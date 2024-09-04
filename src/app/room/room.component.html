@@ -1,1 +1,27 @@
-<p>room works!</p>
+<p>Room works!</p>
+<!-- <h1>State: <i>{{state}}</i></h1> -->
+
+<div *ngIf="state === 'create'; else enter">
+    <form [formGroup]="createForm" (ngSubmit)="onCreate()">
+        <h2>Create Room</h2>
+        <label for="roomName">Room Name:</label>
+        <input id="roomName" formControlName="roomName" />
+
+        <label for="description">Description:</label>
+        <textarea id="description" formControlName="description"></textarea>
+
+        <button type="submit">Create Room</button>
+    </form>
+</div>
+
+<ng-template #enter>
+    <form [formGroup]="enterForm" (ngSubmit)="onEnter()">
+        <h2>Enter Room</h2>
+        <label for="roomId">Room ID:</label>
+        <input id="roomId" formControlName="roomId" />
+
+        <button type="submit">Enter Room</button>
+    </form>
+</ng-template>
+
+<button (click)="getRoomList()">List</button>

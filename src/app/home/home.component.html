@@ -1,1 +1,22 @@
-<p>home works!</p>
+<div *ngIf="state=='home'">
+    <h1>Welcome to the Home Page</h1>
+    <button (click)="createRoom()">Create Room</button>
+    <button (click)="enterRoom()">Enter Room</button>
+  </div>
+  
+  <div *ngIf="state=='create'">
+    <h1>Room Creation</h1>
+    <app-room [state]="state"></app-room>
+    <p>You are now in the room creation state.</p>
+    <!-- Add more content related to creating a room here -->
+    <button (click)="backToHome()">Back to Home</button>
+  </div>
+  
+  <div *ngIf="state=='enter'">
+    <h1>Room Entry</h1>
+    <app-room [state]="state"></app-room>
+    <p>You are now in the room entry state.</p>
+    <!-- Add more content related to entering a room here -->
+    <button (click)="backToHome()">Back to Home</button>
+  </div>
+  
