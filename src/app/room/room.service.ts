@@ -1,56 +1,131 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { FileHandlerService } from '../services/file-handler.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
-  private rooms: any[] = []; // In-memory data store
 
-  constructor() {
-    // Load initial data
-    this.loadRooms();
+  constructor(private fileHandlerService:FileHandlerService){}
+
+  tempDetails:any;
+
+  private roomSubject = new BehaviorSubject<any>([]);
+  room$ = this.roomSubject.asObservable();
+
+  private stateSubject = new BehaviorSubject<any>({});
+  state$ = this.stateSubject.asObservable();
+
+  getRoom(): Observable<any[]> {
+    this.getFromFile()
+    return this.roomSubject.asObservable();
   }
 
-  // Get all rooms
-  getRooms(): Observable<any[]> {
-    return of(this.rooms).pipe(
-      catchError(this.handleError<any[]>('getRooms', []))
-    );
+  setRoom(room: any[]): void {
+    this.roomSubject.next(room);
   }
 
-  // Create a room with a userId
-  createRoom(userId: string): Observable<any> {
+  getState(): any {
+    return this.stateSubject.getValue();
+  }
+
+  // Method to update the state
+  setState(newState: any): void {
+    this.stateSubject.next(newState);
+  }
+
+  roomSelected='';
+  private roomsUrl = 'assets/databasemock.json'; // URL to mock JSON file
+  private rooms: any[] = [
+    { id: '1', userId: 'user1' },
+    { id: '2', userId: 'user2' },
+    { id: '3', userId: 'user3' }
+  ]; // In-memory data store
+
+  private roomDetails: any[] = [
+    { id: '1', userId: 'user1' },
+    { id: '2', userId: 'user2' },
+    { id: '3', userId: 'user3' }
+  ]; // In-memory data store
+
+  // constructor(private http: HttpClient) {
+  //   // Load initial data from JSON file
+  //   this.loadRooms();
+  // }
+
+  // Get all rooms from the rooms
+  getRooms() {
+    return this.rooms;
+    
+  }
+
+  getFromFile(){
+    this.tempDetails = this.fileHandlerService.getData()
+    console.log("retrieved data", this.tempDetails)
+  }
+
+  getRoomDetails(userId:any) {
+    const room = this.roomDetails.find(room => room.userId === userId);
+    return room
+
+  }
+
+  // Create a room with a userId and save to JSON file
+  createRoom(userId: string){
+    
+    const room = this.rooms.find(room => room.userId === userId);
+    // check if room exist then console else create
+    if(room){
+      console.log("Room already exist")
+      return;
+    }
+    else{
     const newRoom = { id: this.generateId(), userId };
     this.rooms.push(newRoom);
-    this.saveRooms(); // Simulate saving to a file or server
-    return of(newRoom).pipe(
-      catchError(this.handleError<any>('createRoom'))
-    );
+    console.log("New Room Created",newRoom)
+    }
+
+    
   }
 
   // Enter a room by id
-  enterRoom(roomId: string): Observable<any> {
-    const room = this.rooms.find(room => room.id === roomId);
-    return of(room).pipe(
-      catchError(this.handleError<any>('enterRoom'))
-    );
+  // enterRoom(roomId: string) {
+  //   const room = this.rooms.find(room => room.id === roomId);
+  //   return of(room).pipe(
+  //     catchError(this.handleError<any>('enterRoom'))
+  //   );
+  // }
+
+  // // Enter a room by userId
+    enterRoom(userId: string) {
+    const room = this.rooms.find(room => room.userId === userId);
+    // if room undefined then no room exist
+    if(!room){
+      console.log("No room exist")
+      return null
+    }
+    console.log("Room Entered", room)
+    this.roomSelected = room
+    return room
   }
 
-  // Simulate loading rooms from a file or server
-  private loadRooms(): void {
-    // Simulate loading data (e.g., from a file or server)
-    // For now, we'll use an empty array as initial data
-    
-    this.rooms = []; // In a real scenario, you would fetch this from a file or server
-  }
+  // // Load rooms from mock JSON file
+  // private loadRooms(): void {
+  //   this.getRooms().subscribe(rooms => {
+  //     this.rooms = rooms || [];
+  //   });
+  // }
 
-  // Simulate saving rooms to a file or server
-  private saveRooms(): void {
-    // In a real scenario, you would send this data to a server
-    console.log('Rooms saved:', this.rooms);
-  }
+  // Simulate saving rooms to the mock JSON file
+  // private saveRooms(): Observable<any> {
+  //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  //   return this.http.put(this.roomsUrl, this.rooms, { headers }).pipe(
+  //     catchError(this.handleError<any>('saveRooms'))
+  //   );
+  // }
 
   // Generate a unique id for new rooms
   private generateId(): string {

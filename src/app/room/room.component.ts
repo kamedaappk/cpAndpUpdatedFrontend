@@ -2,17 +2,20 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule
 import { RoomService } from './room.service';
+import { RoomUiComponent } from './room-ui/room-ui.component';
+import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-room',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RoomUiComponent, HttpClientModule],
   templateUrl: './room.component.html',
   styleUrl: './room.component.css'
 })
 export class RoomComponent implements OnInit {
   // @Input() roomName!: string;
-  @Input() state:any;
+  state:any;
 
+  selectedRoom:any;
   createForm!: FormGroup; // Use '!' to assert that this will be initialized
   enterForm!: FormGroup;
   roomList:any;
@@ -20,6 +23,15 @@ export class RoomComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private roomService:RoomService) {}
   ngOnInit() {
+    // Subscribe to state changes
+    this.roomService.state$.subscribe(updatedState => {
+      this.state = updatedState;
+    });
+
+    this.roomService.room$.subscribe(updatedRoom => {
+      this.selectedRoom = updatedRoom;
+    })
+
     this.createForm = this.fb.group({
       roomName: ['', Validators.required],
       description: ['']
@@ -34,7 +46,9 @@ export class RoomComponent implements OnInit {
     if (this.createForm.valid) {
       // Handle the creation of the room
       console.log('Creating room with data:', this.createForm.value);
-      this.roomService.createRoom(this.createForm.value);
+      console.log('Room ID', this.createForm.value.roomName)
+      
+      this.roomService.createRoom(this.createForm.value.roomName);
     }
   }
 
@@ -42,20 +56,29 @@ export class RoomComponent implements OnInit {
     if (this.enterForm.valid) {
       // Handle entering the room
       console.log('Entering room with ID:', this.enterForm.value.roomId);
-      this.roomService.enterRoom(this.enterForm.value.roomId);
+      this.selectedRoom=this.roomService.enterRoom(this.enterForm.value.roomId);
+      console.log('selected Room',this.selectedRoom)
+      if (this.selectedRoom!=null){
+      // this.state='loggedin'
+      console.log('Logged In')
+      this.roomService.setState('loggedin')
+      this.roomService.setRoom(this.selectedRoom)
+      // return this.selectedRoom
+      }
     }
   }
 
   getRoomList() {
-    this.roomList = this.roomService.getRooms().subscribe((data) => {
-      this.roomList = data;
-      console.log(this.roomList)
-    });
-    console.log(this.roomList)
+    // this.roomList = this.roomService.getRooms().subscribe((data) => {
+    //   this.roomList = data;
+    //   console.log(this.roomList)
+    // });
+    this.roomList = this.roomService.getRooms();
+    console.log("Room List",this.roomList)
   }
 
   ngOnDestroy(): void {}
-  
+  // unsubscribe
 
 
 }

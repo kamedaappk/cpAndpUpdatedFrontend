@@ -1,9 +1,10 @@
 <p>Room works!</p>
 <!-- <h1>State: <i>{{state}}</i></h1> -->
 
-<div *ngIf="state === 'create'; else enter">
+<div *ngIf="state === 'create'">
     <form [formGroup]="createForm" (ngSubmit)="onCreate()">
         <h2>Create Room</h2>
+        <p>You are now in the room creation state.</p>
         <label for="roomName">Room Name:</label>
         <input id="roomName" formControlName="roomName" />
 
@@ -14,14 +15,18 @@
     </form>
 </div>
 
-<ng-template #enter>
+<div *ngIf="state=='enter'">
     <form [formGroup]="enterForm" (ngSubmit)="onEnter()">
         <h2>Enter Room</h2>
+        <p>You are now in the room entry state.</p>
         <label for="roomId">Room ID:</label>
         <input id="roomId" formControlName="roomId" />
 
         <button type="submit">Enter Room</button>
     </form>
-</ng-template>
+</div>
 
 <button (click)="getRoomList()">List</button>
+<div *ngIf="state=='loggedin'">
+    <app-room-ui [room]="selectedRoom"></app-room-ui>
+</div>
