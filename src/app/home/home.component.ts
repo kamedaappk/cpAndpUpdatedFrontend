@@ -3,13 +3,12 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { RoomComponent } from "../room/room.component";
 import { RoomUiComponent } from "../room/room-ui/room-ui.component";
-import { HttpClientModule } from '@angular/common/http';
 import { RoomService } from '../room/room.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RoomComponent, RoomUiComponent, HttpClientModule],
+  imports: [CommonModule, RoomComponent, RoomUiComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

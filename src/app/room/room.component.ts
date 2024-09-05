@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms'; // Import ReactiveFormsModule
 import { RoomService } from './room.service';
 import { RoomUiComponent } from './room-ui/room-ui.component';
-import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-room',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RoomUiComponent, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, RoomUiComponent],
   templateUrl: './room.component.html',
   styleUrl: './room.component.css'
 })
@@ -79,6 +78,8 @@ export class RoomComponent implements OnInit {
 
   ngOnDestroy(): void {}
   // unsubscribe
+  // this.roomservice.state$.unsubscribe();
+  // this.roomservice.room$.unsubscribe();
 
 
 }

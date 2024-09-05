@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import {} from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { RoomService } from '../room.service';
 
 @Component({
   selector: 'app-room-ui',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule],
   templateUrl: './room-ui.component.html',
   styleUrl: './room-ui.component.css'
 })
