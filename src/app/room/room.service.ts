@@ -11,29 +11,52 @@ export class RoomService {
   tempDetails:any;
 
   constructor(private http: HttpClient) { }
-  private roomDetailsAllSubject = new BehaviorSubject<any>([]);
   private roomSubject = new BehaviorSubject<any>([]);
   private stateSubject = new BehaviorSubject<any>({});
+  private roomDataSubject = new BehaviorSubject<any>({});
   
-
   room$ = this.roomSubject.asObservable();
   state$ = this.stateSubject.asObservable();
+  roomData$ = this.roomDataSubject.asObservable();
+
 
   getRoom(): Observable<any[]> {
     // this.getFromFile()
     return this.roomSubject.asObservable();
   }
 
+  
+
   setRoom(room: any[]): void {
+    console.log("room at setRoom", room)
     this.roomSubject.next(room);
   }
 
-  getRoomDetailsAll(): Observable<any[]> {
-    return this.roomDetailsAllSubject.asObservable();
+  setRoomData(room:any){
+    console.log("room at setRoomData", room)
+    this.roomDataSubject.next(room)
   }
+  
 
-  setRoomDetailsAll(roomDetails: any[]): void {
-    this.roomDetailsAllSubject.next(roomDetails);
+  getRoomData(): Observable<any> {
+    return this.roomDataSubject.asObservable();
+  }
+  
+
+  getRoomDataS(userId: any) {
+    console.log("user id for message request", userId);
+    if (userId === undefined) {
+      return;
+    }
+    this.http.post(`${this.apiUrl}/getMessages`, { userId }).subscribe(
+      (data) => {
+        console.log("data at getRoomDataS", data);
+        this.setRoomData(data);
+      },
+      (error) => {
+        console.error("Error fetching room data", error);
+      }
+    );
   }
 
   getState(): any {
@@ -42,16 +65,12 @@ export class RoomService {
 
   // Method to update the state
   setState(newState: any): void {
+    console.log("newState", newState)
     this.stateSubject.next(newState);
   }
 
-  roomSelected='';
-  private roomsUrl = 'assets/databasemock.json'; // URL to mock JSON file
-  private rooms: any[] = [
-    { id: '1', userId: 'user1' },
-    { id: '2', userId: 'user2' },
-    { id: '3', userId: 'user3' }
-  ]; // In-memory data store
+  roomSelected:any;
+  rooms: any; // In-memory data store
 
   private roomDetails: any[] = [
     {
@@ -77,13 +96,12 @@ export class RoomService {
     }
   ];// In-memory data store
 
-  // Get all rooms from the rooms
-  getRooms() {
-    return this.rooms;
-    
-  }
+
+
 
   saveMessage(userId: string, message: any) {
+
+    // this.http.post(`${this.apiUrl}/saveMessage`, {userId, message}).subscribe();
     const room = this.roomDetails.find(r => r.userId === userId);
     console.log("room", room)
     if (room) {
@@ -94,56 +112,59 @@ export class RoomService {
 
   getRoomDetails(userId:any) {
     const room = this.roomDetails.find(room => room.userId === userId);
+    this.setRoomData(room)
     return room
 
   }
 
   // Create a room with a userId and save to JSON file
-  createRoom(userId: string){
+  // createRoom(userId: string){
     
-    const room = this.rooms.find(room => room.userId === userId);
-    // check if room exist then console else create
-    if(room){
-      console.log("Room already exist")
-      return;
-    }
-    else{
-    const newRoom = { id: this.generateId(), userId };
-    this.rooms.push(newRoom);
-    this.roomDetails.push({ id: newRoom.id, userId: newRoom.userId, messages: [] });
-    // this.saveRooms();
-    console.log("New Room Created",newRoom)
-    }
+  //   const room = this.rooms.find(room => room.userId === userId);
+  //   // check if room exist then console else create
+  //   if(room){
+  //     console.log("Room already exist")
+  //     return;
+  //   }
+  //   else{
+  //   const newRoom = { id: this.generateId(), userId };
+  //   this.rooms.push(newRoom);
+  //   this.roomDetails.push({ id: newRoom.id, userId: newRoom.userId, messages: [] });
+  //   // this.saveRooms();
+  //   console.log("New Room Created",newRoom)
+  //   }
 
     
+  // }
+
+  // Get all rooms from the rooms
+  getRooms(){
+    this.rooms = this.http.get<any[]>(`${this.apiUrl}/rooms`);
+    return this.rooms;
   }
 
+  createRoom(userId: string){
+    console.log("userId", userId)
+    return this.http.post<any>(`${this.apiUrl}/createRoom`, {userId}).subscribe();
+  }
 
   // // Enter a room by userId
     enterRoom(userId: string) {
-    const room = this.rooms.find(room => room.userId === userId);
+    // const room = this.rooms.find((room: { userId: string; }) => room.userId === userId);
+    const roomer = this.http.post(`${this.apiUrl}/enterRoom`, {userId}).subscribe(
+      (data) => {
+        this.roomSelected = data
+        if(!this.roomSelected){
+          console.log("No room exist")
+          return null
+        }
+        console.log("Room Entered", this.roomSelected)
+        this.setRoom(this.roomSelected)
+        return this.roomSelected
+      }
+    );
     // if room undefined then no room exist
-    if(!room){
-      console.log("No room exist")
-      return null
-    }
-    console.log("Room Entered", room)
-    this.roomSelected = room
-    return room
+    
   }
 
-
-
-  // Generate a unique id for new rooms
-  private generateId(): string {
-    return (Math.random() * 1000000).toFixed(0);
-  }
-
-  // Handle errors
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(`${operation} failed: ${error.message}`);
-      return of(result as T);
-    };
-  }
 }

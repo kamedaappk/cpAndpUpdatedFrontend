@@ -3,7 +3,7 @@ import { RoomService } from '../room.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { text } from 'stream/consumers';
-import { timeStamp } from 'console';
+import { Console, timeStamp } from 'console';
 
 
 @Component({
@@ -15,24 +15,45 @@ import { timeStamp } from 'console';
 })
 export class RoomUiComponent implements OnInit{
   state:any;
-  @Input() room:any;
+  room:any;
   constructor(private roomService:RoomService){}
-  roomData:any;
+  roomData:any=[];
   username:string='';
   inputMessage:any='';
+  messages:any;
 
   ngOnInit(): void {
     // Subscribe to state changes
     this.roomService.state$.subscribe(updatedState => {
       this.state = updatedState;
+      console.log("state at ng", this.state)
+    
     });
 
-  console.log("state",this.state)
-  console.log("room", this.room)
-  console.log("userId", this.room.userId)
-  this.roomData=this.roomService.getRoomDetails(this.room.userId)
-  console.log("roomData", this.roomData)
-  console.log("roomMessages", this.roomData.messages)
+    this.roomService.room$.subscribe(updatedRoom => {
+      this.room = updatedRoom;
+      this.username=this.room.userId;
+      console.log("room at ng", this.room)
+      console.log("username at ng", this.username)
+      this.messages=this.roomService.getRoomDataS(this.username)
+      console.log("messages at ng", this.messages)
+      // this.roomService.getRoomData(this.room.userId)
+      });
+
+    this.roomService.roomData$.subscribe(updatedRoomData =>{
+      this.roomData = updatedRoomData
+      // this.messages=this.roomData.messages
+      console.log("roomData at ng", this.roomData)
+      // console.log("messages at ng", this.messages)
+      
+    });
+
+    // this.roomData=this.roomService.getRoomDetails(this.room.userId)
+    // console.log("roomData", this.roomData)
+
+  // this.roomData=this.roomService.getRoomDetails(this.room.userId)
+  // this.roomService.getRoomDetails(this.room.userId)
+
   }
 
   saveMessage(){
@@ -53,4 +74,15 @@ export class RoomUiComponent implements OnInit{
     
   }
 
+  ngOnDestroy() {
+    if (this.state.subscription) {
+      this.state.subscription.unsubscribe();
+    }
+    if (this.room.subscription) {
+      this.room.subscription.unsubscribe();
+    }
+    if (this.roomData.subscription) {
+      this.roomData.subscription.unsubscribe();
+    }
+  }
 }

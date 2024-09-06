@@ -49,8 +49,15 @@ export class RoomComponent implements OnInit {
       
       this.roomService.createRoom(this.createForm.value.roomName);
       this.selectedRoom=this.roomService.enterRoom(this.createForm.value.roomName);
+      if(this.selectedRoom){
       this.roomService.setState('loggedin')
       this.roomService.setRoom(this.selectedRoom)
+      this.roomService.setRoomData(this.selectedRoom.userId)
+      }
+      else{
+        console.log("failed to create room")
+      }
+      
     }
   }
 
@@ -59,30 +66,40 @@ export class RoomComponent implements OnInit {
       // Handle entering the room
       console.log('Entering room with ID:', this.enterForm.value.roomId);
       this.selectedRoom=this.roomService.enterRoom(this.enterForm.value.roomId);
-      console.log('selected Room',this.selectedRoom)
-      if (this.selectedRoom!=null){
+      this.roomService.setRoom(this.selectedRoom);
+      console.log('selected Room at room component', this.selectedRoom)
+      // console.log('selected Room',this.selectedRoom)
+      // if (this.selectedRoom!=null){
       // this.state='loggedin'
       console.log('Logged In')
       this.roomService.setState('loggedin')
       this.roomService.setRoom(this.selectedRoom)
+      this.roomService.setRoomData(this.selectedRoom.userId)
       // return this.selectedRoom
-      }
+      // }
     }
   }
+  
 
   getRoomList() {
-    // this.roomList = this.roomService.getRooms().subscribe((data) => {
-    //   this.roomList = data;
-    //   console.log(this.roomList)
-    // });
-    this.roomList = this.roomService.getRooms();
-    console.log("Room List",this.roomList)
+
+    this.roomService.getRooms().subscribe({
+      next: (data: any) => {
+        this.roomList = data;
+        console.log("Room List is", this.roomList)
+      },
+      error: (err: any) => {
+        console.error('Error fetching rooms:', err);      }
+    });
   }
 
-  ngOnDestroy(): void {}
-  // unsubscribe
-  // this.roomservice.state$.unsubscribe();
-  // this.roomservice.room$.unsubscribe();
-
+  ngOnDestroy() {
+    if (this.state.subscription) {
+      this.state.subscription.unsubscribe();
+    }
+    if (this.selectedRoom.subscription) {
+      this.selectedRoom.subscription.unsubscribe();
+    }
+  }
 
 }

@@ -28,5 +28,7 @@
 
 <button (click)="getRoomList()">List</button>
 <div *ngIf="state=='loggedin'">
-    <app-room-ui [room]="selectedRoom"></app-room-ui>
+    <app-room-ui ></app-room-ui>
 </div>
+
+<div *ngIf="selectedRoom"> selectedRoom {{ selectedRoom | json }}</div>

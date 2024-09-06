@@ -1,6 +1,7 @@
 <p>room-ui works!</p>
 <div *ngIf="state === 'loggedin'">
-  <p>Hello, you are at {{room.userId}}</p>
+  <p>Hello, you are at </p><h1>{{username}}</h1>{{room.userId}}
+  room-ui component<p>with ID {{room.id}}</p>
 
   <div class="contents">
     <ul>
@@ -19,3 +20,4 @@
   <label for="fileUpload" class="visually-hidden">Upload a file:</label>
   <input id="fileUpload" type="file" (change)="fileUpload($event)">
 </div>
+<div *ngIf="room">ROOM {{ room |json }}</div>
