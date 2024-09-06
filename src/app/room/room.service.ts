@@ -52,9 +52,6 @@ export class RoomService {
       (data) => {
         console.log("data at getRoomDataS", data);
         this.setRoomData(data);
-      },
-      (error) => {
-        console.error("Error fetching room data", error);
       }
     );
   }
@@ -72,72 +69,27 @@ export class RoomService {
   roomSelected:any;
   rooms: any; // In-memory data store
 
-  private roomDetails: any[] = [
-    {
-      id: '1',
-      userId: 'user1',
-      messages: [
-        { text: 'Hello from room 1!', timestamp: new Date().toISOString() }
-      ]
-    },
-    {
-      id: '2',
-      userId: 'user2',
-      messages: [
-        { text: 'Hi there from room 2!', timestamp: new Date().toISOString() }
-      ]
-    },
-    {
-      id: '3',
-      userId: 'user3',
-      messages: [
-        { text: 'Greetings from room 3!', timestamp: new Date().toISOString()}
-      ]
-    }
-  ];// In-memory data store
-
 
 
 
   saveMessage(userId: string, message: any) {
-
-    // this.http.post(`${this.apiUrl}/saveMessage`, {userId, message}).subscribe();
-    const room = this.roomDetails.find(r => r.userId === userId);
-    console.log("room", room)
-    if (room) {
-      room.messages.push(message);
-    }
-    console.log("room", room)
+    this.http.post(`${this.apiUrl}/saveMessage`, { userId, message }).subscribe(
+      (data) => {
+        this.setRoomData(data)
+  
+        console.log("Message saved successfully");
+      }
+      
+    );
   }
 
-  getRoomDetails(userId:any) {
-    const room = this.roomDetails.find(room => room.userId === userId);
-    this.setRoomData(room)
-    return room
+  // getRoomDetails(userId:any) {
+  //   const room = this.roomDetails.find(room => room.userId === userId);
+  //   this.setRoomData(room)
+  //   return room
 
-  }
-
-  // Create a room with a userId and save to JSON file
-  // createRoom(userId: string){
-    
-  //   const room = this.rooms.find(room => room.userId === userId);
-  //   // check if room exist then console else create
-  //   if(room){
-  //     console.log("Room already exist")
-  //     return;
-  //   }
-  //   else{
-  //   const newRoom = { id: this.generateId(), userId };
-  //   this.rooms.push(newRoom);
-  //   this.roomDetails.push({ id: newRoom.id, userId: newRoom.userId, messages: [] });
-  //   // this.saveRooms();
-  //   console.log("New Room Created",newRoom)
-  //   }
-
-    
   // }
 
-  // Get all rooms from the rooms
   getRooms(){
     this.rooms = this.http.get<any[]>(`${this.apiUrl}/rooms`);
     return this.rooms;
@@ -145,7 +97,14 @@ export class RoomService {
 
   createRoom(userId: string){
     console.log("userId", userId)
-    return this.http.post<any>(`${this.apiUrl}/createRoom`, {userId}).subscribe();
+    return this.http.post<any>(`${this.apiUrl}/createRoom`, {userId}).subscribe(
+      (data) => {
+        this.roomSelected = data
+        console.log("Room Created", this.roomSelected)
+        this.setRoom(this.roomSelected)
+        this.setState('loggedin')
+      }
+    );
   }
 
   // // Enter a room by userId
@@ -156,15 +115,18 @@ export class RoomService {
         this.roomSelected = data
         if(!this.roomSelected){
           console.log("No room exist")
-          return null
+          return 
         }
         console.log("Room Entered", this.roomSelected)
         this.setRoom(this.roomSelected)
+        this.setState('loggedin')
         return this.roomSelected
       }
     );
     // if room undefined then no room exist
     
   }
+
+  
 
 }

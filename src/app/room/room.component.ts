@@ -49,14 +49,11 @@ export class RoomComponent implements OnInit {
       
       this.roomService.createRoom(this.createForm.value.roomName);
       this.selectedRoom=this.roomService.enterRoom(this.createForm.value.roomName);
-      if(this.selectedRoom){
+      console.log('selected Room at room component on create', this.selectedRoom)
       this.roomService.setState('loggedin')
       this.roomService.setRoom(this.selectedRoom)
       this.roomService.setRoomData(this.selectedRoom.userId)
-      }
-      else{
-        console.log("failed to create room")
-      }
+
       
     }
   }
@@ -66,15 +63,15 @@ export class RoomComponent implements OnInit {
       // Handle entering the room
       console.log('Entering room with ID:', this.enterForm.value.roomId);
       this.selectedRoom=this.roomService.enterRoom(this.enterForm.value.roomId);
-      this.roomService.setRoom(this.selectedRoom);
-      console.log('selected Room at room component', this.selectedRoom)
+      // this.roomService.setRoom(this.selectedRoom);
+      // console.log('selected Room at room component on enter', this.selectedRoom)
       // console.log('selected Room',this.selectedRoom)
       // if (this.selectedRoom!=null){
       // this.state='loggedin'
-      console.log('Logged In')
-      this.roomService.setState('loggedin')
-      this.roomService.setRoom(this.selectedRoom)
-      this.roomService.setRoomData(this.selectedRoom.userId)
+      // console.log('Logged In')
+      // this.roomService.setState('loggedin')
+      // this.roomService.setRoom(this.selectedRoom)
+      // this.roomService.setRoomData(this.selectedRoom.userId)
       // return this.selectedRoom
       // }
     }
