@@ -1,14 +1,17 @@
-import { CommonModule } from '@angular/common';
-import {} from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { RoomService } from '../room.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { text } from 'stream/consumers';
+import { timeStamp } from 'console';
+
 
 @Component({
   selector: 'app-room-ui',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './room-ui.component.html',
-  styleUrl: './room-ui.component.css'
+  styleUrls: ['./room-ui.component.css']
 })
 export class RoomUiComponent implements OnInit{
   state:any;
@@ -16,6 +19,7 @@ export class RoomUiComponent implements OnInit{
   constructor(private roomService:RoomService){}
   roomData:any;
   username:string='';
+  inputMessage:any='';
 
   ngOnInit(): void {
     // Subscribe to state changes
@@ -28,6 +32,25 @@ export class RoomUiComponent implements OnInit{
   console.log("userId", this.room.userId)
   this.roomData=this.roomService.getRoomDetails(this.room.userId)
   console.log("roomData", this.roomData)
+  console.log("roomMessages", this.roomData.messages)
+  }
+
+  saveMessage(){
+    console.log("message", this.inputMessage)
+    // if message = '' avoid
+    if(this.inputMessage==='') return;
+    this.inputMessage = {
+      text: this.inputMessage,
+      timestamp: new Date().toISOString()}
+    this.roomService.saveMessage(this.room.userId, this.inputMessage)
+    this.inputMessage=''
+  }
+
+  fileUpload(event:any){
+    // console.log("file", file)
+    console.log("event", event)
+    // const file = event.target.files[0];
+    
   }
 
 }

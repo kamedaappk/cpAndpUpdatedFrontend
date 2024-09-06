@@ -48,6 +48,9 @@ export class RoomComponent implements OnInit {
       console.log('Room ID', this.createForm.value.roomName)
       
       this.roomService.createRoom(this.createForm.value.roomName);
+      this.selectedRoom=this.roomService.enterRoom(this.createForm.value.roomName);
+      this.roomService.setState('loggedin')
+      this.roomService.setRoom(this.selectedRoom)
     }
   }
 

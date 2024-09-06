@@ -1,9 +1,21 @@
 <p>room-ui works!</p>
-<div *ngIf="state=='loggedin'">
-    Hello You are at {{room.userId}}
+<div *ngIf="state === 'loggedin'">
+  <p>Hello, you are at {{room.userId}}</p>
 
-    <div class="contents">
+  <div class="contents">
+    <ul>
+      <li *ngFor="let message of roomData.messages">
+        {{ message.text }} <span class="timestamp">time {{message.timestamp}}</span>
+      </li>
+    </ul>
+  </div>
+</div>
 
-    </div>
+<div class="input">
+  <label for="messageInput">Message:</label>
+  <input id="messageInput" type="text" [(ngModel)]="inputMessage" placeholder="Type your message here">
+  <button (click)="saveMessage()">Send</button>
 
+  <label for="fileUpload" class="visually-hidden">Upload a file:</label>
+  <input id="fileUpload" type="file" (change)="fileUpload($event)">
 </div>

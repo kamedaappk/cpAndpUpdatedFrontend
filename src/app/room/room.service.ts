@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';  
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
 
+  private apiUrl = 'http://localhost:3000'; // Your backend URL
   tempDetails:any;
 
+  constructor(private http: HttpClient) { }
   private roomDetailsAllSubject = new BehaviorSubject<any>([]);
   private roomSubject = new BehaviorSubject<any>([]);
   private stateSubject = new BehaviorSubject<any>({});
   
+
   room$ = this.roomSubject.asObservable();
   state$ = this.stateSubject.asObservable();
 
@@ -50,10 +54,28 @@ export class RoomService {
   ]; // In-memory data store
 
   private roomDetails: any[] = [
-    { id: '1', userId: 'user1' },
-    { id: '2', userId: 'user2' },
-    { id: '3', userId: 'user3' }
-  ]; // In-memory data store
+    {
+      id: '1',
+      userId: 'user1',
+      messages: [
+        { text: 'Hello from room 1!', timestamp: new Date().toISOString() }
+      ]
+    },
+    {
+      id: '2',
+      userId: 'user2',
+      messages: [
+        { text: 'Hi there from room 2!', timestamp: new Date().toISOString() }
+      ]
+    },
+    {
+      id: '3',
+      userId: 'user3',
+      messages: [
+        { text: 'Greetings from room 3!', timestamp: new Date().toISOString()}
+      ]
+    }
+  ];// In-memory data store
 
   // Get all rooms from the rooms
   getRooms() {
@@ -61,6 +83,14 @@ export class RoomService {
     
   }
 
+  saveMessage(userId: string, message: any) {
+    const room = this.roomDetails.find(r => r.userId === userId);
+    console.log("room", room)
+    if (room) {
+      room.messages.push(message);
+    }
+    console.log("room", room)
+  }
 
   getRoomDetails(userId:any) {
     const room = this.roomDetails.find(room => room.userId === userId);
@@ -80,6 +110,7 @@ export class RoomService {
     else{
     const newRoom = { id: this.generateId(), userId };
     this.rooms.push(newRoom);
+    this.roomDetails.push({ id: newRoom.id, userId: newRoom.userId, messages: [] });
     // this.saveRooms();
     console.log("New Room Created",newRoom)
     }
