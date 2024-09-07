@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { RoomService } from '../room.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -24,14 +24,56 @@ export class RoomUiComponent implements OnInit{
   time:any;
   selectedFile: File | null = null;
 
-
+  @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement> | undefined;
   // Method to handle file selection
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
+    const maxSizeInMB = 5;
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // 5 MB in bytes
+
     if (file) {
-      this.selectedFile = file;
+        if (file.size > maxSizeInBytes) {
+          if (this.fileInput && this.fileInput.nativeElement) {
+            this.fileInput.nativeElement.value = '';
+          }
+            // File size exceeds the limit
+            alert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`);
+        } else {
+            // File size is within the limit
+            this.selectedFile = file;
+            // Proceed with the file processing
+        }
     }
+}
+
+copyMessageText(text: string): void {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        console.log('Text copied to clipboard successfully!');
+        // Optionally show a success message to the user
+      },
+      (err) => {
+        console.error('Failed to copy text: ', err);
+        // Optionally show an error message to the user
+      }
+    );
+  } else {
+    // Fallback for older browsers
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      console.log('Text copied to clipboard successfully!');
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+    document.body.removeChild(textarea);
   }
+}
+
 
   // Method to upload the selected file
   uploadFile(): void {
@@ -41,7 +83,11 @@ export class RoomUiComponent implements OnInit{
         (response) => {
           console.log('File uploaded successfully', response);
           this.roomService.getRoomDataS(this.room.userId)
-          this.selectedFile=null
+          // this.selectedFile=null
+          // Reset the file input
+          if (this.fileInput && this.fileInput.nativeElement) {
+            this.fileInput.nativeElement.value = '';
+          }
         },
         (error) => {
           console.error('Error uploading file', error);

@@ -5,6 +5,7 @@
     <form [formGroup]="createForm" (ngSubmit)="onCreate()">
         <h2>Create Room</h2>
         <p>You are now in the room creation state.</p>
+        
         <label for="roomName">Room Name:</label>
         <input id="roomName" formControlName="roomName" />
 
@@ -12,33 +13,38 @@
         <textarea id="description" formControlName="description"></textarea>
 
         <label for="duration">Duration in Hours:</label>
-  <input
-    type="number"
-    id="duration"
-    formControlName="duration"
-    min="1"
-    max="12"
-    required
-  />
- 
+        <input
+            type="number"
+            id="duration"
+            formControlName="duration"
+            min="1"
+            max="12"
+            required
+        />
+        
         <button type="submit">Create Room</button>
     </form>
 </div>
 
-<div *ngIf="state=='enter'">
+<div *ngIf="state === 'enter'">
     <form [formGroup]="enterForm" (ngSubmit)="onEnter()">
         <h2>Enter Room</h2>
         <p>You are now in the room entry state.</p>
+        
         <label for="roomId">Room ID:</label>
         <input id="roomId" formControlName="roomId" />
-
+        
         <button type="submit">Enter Room</button>
     </form>
 </div>
 
-<button (click)="getRoomList()">List</button>
-<div *ngIf="state=='loggedin'">
-    <app-room-ui ></app-room-ui>
+<!-- Added a wrapper div for better logical grouping of buttons -->
+<div>
+    <button (click)="getRoomList()">List</button>
+</div>
+
+<div *ngIf="state === 'loggedin'">
+    <app-room-ui></app-room-ui>
 </div>
 
 <!-- <div *ngIf="selectedRoom"> selectedRoom {{ selectedRoom | json }}</div> -->

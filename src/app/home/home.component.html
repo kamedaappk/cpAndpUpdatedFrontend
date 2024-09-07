@@ -1,18 +1,17 @@
-home page works
-<div *ngIf="state=='home'; else elseblock">
+<div *ngIf="state === 'home'; else elseblock" class="container">
     <h1>Welcome to the Home Page</h1>
-    <button (click)="createRoom()">Create Room</button>
-    <button (click)="enterRoom()">Enter Room</button>
-  </div>
-  
+    <div class="button-container">
+        <button (click)="createRoom()">Create Room</button>
+        <button (click)="enterRoom()">Enter Room</button>
+    </div>
+</div>
 
-    <app-room ></app-room>
-    
+<app-room *ngIf="state === 'enter' || state === 'create' || state === 'loggedin'" ></app-room>
 
-  <ng-template #elseblock> is working 😁 as {{state}}</ng-template>
-  <div>
+<ng-template #elseblock>
+    <div class="error-message">is working 😁 as {{state}}</div>
+</ng-template>
+
+<div class="back-button-container">
     <button (click)="backToHome()">Back to Home</button>
-  </div>
-
-  <!-- <div *ngIf="state">STATE {{ state }}</div> -->
-  
+</div>
