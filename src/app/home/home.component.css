@@ -1,71 +1,78 @@
+/* Container for the entire page */
 .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 20px;
     text-align: center;
-    font-family: 'Arial', sans-serif;
-}
-
-h1 {
-    color: #333;
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-}
-
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-button {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    color: white;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    background-color: #f9f9f9; /* Light background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    border-radius: 10px;
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #45a049;
+.container:hover {
+    background-color: #f1f1f1;
 }
 
-.error-message {
-    color: #721c24;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
+/* Heading styles */
+h1 {
+    font-size: 2.5rem;
+    color: #333; /* Dark gray color */
+    margin-bottom: 20px;
+}
+
+/* Button container for alignment */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+/* Button styles */
+button {
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
     border-radius: 5px;
-    padding: 1rem;
-    margin: 2rem auto;
-    max-width: 400px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Error message styling */
+.error-message {
+    color: #d9534f; /* Bootstrap's danger color */
+    font-size: 1.2rem;
+    margin-top: 20px;
+}
+
+/* Back button container */
 .back-button-container {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
+    text-align: center;
+    margin-top: 20px;
 }
 
+/* Back button styling */
 .back-button-container button {
-    background-color: #f44336;
+    background-color: #6c757d;
+    padding: 10px 15px;
 }
 
 .back-button-container button:hover {
-    background-color: #d32f2f;
+    background-color: #5a6268;
 }
 
-@media (max-width: 600px) {
-    .button-container {
-        flex-direction: column;
-    }
-
-    button {
-        width: 100%;
-    }
+.back-button-container button:active {
+    transform: scale(0.95);
 }

@@ -1,7 +1,7 @@
 <p>Room works!</p>
 <!-- <h1>State: <i>{{state}}</i></h1> -->
 
-<div *ngIf="state === 'create'">
+<div *ngIf="state === 'create'" class="state">
     <form [formGroup]="createForm" (ngSubmit)="onCreate()">
         <h2>Create Room</h2>
         <p>You are now in the room creation state.</p>
@@ -26,7 +26,7 @@
     </form>
 </div>
 
-<div *ngIf="state === 'enter'">
+<div *ngIf="state === 'enter'" class="state">
     <form [formGroup]="enterForm" (ngSubmit)="onEnter()">
         <h2>Enter Room</h2>
         <p>You are now in the room entry state.</p>

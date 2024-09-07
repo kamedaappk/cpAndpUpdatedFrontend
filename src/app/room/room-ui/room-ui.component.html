@@ -1,11 +1,11 @@
 <p>room-ui works!</p>
 
-<div *ngIf="state === 'loggedin'">
+<div *ngIf="state === 'loggedin'" class="loggedin">
     <p>Hello, you are at </p> <h1>{{username}}</h1> in the room with ID {{room.id}}
     <p>Room expiry on {{room.duration}}</p>
     <p>Current time: {{time | json}}</p>
 
-    <div *ngFor="let message of roomData.messages">
+    <div class="messages" *ngFor="let message of roomData.messages">
         <p>{{ message.text }}</p>
         <span class="timestamp">Time: {{message.timestamp}}</span>
         <div *ngIf="message.filePath; else copy">
