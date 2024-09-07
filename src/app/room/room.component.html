@@ -11,6 +11,16 @@
         <label for="description">Description:</label>
         <textarea id="description" formControlName="description"></textarea>
 
+        <label for="duration">Duration in Hours:</label>
+  <input
+    type="number"
+    id="duration"
+    formControlName="duration"
+    min="1"
+    max="12"
+    required
+  />
+ 
         <button type="submit">Create Room</button>
     </form>
 </div>

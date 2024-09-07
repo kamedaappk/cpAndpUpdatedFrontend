@@ -1,30 +1,89 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';  
+import { io, Socket } from 'socket.io-client';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
 
+
+  
   private apiUrl = 'http://localhost:3000'; // Your backend URL
+  // private socket: Socket; // Add this line
+
   tempDetails:any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    // this.socket = io(this.apiUrl); // Initialize socket connection
+
+  }
   private roomSubject = new BehaviorSubject<any>([]);
   private stateSubject = new BehaviorSubject<any>({});
   private roomDataSubject = new BehaviorSubject<any>({});
+  private realTimeSubject = new BehaviorSubject<any>([]);
   
   room$ = this.roomSubject.asObservable();
   state$ = this.stateSubject.asObservable();
   roomData$ = this.roomDataSubject.asObservable();
+  realTime$ = this.realTimeSubject.asObservable();
 
 
-  getRoom(): Observable<any[]> {
-    // this.getFromFile()
-    return this.roomSubject.asObservable();
+  uploadFile(userId: string, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('userId', userId);
+  
+    return this.http.post(`${this.apiUrl}/uploadFile`, formData);
+  }
+  
+
+  // // socketss
+  // // Method to join a room
+  // joinRoom(userId: string): void {
+  //   this.socket.emit('joinRoom', { userId });
+  //   console.log(`${userId} joined the room via socket`);
+  // }
+
+  // Method to send a new message
+  // sendMessage(userId: string, message: any): void {
+  //   this.socket.emit('newMessage', { userId, message });
+  // }
+
+  // // Method to receive messages
+  // onMessage(): Observable<any> {
+  //   return new Observable(observer => {
+  //     this.socket.on('message', (message: any) => {
+  //       observer.next(message);
+  //     });
+  //   });
+
+  // }
+
+  // Modify saveMessage to use sockets
+  // saveMessages(userId: string, message: any): void {
+  //   // Optionally, keep HTTP call to save to backend
+  //   // this.http.post(`${this.apiUrl}/saveMessage`, { userId, message }).subscribe();
+
+  //   // Use socket to send the message
+  //   this.sendMessage(userId, message);
+  // }
+
+  // getRoom(): Observable<any[]> {
+  //   // this.getFromFile()
+  //   return this.roomSubject.asObservable();
+  // }
+
+  getRealtime(){
+    // current date and time
+    return this.realTimeSubject.asObservable();
   }
 
+  setRealtime(data:any){
+    this.realTimeSubject.next(data)
+  }
   
 
   setRoom(room: any[]): void {
@@ -69,6 +128,14 @@ export class RoomService {
   roomSelected:any;
   rooms: any; // In-memory data store
 
+// update the current time automatically
+  updateTime() {
+    setInterval(() => {
+      const currentTime = new Date().getTime();
+      this.setRealtime(currentTime);
+      console.log("currentTime", currentTime)
+    }, 1000); // Update every second
+  }
 
 
 
@@ -76,6 +143,7 @@ export class RoomService {
     this.http.post(`${this.apiUrl}/saveMessage`, { userId, message }).subscribe(
       (data) => {
         this.setRoomData(data)
+        // this.sendMessage(userId, message);
   
         console.log("Message saved successfully");
       }
@@ -95,9 +163,10 @@ export class RoomService {
     return this.rooms;
   }
 
-  createRoom(userId: string){
+  createRoom(userId: string, duration:any){
     console.log("userId", userId)
-    return this.http.post<any>(`${this.apiUrl}/createRoom`, {userId}).subscribe(
+    console.log("Expiry", duration)
+    return this.http.post<any>(`${this.apiUrl}/createRoom`, {userId, duration}).subscribe(
       (data) => {
         this.roomSelected = data
         console.log("Room Created", this.roomSelected)

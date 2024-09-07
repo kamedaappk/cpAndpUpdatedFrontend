@@ -33,12 +33,16 @@ export class RoomComponent implements OnInit {
 
     this.createForm = this.fb.group({
       roomName: ['', Validators.required],
-      description: ['']
+      description: [''],
+      duration: ['',
+          Validators.required,
+        ]
     });
 
     this.enterForm = this.fb.group({
       roomId: ['', Validators.required]
     });
+    
   }
 
   onCreate() {
@@ -46,8 +50,14 @@ export class RoomComponent implements OnInit {
       // Handle the creation of the room
       console.log('Creating room with data:', this.createForm.value);
       console.log('Room ID', this.createForm.value.roomName)
-      
-      this.roomService.createRoom(this.createForm.value.roomName);
+      // console.log('Room Name', this.createForm.value.duration)
+
+      // set time = current time + duration
+      this.createForm.value.duration = new Date().getTime() + this.createForm.value.duration * 60000;
+      console.log('Duration', this.createForm.value.duration)
+      // set time = current time
+      // this.createForm.value.duration = new Date();
+      this.roomService.createRoom(this.createForm.value.roomName, this.createForm.value.duration);
       this.selectedRoom=this.roomService.enterRoom(this.createForm.value.roomName);
       console.log('selected Room at room component on create', this.selectedRoom)
       this.roomService.setState('loggedin')
@@ -63,6 +73,14 @@ export class RoomComponent implements OnInit {
       // Handle entering the room
       console.log('Entering room with ID:', this.enterForm.value.roomId);
       this.selectedRoom=this.roomService.enterRoom(this.enterForm.value.roomId);
+      this.roomService.updateTime()
+      if(this.selectedRoom!=null){
+      this.roomService.setState('loggedin')
+      this.roomService.setRoom(this.selectedRoom)
+      this.roomService.setRoomData(this.selectedRoom.userId)
+
+      }
+      
       // this.roomService.setRoom(this.selectedRoom);
       // console.log('selected Room at room component on enter', this.selectedRoom)
       // console.log('selected Room',this.selectedRoom)
