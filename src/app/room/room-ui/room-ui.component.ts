@@ -98,7 +98,9 @@ copyMessageText(text: string): void {
 
   downloadFile(filePath: string): void {
     console.log(filePath)
-    const backendUrl = 'http://localhost:3000'; // Your backend URL
+    // const backendUrl = 'https://cpandpupdatedbackend.onrender.com'; // Your backend URL
+    const backendUrl = this.roomService.getApi()
+    console.log("backendurl",backendUrl)
     window.open(`${backendUrl}${filePath}`, '_blank'); // Use full URL with backend port
   }
 

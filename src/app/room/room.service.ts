@@ -11,7 +11,7 @@ export class RoomService {
 
 
   
-  private apiUrl = 'http://localhost:3000'; // Your backend URL
+  private apiUrl = 'https://cpandpupdatedbackend.onrender.com'; // Your backend URL
   // private socket: Socket; // Add this line
 
   tempDetails:any;
@@ -39,6 +39,17 @@ export class RoomService {
     return this.http.post(`${this.apiUrl}/uploadFile`, formData);
   }
   
+  getApi(){
+    return this.apiUrl
+  }
+  
+  deleteAll(){
+    this.http.get(`${this.apiUrl}/deleteAllAlone`).subscribe()
+  }
+
+  resetAll(){
+    this.http.get(`${this.apiUrl}/resetAll`).subscribe()
+  }
 
   // // socketss
   // // Method to join a room

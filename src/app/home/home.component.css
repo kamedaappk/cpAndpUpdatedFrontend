@@ -76,3 +76,10 @@ button:active {
 .back-button-container button:active {
     transform: scale(0.95);
 }
+
+.configButtons button {
+    background-color: rgba(0, 0, 0, 0.1); /* Black with 10% opacity */
+    color: rgba(255, 255, 255, 0.8); /* White text with 80% opacity */
+    border: 1px solid rgba(0, 0, 0, 0.3); /* Border with 30% opacity */
+  }
+  
