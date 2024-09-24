@@ -13,6 +13,7 @@ import { RoomUiComponent } from './room-ui/room-ui.component';
 export class RoomComponent implements OnInit {
   // @Input() roomName!: string;
   state:any;
+  stateSubscription:any;
 
   selectedRoom:any;
   createForm!: FormGroup; // Use '!' to assert that this will be initialized
@@ -23,7 +24,7 @@ export class RoomComponent implements OnInit {
   constructor(private fb: FormBuilder, private roomService:RoomService) {}
   ngOnInit() {
     // Subscribe to state changes
-    this.roomService.state$.subscribe(updatedState => {
+    this.stateSubscription=this.roomService.state$.subscribe(updatedState => {
       this.state = updatedState;
     });
 
@@ -35,7 +36,7 @@ export class RoomComponent implements OnInit {
       roomName: ['', Validators.required],
       description: [''],
       duration: ['',
-          Validators.required,
+        [Validators.required, Validators.min(1), Validators.max(12)]
         ]
     });
 
@@ -46,6 +47,8 @@ export class RoomComponent implements OnInit {
   }
 
   onCreate() {
+      
+
     if (this.createForm.valid) {
       // Handle the creation of the room
       console.log('Creating room with data:', this.createForm.value);
@@ -53,7 +56,7 @@ export class RoomComponent implements OnInit {
       // console.log('Room Name', this.createForm.value.duration)
 
       // set time = current time + duration
-      this.createForm.value.duration = new Date().getTime() + this.createForm.value.duration * 60000;
+      this.createForm.value.duration = new Date().getTime() + this.createForm.value.duration * 3600000;
       console.log('Duration', this.createForm.value.duration)
       // set time = current time
       // this.createForm.value.duration = new Date();
@@ -65,6 +68,11 @@ export class RoomComponent implements OnInit {
       this.roomService.setRoomData(this.selectedRoom.userId)
 
       
+    }
+    else
+    {
+      console.log('Form is invalid');
+      return;
     }
   }
 
@@ -109,12 +117,10 @@ export class RoomComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.state.subscription) {
-      this.state.subscription.unsubscribe();
-    }
-    if (this.selectedRoom.subscription) {
-      this.selectedRoom.subscription.unsubscribe();
-    }
+    this.stateSubscription?.unsubscribe();
+    this. state.subscription?.unsubscribe();
+    this.selectedRoom.subscription?.unsubscribe();
+
   }
 
 }

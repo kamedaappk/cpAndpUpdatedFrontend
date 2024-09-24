@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "dist\\cp-and-p-updated\\browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

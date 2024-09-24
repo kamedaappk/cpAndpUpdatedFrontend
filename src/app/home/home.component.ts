@@ -43,8 +43,9 @@ export class HomeComponent implements OnInit {
 
   backToHome(){
     console.log('back to home')
-    // this.state='home'
     this.roomService.setState('home')
+    location.reload(); // Reloads the entire application
+    
   }
 
   resetAll(){
