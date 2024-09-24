@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';  
 import { io, Socket } from 'socket.io-client';
-
+import { LoadingService } from '../services/loading.service';
+import { finalize } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class RoomService {
 
   tempDetails:any;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private loadingService: LoadingService) { 
     // this.socket = io(this.apiUrl); // Initialize socket connection
 
   }
@@ -35,8 +36,10 @@ export class RoomService {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('userId', userId);
-  
-    return this.http.post(`${this.apiUrl}/uploadFile`, formData);
+    this.loadingService.show(); // Show loading screen
+    return this.http.post(`${this.apiUrl}/uploadFile`, formData).pipe(
+      finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
+    );
   }
   
   getApi(){
@@ -44,11 +47,17 @@ export class RoomService {
   }
   
   deleteAll(){
-    this.http.get(`${this.apiUrl}/deleteAllAlone`).subscribe()
+    this.loadingService.show(); // Show loading screen
+    this.http.get(`${this.apiUrl}/deleteAllAlone`).pipe(
+      finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
+    ).subscribe()
   }
 
   resetAll(){
-    this.http.get(`${this.apiUrl}/resetAll`).subscribe()
+    this.loadingService.show(); // Show loading screen
+    this.http.get(`${this.apiUrl}/resetAll`).pipe(
+      finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
+    ).subscribe()
   }
 
   // // socketss
@@ -118,7 +127,10 @@ export class RoomService {
     if (userId === undefined) {
       return;
     }
-    this.http.post(`${this.apiUrl}/getMessages`, { userId }).subscribe(
+    this.loadingService.show(); // Show loading screen
+    this.http.post(`${this.apiUrl}/getMessages`, { userId }).pipe(
+      finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
+    ).subscribe(
       (data) => {
         console.log("data at getRoomDataS", data);
         this.setRoomData(data);
@@ -151,7 +163,10 @@ export class RoomService {
 
 
   saveMessage(userId: string, message: any) {
-    this.http.post(`${this.apiUrl}/saveMessage`, { userId, message }).subscribe(
+    this.loadingService.show(); // Show loading screen
+    this.http.post(`${this.apiUrl}/saveMessage`, { userId, message }).pipe(
+      finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
+    ).subscribe(
       (data) => {
         this.setRoomData(data)
         // this.sendMessage(userId, message);
@@ -170,27 +185,37 @@ export class RoomService {
   // }
 
   getRooms(){
-    this.rooms = this.http.get<any[]>(`${this.apiUrl}/rooms`);
+    this.loadingService.show(); // Show loading screen
+    console.log("getRooms")
+    this.rooms = this.http.get<any[]>(`${this.apiUrl}/rooms`).pipe(
+      finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
+    );
     return this.rooms;
   }
 
   createRoom(userId: string, duration:any){
     console.log("userId", userId)
     console.log("Expiry", duration)
-    return this.http.post<any>(`${this.apiUrl}/createRoom`, {userId, duration}).subscribe(
+    this.loadingService.show();
+    return this.http.post<any>(`${this.apiUrl}/createRoom`, {userId, duration}).pipe(
+      finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
+    ).subscribe(
       (data) => {
         this.roomSelected = data
         console.log("Room Created", this.roomSelected)
         this.setRoom(this.roomSelected)
         this.setState('loggedin')
       }
-    );
+    )
   }
 
   // // Enter a room by userId
     enterRoom(userId: string) {
     // const room = this.rooms.find((room: { userId: string; }) => room.userId === userId);
-    const roomer = this.http.post(`${this.apiUrl}/enterRoom`, {userId}).subscribe(
+    this.loadingService.show();
+    const roomer = this.http.post(`${this.apiUrl}/enterRoom`, {userId}).pipe(
+      finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
+    ).subscribe(
       (data) => {
         this.roomSelected = data
         if(!this.roomSelected){
