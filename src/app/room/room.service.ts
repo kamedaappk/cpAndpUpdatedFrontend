@@ -218,14 +218,16 @@ export class RoomService {
     ).subscribe(
       (data) => {
         this.roomSelected = data
+        console.log("aj: data at enter", data)
         if(!this.roomSelected){
           console.log("No room exist")
           return 
         }
         console.log("Room Entered", this.roomSelected)
         this.setRoom(this.roomSelected)
+        this.updateTime()
+        this.getRoomDataS(this.roomSelected.userId)
         this.setState('loggedin')
-        return this.roomSelected
       }
     );
     // if room undefined then no room exist

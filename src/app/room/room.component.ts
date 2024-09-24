@@ -79,15 +79,13 @@ export class RoomComponent implements OnInit {
   onEnter() {
     if (this.enterForm.valid) {
       // Handle entering the room
-      console.log('Entering room with ID:', this.enterForm.value.roomId);
+      console.log('Checking room with ID:', this.enterForm.value.roomId);
       this.selectedRoom=this.roomService.enterRoom(this.enterForm.value.roomId);
-      this.roomService.updateTime()
-      if(this.selectedRoom!=null){
-      this.roomService.setState('loggedin')
-      this.roomService.setRoom(this.selectedRoom)
-      this.roomService.setRoomData(this.selectedRoom.userId)
+      // if(this.selectedRoom!=null){
+      // console.log('selected Room at room component on enter', this.selectedRoom)
+      // this.roomService.setRoomData(this.selectedRoom.userId)
 
-      }
+      // }
       
       // this.roomService.setRoom(this.selectedRoom);
       // console.log('selected Room at room component on enter', this.selectedRoom)

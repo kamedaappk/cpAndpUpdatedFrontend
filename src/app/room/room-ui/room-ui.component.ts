@@ -135,7 +135,7 @@ copyMessageText(text: string): void {
       this.room.duration = this.formatTimestamp(this.room.duration);
       // console.log("room at ng", this.room)
       // console.log("username at ng", this.username)
-      this.messages=this.roomService.getRoomDataS(this.username)
+      // this.messages=this.roomService.getRoomDataS(this.username)
       // console.log("room expiry", this.roomData.duration)
       // console.log("messages at ng", this.messages)
       // this.roomService.getRoomData(this.room.userId)
