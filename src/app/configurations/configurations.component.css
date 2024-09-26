@@ -1,0 +1,150 @@
+/* Global body styling */
+body {
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #fff;
+}
+
+/* Floating button container */
+.floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.floating-button button {
+    background: #00b894;
+    border: none;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0, 184, 148, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floating-button button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(0, 184, 148, 0.6);
+}
+
+/* Endpoints container */
+.endpoints {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #34495e;
+    border-radius: 12px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.endpoints:hover {
+    background: #2ecc71;
+    box-shadow: 0 8px 15px rgba(0, 230, 118, 0.2);
+}
+
+/* Radio button styling */
+input[type="radio"] {
+    accent-color: #00b894;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+}
+
+/* Labels for radio buttons */
+label {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    color: #ecf0f1;
+    font-weight: 400;
+}
+
+/* Selected Endpoint text styling */
+p {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #00b894;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .floating-button button {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .endpoints {
+        padding: 8px 15px;
+        margin-bottom: 8px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+}
+
+/* Active endpoint - green text */
+.active-endpoint label {
+    color: #00b894; /* Green when active */
+}
+
+/* Inactive endpoint - red text */
+.inactive-endpoint label {
+    color: #e74c3c; /* Red when inactive */
+}
+
+.checking-endpoint label {
+    color: orange;
+}
+
+/* Add some styles to make it visually clearer */
+.endpoints {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #34495e;
+    border-radius: 12px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.endpoints:hover {
+    background: #2ecc71;
+    box-shadow: 0 8px 15px rgba(0, 230, 118, 0.2);
+}
+
+label {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+}
+
+/* Radio button styling */
+input[type="radio"] {
+    accent-color: #00b894;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+}

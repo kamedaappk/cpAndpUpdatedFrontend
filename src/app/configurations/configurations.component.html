@@ -1,9 +1,20 @@
-
-<div class="floating-button">
-<button>configButtons</button>
+<div class="floating-button" *ngIf="state === 'home'">
+    <button (click)="toggleConfig()">Toggle Config</button>
 </div>
 
-
-<div class="endpoints" *ngFor="let endpoint of apiEndpoints">
-    <p>{{ endpoint.title }}</p>
+<div *ngIf="toggler && state === 'home'">
+    <div class="endpoints" *ngFor="let endpoint of apiEndpoints" [ngClass]="{'inactive-endpoint': endpoint.active ==='inactive', 'active-endpoint': endpoint.active === 'active', 'checking-endpoint' : endpoint.active === 'checking'}">
+        <label>
+            <input 
+                type="radio" 
+                name="apiEndpoint" 
+                [value]="endpoint.url" 
+                [(ngModel)]="selectedEndpoint"
+                (change)="updateSelectedEndpoint(endpoint.url)"
+            />
+            {{ endpoint.title }} 
+        </label>
+    </div>
 </div>
+
+<p>Selected Endpoint: {{ selectedEndpoint }}</p>

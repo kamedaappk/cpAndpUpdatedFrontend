@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { io, Socket } from 'socket.io-client';
 import { LoadingService } from '../services/loading.service';
 import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+
 import { ConfigurationsService } from '../services/configurations.service';
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,7 @@ import { ConfigurationsService } from '../services/configurations.service';
 export class RoomService {
 
 
+  private backendSubscription: Subscription = new Subscription;
   
   private apiUrl = 'https://cpandpupdatedbackend.onrender.com'; // Your backend URL
   // private socket: Socket; // Add this line
@@ -20,9 +23,14 @@ export class RoomService {
   constructor(
     private http: HttpClient, 
     private loadingService: LoadingService,
-    private configuratons:ConfigurationsService,
+    private configurationsService:ConfigurationsService,
 ) { 
     // this.socket = io(this.apiUrl); // Initialize socket connection
+    // this.apiUrl = this.configurationsService.getSelectedEndPoint();
+    this.backendSubscription = this.configurationsService.selectedEndPoint$.subscribe(url => {
+      this.apiUrl = url;
+    });
+    
 
   }
   private roomSubject = new BehaviorSubject<any>([]);
@@ -47,6 +55,7 @@ export class RoomService {
   }
   
   getApi(){
+    // this.apiUrl = this.configurationsService.getSelectedEndPoint();
     return this.apiUrl
   }
   
@@ -190,7 +199,7 @@ export class RoomService {
 
   getRooms(){
     this.loadingService.show(); // Show loading screen
-    console.log("getRooms")
+    console.log("getRooms via", this.apiUrl)
     this.rooms = this.http.get<any[]>(`${this.apiUrl}/rooms`).pipe(
       finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
     );
