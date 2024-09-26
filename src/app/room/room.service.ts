@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { io, Socket } from 'socket.io-client';
 import { LoadingService } from '../services/loading.service';
 import { finalize } from 'rxjs/operators';
-
+import { ConfigurationsService } from '../services/configurations.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -17,7 +17,11 @@ export class RoomService {
 
   tempDetails:any;
 
-  constructor(private http: HttpClient, private loadingService: LoadingService) { 
+  constructor(
+    private http: HttpClient, 
+    private loadingService: LoadingService,
+    private configuratons:ConfigurationsService,
+) { 
     // this.socket = io(this.apiUrl); // Initialize socket connection
 
   }
@@ -218,7 +222,6 @@ export class RoomService {
     ).subscribe(
       (data) => {
         this.roomSelected = data
-        console.log("aj: data at enter", data)
         if(!this.roomSelected){
           console.log("No room exist")
           return 

@@ -4,11 +4,11 @@ import { Component } from '@angular/core';
 import { RoomComponent } from "../room/room.component";
 import { RoomUiComponent } from "../room/room-ui/room-ui.component";
 import { RoomService } from '../room/room.service';
-
+import { ConfigurationsComponent } from '../configurations/configurations.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RoomComponent, RoomUiComponent],
+  imports: [CommonModule, RoomComponent, RoomUiComponent, ConfigurationsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
