@@ -8,8 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:cp-and-p-updated": "node dist/cp-and-p-updated/server/server.mjs",
-    "serve": "NODE_OPTIONS='--max-old-space-size=512' ng serve", // For Linux/Mac
-    "serve:win": "set NODE_OPTIONS=--max-old-space-size=512 && ng serve" // For Windows
+    "serve": "NODE_OPTIONS='--max-old-space-size=512' ng serve", 
+    "serve:win": "set NODE_OPTIONS=--max-old-space-size=512 && ng serve"
   },
   "private": true,
   "dependencies": {
