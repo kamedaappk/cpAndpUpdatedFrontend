@@ -18,6 +18,7 @@ export class ConfigurationsService {
     {title:"Local",url:"http://localhost:3000", active: this.endpointStatus.Checking},
     {title:"On Render",url:"https://cpandpupdatedbackend.onrender.com", active: this.endpointStatus.Checking},
     {title:"On Back4App",url:"https://cpandpbackend01-ad9mkl9f.b4a.run", active: this.endpointStatus.Checking},
+    {title:"On Back4App (2)",url:"https://cpandpbackend02-0xc7ys9t.b4a.run", active: this.endpointStatus.Checking},
   ]
   
   selectedEndPoint = "https://cpandpupdatedbackend.onrender.com"
