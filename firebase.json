@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "cpandp01",
     "public": "dist\\cp-and-p-updated\\browser",
     "ignore": [
       "firebase.json",
