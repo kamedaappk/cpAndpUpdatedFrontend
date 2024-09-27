@@ -1,0 +1,5 @@
+dist\cp-and-p-updated\browser
+
+
+ng build --base-href "https://kamedaappk.github.io/cpAndpUpdatedFrontend"
+npx angular-cli-ghpages --dir=dist\cp-and-p-updated\browser\
