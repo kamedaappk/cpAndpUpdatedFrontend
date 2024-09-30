@@ -1,25 +1,25 @@
-<p>room-ui works!</p>
+<p class="room-status">Room UI is up and running! 🎉</p>
 
 <div *ngIf="state === 'loggedin'" class="loggedin">
-    <p>Hello, you are at </p> <h1>{{username}}</h1> in the room with ID {{room.id}}
-    <p>Room expiry on {{room.duration}}</p>
+    <p>Hello, fabulous user!</p>
+    <h1>{{username}} 👋</h1>
+    <p>You're in the room with ID: <strong>{{room.id}}</strong></p>
+    <p>Room expires in: <strong>{{room.duration}}</strong></p>
     <p>Current time: {{time | json}}</p>
 
     <div class="messages" *ngFor="let message of roomData.messages">
-        <p>{{ message.text }}</p>
-        <label>{{message.filename}}</label>
-        <span class="timestamp">Time: {{message.timestamp}}</span>
-        <div *ngIf="message.filePath; else copy">
-            
-            <button (click)="downloadFile(message.filePath)">Download File</button>
+        <div class="message-container">
+            <p>{{ message.text }}</p>
+            <label>{{message.filename}}</label>
+            <span class="timestamp">Time: {{message.timestamp}}</span>
+            <div *ngIf="message.filePath; else copy">
+                <button (click)="downloadFile(message.filePath)">📥 Download File</button>
+            </div>
+            <ng-template #copy>
+                <button (click)="copyMessageText(message.text)">📋 Copy</button>
+            </ng-template>
         </div>
-        <ng-template #copy>
-          <button (click)="copyMessageText(message.text)">Copy</button>
-        </ng-template>
     </div>
-
-   
-
 
     <div class="input">
         <label for="messageInput">Message:</label>
@@ -29,11 +29,11 @@
             [(ngModel)]="inputMessage"
             placeholder="Type your message here"
         />
-        <button (click)="saveMessage()">Send</button>
+        <button (click)="saveMessage()">💬 Send</button>
     </div>
 
     <div class="file-upload">
         <input type="file" #fileInput (change)="onFileSelected($event)" />
-        <button (click)="uploadFile()">Upload File</button>
+        <button (click)="uploadFile()">📤 Upload File</button>
     </div>
 </div>

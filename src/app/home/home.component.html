@@ -1,28 +1,26 @@
-<app-configurations  [state]="state"></app-configurations>
-<h1 align = "center"><i><u><b>CpAndP Returns....</b></u></i></h1>
+<app-configurations [state]="state"></app-configurations>
+<h1 align="center" class="main-title"><i><u><b>CpAndP Returns....</b></u></i></h1>
 
 <app-alert></app-alert>
 
 <div *ngIf="state === 'home'; else elseblock" class="container">
-    <h1>Welcome to the Home Page</h1>
+    <h1>Welcome to the Home Page!</h1>
     <div class="button-container">
-        <button (click)="createRoom()">Create Room</button>
-        <button (click)="enterRoom()">Enter Room</button>
+        <button (click)="createRoom()">Create Room 🏠</button>
+        <button (click)="enterRoom()">Enter Room 🚪</button>
     </div>
 </div>
 
-<app-room *ngIf="state === 'enter' || state === 'create' || state === 'loggedin'" ></app-room>
+<app-room *ngIf="state === 'enter' || state === 'create' || state === 'loggedin'"></app-room>
 
 <ng-template #elseblock>
-    <div class="error-message">is working 😁 as {{state}}</div>
+    <div class="error-message">Oops! It’s working 😁 as {{state}}</div>
 </ng-template>
 
 <div class="back-button-container">
-    <button (click)="backToHome()">Back to Home</button>
+    <button (click)="backToHome()">🔙 Back to Home</button>
 </div>
 
 <div class="configButtons">
-  <button (click)="resetAll()">
-    resetAll
-  </button>
+    <button (click)="resetAll()">🔄 Reset All</button>
 </div>

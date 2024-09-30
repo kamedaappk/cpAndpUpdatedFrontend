@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './alert.component.html',
-  styleUrl: './alert.component.css'
+  styleUrl: './alert.component.css',
 })
 export class AlertComponent implements OnInit, OnDestroy {
   alert: Alert | null = null;
@@ -35,4 +35,12 @@ export class AlertComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+
+  // Function to close the alert
+closeAlert(): void {
+  this.isVisible = false; // Hide the alert
+  setTimeout(() => {
+      this.alert = null; // Optionally reset the alert after fade out
+  }, 500); // Matches the CSS transition duration
+}
 }

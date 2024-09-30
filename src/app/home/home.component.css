@@ -4,20 +4,20 @@
     margin: 0 auto;
     padding: 20px;
     text-align: center;
-    background-color: #f9f9f9; /* Light background */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    border-radius: 10px;
+    background-color: #fffae6; /* Soft, cheerful background */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    border-radius: 15px;
     transition: background-color 0.3s ease;
 }
 
 .container:hover {
-    background-color: #f1f1f1;
+    background-color: #fff5cc; /* Slightly darker on hover */
 }
 
-/* Heading styles */
-h1 {
-    font-size: 2.5rem;
-    color: #333; /* Dark gray color */
+/* Main title styles */
+.main-title {
+    font-size: 2.8rem;
+    color: #3a3a3a; /* Friendly dark gray */
     margin-bottom: 20px;
 }
 
@@ -31,18 +31,19 @@ h1 {
 
 /* Button styles */
 button {
-    padding: 10px 20px;
-    font-size: 1.1rem;
+    padding: 12px 25px;
+    font-size: 1.2rem;
     color: #fff;
-    background-color: #007bff;
+    background-color: #ff7f50; /* Coral color for warmth */
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    position: relative; /* For ripple effect */
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #ff6347; /* Lighter coral */
     transform: scale(1.05);
 }
 
@@ -52,9 +53,23 @@ button:active {
 
 /* Error message styling */
 .error-message {
-    color: #d9534f; /* Bootstrap's danger color */
-    font-size: 1.2rem;
+    color: #d9534f; /* Bright red for alerts */
+    font-size: 1.5rem;
     margin-top: 20px;
+    animation: bounce 0.5s infinite; /* Bouncing effect for error message */
+}
+
+/* Bounce animation for the error message */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
 }
 
 /* Back button container */
@@ -66,7 +81,8 @@ button:active {
 /* Back button styling */
 .back-button-container button {
     background-color: #6c757d;
-    padding: 10px 15px;
+    padding: 12px 20px;
+    font-size: 1.2rem;
 }
 
 .back-button-container button:hover {
@@ -77,9 +93,12 @@ button:active {
     transform: scale(0.95);
 }
 
+/* Config button styles */
 .configButtons button {
-    background-color: rgba(0, 0, 0, 0.1); /* Black with 10% opacity */
-    color: rgba(255, 255, 255, 0.8); /* White text with 80% opacity */
-    border: 1px solid rgba(0, 0, 0, 0.3); /* Border with 30% opacity */
-  }
-  
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 5px;
+}

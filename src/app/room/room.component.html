@@ -1,19 +1,17 @@
-<p>Room works!</p>
-<!-- <h1>State: <i>{{state}}</i></h1> -->
+<p class="room-status">Room works! 🎉</p>
 
 <div *ngIf="state === 'create'" class="state">
     <form [formGroup]="createForm" (ngSubmit)="onCreate()">
-        <h2>Create Room</h2>
-        <p>You are now in the room creation state.</p>
+        <h2>Create Your Room 🏠</h2>
+        <p>Let's get this party started! 🎊</p>
         
-        <label for="roomName">Room Name<span style="color: red;">*</span>:</label>
-        <input id="roomName" formControlName="roomName" placeholder="UNIQUE ROOM ID"   (input)="onInputChange($event)" style="text-transform: uppercase;"/>
+        <label for="roomName">Room Name <span class="required">*</span>:</label>
+        <input id="roomName" formControlName="roomName" placeholder="UNIQUE ROOM ID" (input)="onInputChange($event)" style="text-transform: uppercase;" />
 
         <label for="description">Description:</label>
         <textarea id="description" formControlName="description" placeholder="Short Description [optional]"></textarea>
 
-         <!-- Stylish slider for selecting duration -->
-         <label for="duration">Duration in Hours<span style="color: red;">*</span>:</label>
+        <label for="duration">Duration in Hours <span class="required">*</span>:</label>
          <div class="slider-container">
             
             <input
@@ -28,25 +26,24 @@
             <span class="slider-value">{{ createForm.get('duration')?.value }} hrs</span>
         </div>
         
-        <button type="submit">Create Room</button>
+        <button type="submit">Create Room 🚀</button>
     </form>
 </div>
 
 <div *ngIf="state === 'enter'" class="state">
     <form [formGroup]="enterForm" (ngSubmit)="onEnter()">
-        <h2>Enter Room</h2>
-        <p>You are now in the room entry state.</p>
+        <h2>Enter Your Room 🚪</h2>
+        <p>Let's get you in there! 🕺</p>
         
         <label for="roomId">Room ID:</label>
         <input id="roomId" formControlName="roomId" placeholder="UNIQUE ROOM ID" (input)="onInputChange($event)" style="text-transform: uppercase;" />
         
-        <button type="submit">Enter Room</button>
+        <button type="submit">Enter Room 🎉</button>
     </form>
 </div>
 
-<!-- Added a wrapper div for better logical grouping of buttons -->
-<div>
-    <button (click)="getRoomList()">List</button>
+<div class="button-container">
+    <button (click)="getRoomList()">List Rooms 📋</button>
 </div>
 
 <div *ngIf="state === 'loggedin'">

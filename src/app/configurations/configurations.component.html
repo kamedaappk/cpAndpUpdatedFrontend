@@ -1,9 +1,12 @@
 <div class="floating-button" *ngIf="state === 'home'">
-    <button (click)="toggleConfig()">Toggle Config</button>
+    <button (click)="toggleConfig()">⚙️</button>
 </div>
 
-<div *ngIf="toggler && state === 'home'">
-    <div class="endpoints" *ngFor="let endpoint of apiEndpoints" [ngClass]="{'inactive-endpoint': endpoint.active ==='inactive', 'active-endpoint': endpoint.active === 'active', 'checking-endpoint' : endpoint.active === 'checking'}">
+<div *ngIf="toggler && state === 'home'" class="endpoints-container">
+    <h2>Select an API Endpoint 🌐</h2>
+    <div *ngFor="let endpoint of apiEndpoints" 
+         [ngClass]="{'inactive-endpoint': endpoint.active === 'inactive', 'active-endpoint': endpoint.active === 'active', 'checking-endpoint': endpoint.active === 'checking'}"
+         class="endpoint">
         <label>
             <input 
                 type="radio" 
@@ -12,9 +15,10 @@
                 [(ngModel)]="selectedEndpoint"
                 (change)="updateSelectedEndpoint(endpoint.url)"
             />
-            {{ endpoint.title }} 
+            <span>{{ endpoint.title }}</span>
         </label>
     </div>
 </div>
-<i>v2024.09.30.02</i>
-<p>Selected Endpoint: {{ selectedEndpoint }}</p>
+
+<i class="version">v2024.09.30.03</i>
+<p class="selected-endpoint">Selected Endpoint: {{ selectedEndpoint }}</p>

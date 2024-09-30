@@ -1,6 +1,6 @@
 /* Global body styling */
 body {
-    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    background: radial-gradient(circle at 50% 50%, #1f1c2c, #928dab);
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
@@ -16,135 +16,132 @@ body {
     position: fixed;
     bottom: 20px;
     right: 20px;
+    animation: float 2s ease-in-out infinite;
 }
 
 .floating-button button {
     background: #00b894;
     border: none;
     color: white;
-    padding: 15px 20px;
-    border-radius: 50px;
-    font-size: 16px;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 24px;
     cursor: pointer;
-    box-shadow: 0 6px 12px rgba(0, 184, 148, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 184, 148, 0.5);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .floating-button button:hover {
-    transform: translateY(-3px);
+    transform: scale(1.1) rotate(15deg);
     box-shadow: 0 12px 20px rgba(0, 184, 148, 0.6);
 }
 
-/* Endpoints container */
-.endpoints {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #34495e;
-    border-radius: 12px;
-    padding: 10px 20px;
-    margin-bottom: 10px;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+/* Animation for the floating button */
+@keyframes float {
+    0%, 100% {
+        transform: translatey(0px);
+    }
+    50% {
+        transform: translatey(-10px);
+    }
 }
 
-.endpoints:hover {
-    background: #2ecc71;
-    box-shadow: 0 8px 15px rgba(0, 230, 118, 0.2);
+/* Endpoints container */
+.endpoints-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+h2 {
+    color: #ecf0f1;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+/* Endpoint styling */
+.endpoint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(52, 73, 94, 0.9);
+    border-radius: 20px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    transition: background 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.endpoint:hover {
+    background: rgba(46, 204, 113, 0.9);
+    transform: scale(1.02);
 }
 
 /* Radio button styling */
 input[type="radio"] {
     accent-color: #00b894;
     cursor: pointer;
-    width: 18px;
-    height: 18px;
-    margin-right: 10px;
+    width: 22px;
+    height: 22px;
+    margin-right: 15px;
 }
 
 /* Labels for radio buttons */
 label {
-    font-size: 16px;
+    font-size: 18px;
     display: flex;
     align-items: center;
     color: #ecf0f1;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 /* Selected Endpoint text styling */
-p {
+.selected-endpoint {
     margin-top: 20px;
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 22px;
+    font-weight: 600;
     color: #00b894;
     text-align: center;
+}
+
+/* Version styling */
+.version {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #95a5a6;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .floating-button button {
-        padding: 10px 15px;
-        font-size: 14px;
+        padding: 10px;
+        font-size: 20px;
     }
 
-    .endpoints {
-        padding: 8px 15px;
-        margin-bottom: 8px;
+    .endpoint {
+        padding: 10px 15px;
+        margin-bottom: 10px;
     }
 
     label {
-        font-size: 14px;
+        font-size: 16px;
     }
 
-    p {
-        font-size: 16px;
+    .selected-endpoint {
+        font-size: 18px;
     }
 }
 
 /* Active endpoint - green text */
 .active-endpoint label {
-    color: #00b894; /* Green when active */
+    color: #2ecc71; /* Bright green when active */
 }
 
 /* Inactive endpoint - red text */
 .inactive-endpoint label {
-    color: #e74c3c; /* Red when inactive */
+    color: #e74c3c; /* Bright red when inactive */
 }
 
+/* Checking endpoint - orange text */
 .checking-endpoint label {
-    color: orange;
-}
-
-/* Add some styles to make it visually clearer */
-.endpoints {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #34495e;
-    border-radius: 12px;
-    padding: 10px 20px;
-    margin-bottom: 10px;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.endpoints:hover {
-    background: #2ecc71;
-    box-shadow: 0 8px 15px rgba(0, 230, 118, 0.2);
-}
-
-label {
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    font-weight: 400;
-}
-
-/* Radio button styling */
-input[type="radio"] {
-    accent-color: #00b894;
-    cursor: pointer;
-    width: 18px;
-    height: 18px;
-    margin-right: 10px;
+    color: #f39c12; /* Orange for checking */
 }
