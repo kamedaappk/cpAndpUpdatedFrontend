@@ -143,6 +143,7 @@ copyMessageText(text: string): void {
 
     this.roomService.roomData$.subscribe(updatedRoomData =>{
       this.roomData = updatedRoomData
+      console.log("roomData at ng", this.roomData)
       // for all messages format timestamp
       this.roomData.messages.forEach((message:any) => {message.timestamp=this.formatTimestamp(message.timestamp)});
       // this.roomData.messages.timestamp=this.formatTimestamp(this.roomData.messages.timestamp)
@@ -189,12 +190,6 @@ formatTimestamp(timestamp: any): string {
     this.inputMessage=''
   }
 
-  fileUpload(event:any){
-    // console.log("file", file)
-    console.log("event", event)
-    // const file = event.target.files[0];
-    
-  }
 
   ngOnDestroy() {
     if (this.state.subscription) {

@@ -101,6 +101,11 @@ export class RoomComponent implements OnInit {
     }
   }
   
+  onDurationChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.createForm.get('duration')?.setValue(value);
+}
+
 
   getRoomList() {
 

@@ -7,8 +7,10 @@
 
     <div class="messages" *ngFor="let message of roomData.messages">
         <p>{{ message.text }}</p>
+        <label>{{message.filename}}</label>
         <span class="timestamp">Time: {{message.timestamp}}</span>
         <div *ngIf="message.filePath; else copy">
+            
             <button (click)="downloadFile(message.filePath)">Download File</button>
         </div>
         <ng-template #copy>

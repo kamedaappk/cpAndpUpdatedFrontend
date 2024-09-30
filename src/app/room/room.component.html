@@ -6,21 +6,27 @@
         <h2>Create Room</h2>
         <p>You are now in the room creation state.</p>
         
-        <label for="roomName">Room Name:</label>
+        <label for="roomName">Room Name*:</label>
         <input id="roomName" formControlName="roomName" />
 
         <label for="description">Description:</label>
         <textarea id="description" formControlName="description"></textarea>
 
-        <label for="duration">Duration in Hours:</label>
-        <input
-            type="number"
-            id="duration"
-            formControlName="duration"
-            min="1"
-            max="12"
-            required
-        />
+         <!-- Stylish slider for selecting duration -->
+         <label for="duration">Duration in Hours:</label>
+         <div class="slider-container">
+            
+            <input
+                type="range"
+                id="duration"
+                formControlName="duration"
+                min="1"
+                max="12"
+                step="1"
+                class="styled-slider"
+            />
+            <span class="slider-value">{{ createForm.get('duration')?.value }} hrs</span>
+        </div>
         
         <button type="submit">Create Room</button>
     </form>
