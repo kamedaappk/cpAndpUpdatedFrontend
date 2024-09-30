@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { text } from 'stream/consumers';
 import { Console, timeStamp } from 'console';
-
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-room-ui',
@@ -16,7 +16,10 @@ import { Console, timeStamp } from 'console';
 export class RoomUiComponent implements OnInit{
   state:any;
   room:any;
-  constructor(private roomService:RoomService){}
+  constructor(
+    private roomService:RoomService,
+    private alertService: AlertService,
+  ){}
   roomData:any=[];
   username:string='';
   inputMessage:any='';
@@ -37,7 +40,8 @@ export class RoomUiComponent implements OnInit{
             this.fileInput.nativeElement.value = '';
           }
             // File size exceeds the limit
-            alert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`);
+            this.alertService.showAlert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`, "warning");
+            // alert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`);
         } else {
             // File size is within the limit
             this.selectedFile = file;
@@ -55,6 +59,7 @@ copyMessageText(text: string): void {
       },
       (err) => {
         console.error('Failed to copy text: ', err);
+        this.alertService.showAlert(`Failed to copy text: ${err}`, "error");
         // Optionally show an error message to the user
       }
     );
@@ -67,8 +72,10 @@ copyMessageText(text: string): void {
     try {
       document.execCommand('copy');
       console.log('Text copied to clipboard successfully!');
+      this.alertService.showAlert(`Text copied to clipboard successfully!`, "success");
     } catch (err) {
       console.error('Failed to copy text: ', err);
+      this.alertService.showAlert(`Failed to copy text: ${err}`, "error");
     }
     document.body.removeChild(textarea);
   }
@@ -82,6 +89,7 @@ copyMessageText(text: string): void {
       this.roomService.uploadFile(this.room.userId, this.selectedFile).subscribe(
         (response) => {
           console.log('File uploaded successfully', response);
+          this.alertService.showAlert(`File uploaded successfully`, "success");
           this.roomService.getRoomDataS(this.room.userId)
           // this.selectedFile=null
           // Reset the file input
@@ -91,6 +99,7 @@ copyMessageText(text: string): void {
         },
         (error) => {
           console.error('Error uploading file', error);
+          this.alertService.showAlert(`Error uploading file: ${error}`, "error");
         }
       );
     }
@@ -113,6 +122,8 @@ copyMessageText(text: string): void {
       console.log("state at ng", this.state)
     });
 
+    this.alertService.showAlert(`Logged into Room`, "success")
+      this.roomService.updateTime()
     // Join the room
     // this.roomService.joinRoom(this.room.userId);
 

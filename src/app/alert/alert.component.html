@@ -1,0 +1,4 @@
+<div *ngIf="alert" [ngClass]="['alert', alert.type]" [style.opacity]="isVisible ? 1 : 0">
+    {{ alert.message }}
+  </div>
+  

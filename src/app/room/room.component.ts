@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms'; // Import ReactiveFormsModule
 import { RoomService } from './room.service';
 import { RoomUiComponent } from './room-ui/room-ui.component';
+import { AlertService } from '../services/alert.service';
 @Component({
   selector: 'app-room',
   standalone: true,
@@ -21,7 +22,11 @@ export class RoomComponent implements OnInit {
   roomList:any;
 
 
-  constructor(private fb: FormBuilder, private roomService:RoomService) {}
+  constructor(
+    private fb: FormBuilder, 
+    private roomService:RoomService,
+    private alertService: AlertService,
+  ) {}
   ngOnInit() {
     // Subscribe to state changes
     this.stateSubscription=this.roomService.state$.subscribe(updatedState => {
@@ -51,6 +56,7 @@ export class RoomComponent implements OnInit {
 
     if (this.createForm.valid) {
       // Handle the creation of the room
+      this.createForm.value.roomName = this.createForm.value.roomName.toUpperCase();
       console.log('Creating room with data:', this.createForm.value);
       console.log('Room ID', this.createForm.value.roomName)
       // console.log('Room Name', this.createForm.value.duration)
@@ -60,6 +66,8 @@ export class RoomComponent implements OnInit {
       console.log('Duration', this.createForm.value.duration)
       // set time = current time
       // this.createForm.value.duration = new Date();
+      //  all caps for the roomname
+      
       this.roomService.createRoom(this.createForm.value.roomName, this.createForm.value.duration);
       this.selectedRoom=this.roomService.enterRoom(this.createForm.value.roomName);
       console.log('selected Room at room component on create', this.selectedRoom)
@@ -72,6 +80,7 @@ export class RoomComponent implements OnInit {
     else
     {
       console.log('Form is invalid');
+      this.alertService.showAlert("Please fill all the required values", "error")
       return;
     }
   }
@@ -80,6 +89,8 @@ export class RoomComponent implements OnInit {
     if (this.enterForm.valid) {
       // Handle entering the room
       console.log('Checking room with ID:', this.enterForm.value.roomId);
+      // make it all caps
+      this.enterForm.value.roomId = this.enterForm.value.roomId.toUpperCase();
       this.selectedRoom=this.roomService.enterRoom(this.enterForm.value.roomId);
       // if(this.selectedRoom!=null){
       // console.log('selected Room at room component on enter', this.selectedRoom)
@@ -99,6 +110,11 @@ export class RoomComponent implements OnInit {
       // return this.selectedRoom
       // }
     }
+    else{
+      console.log('Form is invalid');
+      this.alertService.showAlert("Please fill all the required values", "error")
+      return;
+    }
   }
   
   onDurationChange(event: Event) {
@@ -106,6 +122,10 @@ export class RoomComponent implements OnInit {
     this.createForm.get('duration')?.setValue(value);
 }
 
+onInputChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  input.value = input.value.toUpperCase();
+}
 
   getRoomList() {
 

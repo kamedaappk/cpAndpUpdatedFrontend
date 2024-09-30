@@ -6,14 +6,14 @@
         <h2>Create Room</h2>
         <p>You are now in the room creation state.</p>
         
-        <label for="roomName">Room Name*:</label>
-        <input id="roomName" formControlName="roomName" />
+        <label for="roomName">Room Name<span style="color: red;">*</span>:</label>
+        <input id="roomName" formControlName="roomName" placeholder="UNIQUE ROOM ID"   (input)="onInputChange($event)" style="text-transform: uppercase;"/>
 
         <label for="description">Description:</label>
-        <textarea id="description" formControlName="description"></textarea>
+        <textarea id="description" formControlName="description" placeholder="Short Description [optional]"></textarea>
 
          <!-- Stylish slider for selecting duration -->
-         <label for="duration">Duration in Hours:</label>
+         <label for="duration">Duration in Hours<span style="color: red;">*</span>:</label>
          <div class="slider-container">
             
             <input
@@ -38,7 +38,7 @@
         <p>You are now in the room entry state.</p>
         
         <label for="roomId">Room ID:</label>
-        <input id="roomId" formControlName="roomId" />
+        <input id="roomId" formControlName="roomId" placeholder="UNIQUE ROOM ID" (input)="onInputChange($event)" style="text-transform: uppercase;" />
         
         <button type="submit">Enter Room</button>
     </form>

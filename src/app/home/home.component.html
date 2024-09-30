@@ -1,6 +1,8 @@
 <app-configurations  [state]="state"></app-configurations>
 <h1 align = "center"><i><u><b>CpAndP Returns....</b></u></i></h1>
 
+<app-alert></app-alert>
+
 <div *ngIf="state === 'home'; else elseblock" class="container">
     <h1>Welcome to the Home Page</h1>
     <div class="button-container">

@@ -3,8 +3,9 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';  
 import { io, Socket } from 'socket.io-client';
 import { LoadingService } from '../services/loading.service';
-import { finalize } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { AlertService } from '../services/alert.service';
 
 import { ConfigurationsService } from '../services/configurations.service';
 @Injectable({
@@ -24,6 +25,7 @@ export class RoomService {
     private http: HttpClient, 
     private loadingService: LoadingService,
     private configurationsService:ConfigurationsService,
+    private alertService:AlertService,
 ) { 
     // this.socket = io(this.apiUrl); // Initialize socket connection
     // this.apiUrl = this.configurationsService.getSelectedEndPoint();
@@ -206,46 +208,62 @@ export class RoomService {
     return this.rooms;
   }
 
-  createRoom(userId: string, duration:any){
-    console.log("userId", userId)
-    console.log("Expiry", duration)
+  createRoom(userId: string, duration: any) {
+    console.log("userId", userId);
+    console.log("Expiry", duration);
     this.loadingService.show();
-    return this.http.post<any>(`${this.apiUrl}/createRoom`, {userId, duration}).pipe(
-      finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
+    
+    return this.http.post<any>(`${this.apiUrl}/createRoom`, { userId, duration }).pipe(
+      finalize(() => this.loadingService.hide()), // Hide loading screen after request completes
+      catchError((error) => {
+        console.error('Error creating room:', error); // Log the error
+        // Notify the user of the error
+        // alert('Failed to create the room. Please try again.'); // Example notification
+        return of(null); // Return an observable with a null value to continue the stream
+      })
     ).subscribe(
       (data) => {
-        this.roomSelected = data
-        console.log("Room Created", this.roomSelected)
-        this.setRoom(this.roomSelected)
-        this.setState('loggedin')
-      }
-    )
-  }
-
-  // // Enter a room by userId
-    enterRoom(userId: string) {
-    // const room = this.rooms.find((room: { userId: string; }) => room.userId === userId);
-    this.loadingService.show();
-    const roomer = this.http.post(`${this.apiUrl}/enterRoom`, {userId}).pipe(
-      finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
-    ).subscribe(
-      (data) => {
-        this.roomSelected = data
-        if(!this.roomSelected){
-          console.log("No room exist")
-          return 
+        if (!data) {
+          console.log("Room creation failed.");
+          this.alertService.showAlert("Room creation failed. Please try again!!!", "error");
+          return;
         }
-        console.log("Room Entered", this.roomSelected)
-        this.setRoom(this.roomSelected)
-        this.updateTime()
-        this.getRoomDataS(this.roomSelected.userId)
-        this.setState('loggedin')
+        this.roomSelected = data;
+        console.log("Room Created", this.roomSelected);
+        this.alertService.showAlert("Room Created Successfully", "success")
+        this.setRoom(this.roomSelected);
+        this.setState('loggedin');
       }
     );
+}
+
+  // // Enter a room by userId
+  enterRoom(userId: string) {
+    this.loadingService.show();
+    const roomer = this.http.post(`${this.apiUrl}/enterRoom`, { userId }).pipe(
+      finalize(() => this.loadingService.hide()), // Hide loading screen after request completes
+      catchError((error) => {
+        console.error('Error entering room:', error); // Log the error
+        // You can also show a user-friendly message or notification here
+        // alert('Failed to enter the room. Please try again.'); // Example notification
+        return of(null); // Return an observable with a null value to continue the stream
+      })
+    ).subscribe(
+      (data) => {
+        this.roomSelected = data;
+        if (!this.roomSelected) {
+          console.log("No room exists");
+          this.alertService.showAlert("No room exists Please Create one!!!", "warning");
+          return;
+        }
+        console.log("Room Entered", this.roomSelected);
+        this.setRoom(this.roomSelected);
+        // this.updateTime();
+        this.getRoomDataS(this.roomSelected.userId);
+        this.setState('loggedin');
+      }
+    );
+}
     // if room undefined then no room exist
     
   }
-
-  
-
-}
