@@ -26,6 +26,14 @@ export class HomeComponent implements OnInit {
   constructor(private roomService:RoomService){}
 
   ngOnInit(){
+    this.roomService.getRooms().subscribe(
+      (data: any) => {
+        console.log('Rooms data:', data);
+      },
+      (error: any) => {
+        console.error('Error fetching rooms:', error);
+      }
+    )
     // Subscribe to state changes
     this.roomService.state$.subscribe(updatedState => {
       this.state = updatedState;
