@@ -43,26 +43,26 @@ export class RoomUiComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement> | undefined;
   // Method to handle file selection
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    const maxSizeInMB = 5;
-    const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // 5 MB in bytes
+  // onFileSelected(event: any): void {
+  //   const file: File = event.target.files[0];
+  //   const maxSizeInMB = 5;
+  //   const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // 5 MB in bytes
 
-    if (file) {
-      if (file.size > maxSizeInBytes) {
-        if (this.fileInput?.nativeElement) {
-          this.fileInput.nativeElement.value = '';
-        }
-        // File size exceeds the limit
-        this.alertService.showAlert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`, "warning");
-        // alert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`);
-      } else {
-        // File size is within the limit
-        this.selectedFile = file;
-        // Proceed with the file processing
-      }
-    }
-  }
+  //   if (file) {
+  //     if (file.size > maxSizeInBytes) {
+  //       if (this.fileInput?.nativeElement) {
+  //         this.fileInput.nativeElement.value = '';
+  //       }
+  //       // File size exceeds the limit
+  //       this.alertService.showAlert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`, "warning");
+  //       // alert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`);
+  //     } else {
+  //       // File size is within the limit
+  //       this.selectedFile = file;
+  //       // Proceed with the file processing
+  //     }
+  //   }
+  // }
 
   copyMessageText(text: string): void {
     if (navigator.clipboard) {
@@ -95,22 +95,84 @@ export class RoomUiComponent implements OnInit {
     }
   }
 
-
-  // Method to upload the selected file
+  triggerFileInput(): void {
+    // Trigger a click on the hidden file input
+    if (this.fileInput?.nativeElement) {
+      this.fileInput.nativeElement.click();
+    }
+  }
+  
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    // Optionally, you can add styles here for highlighting the drop area when dragging
+  }
+  
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const files = event.dataTransfer?.files;
+    if (files?.length) {
+      const file = files[0];
+      this.handleFileSelection(file);
+    }
+  }
+  
+  // File selection through input or drop
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.handleFileSelection(file);
+    }
+  }
+  
+  // Handle file after selection or drop
+  handleFileSelection(file: File): void {
+    const maxSizeInMB = 5;
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // 5 MB in bytes
+  
+    if (file.size > maxSizeInBytes) {
+      if (this.fileInput?.nativeElement) {
+        this.fileInput.nativeElement.value = ''; // Reset input
+      }
+      this.alertService.showAlert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`, "warning");
+    } else {
+      this.selectedFile = file; // Set the selected file
+    }
+  }
+  
+  // Upload the selected file
   uploadFile(): void {
-    console.log(this.selectedFile)
+    console.log(this.selectedFile);
     if (this.selectedFile) {
       const messageData = {
         userId: this.room.userId,
         file: this.selectedFile
-      }
-      this.store.dispatch(sendFileMessage( {messageData} ))
-      this.selectedFile=null
+      };
+      this.store.dispatch(sendFileMessage({ messageData }));
+      this.selectedFile = null;
       if (this.fileInput?.nativeElement) {
-        this.fileInput.nativeElement.value = '';
+        this.fileInput.nativeElement.value = ''; // Reset the input after upload
       }
     }
   }
+  
+  // // Method to upload the selected file
+  // uploadFile(): void {
+  //   console.log(this.selectedFile)
+  //   if (this.selectedFile) {
+  //     const messageData = {
+  //       userId: this.room.userId,
+  //       file: this.selectedFile
+  //     }
+  //     this.store.dispatch(sendFileMessage( {messageData} ))
+  //     this.selectedFile=null
+  //     if (this.fileInput?.nativeElement) {
+  //       this.fileInput.nativeElement.value = '';
+  //     }
+  //   }
+  // }
 
   downloadFile(filePath: string): void {
     console.log(filePath)

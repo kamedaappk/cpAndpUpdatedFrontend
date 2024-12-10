@@ -398,3 +398,28 @@ button:active {
 
 
   
+/* Style for the drag-and-drop area */
+.drop-zone {
+  border: 2px dashed #007bff;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer; /* Make it clear that it's clickable */
+  margin-bottom: 10px;
+}
+
+.drop-zone:hover {
+  background-color: #f0f0f0;
+}
+
+input[type="file"] {
+  display: none; /* Hide the default file input */
+}
+
+p {
+  font-size: 16px;
+  color: #555;
+}
+
+button {
+  margin-top: 10px;
+}

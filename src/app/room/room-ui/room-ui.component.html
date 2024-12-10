@@ -35,7 +35,21 @@
     </div>
 
     <div class="file-upload">
-        <input  type="file" #fileInput (change)="onFileSelected($event)" />
+        <!-- Drag and Drop Area -->
+        <div 
+            class="drop-zone"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($event)"
+            (click)="triggerFileInput()">
+            <p>Drag and drop your file here or click to select a file</p>
+        </div>
+
+        <!-- Hidden File Input -->
+        <input type="file" #fileInput (change)="onFileSelected($event)" />
+        
+        <!-- Show selected file name -->
+        <p *ngIf="selectedFile">Selected File: {{ selectedFile.name }}</p>
+
         <button *ngIf="selectedFile" (click)="uploadFile()">📤 Upload File</button>
     </div>
 
