@@ -1,9 +1,10 @@
+<app-loading></app-loading>
 <app-configurations [state]="state"></app-configurations>
 <h1 align="center" class="main-title"><i><u><b>CpAndP Returns....</b></u></i></h1>
 
 <app-alert></app-alert>
 
-<div *ngIf="state === 'home'; else elseblock" class="container">
+<div *ngIf="state === 'home'" class="container">
     <h1>Welcome to the Home Page!</h1>
     <div class="button-container">
         <button (click)="createRoom()">Create Room 🏠</button>
@@ -11,11 +12,7 @@
     </div>
 </div>
 
-<app-room *ngIf="state === 'enter' || state === 'create' || state === 'loggedin'"></app-room>
-
-<ng-template #elseblock>
-    <div class="error-message">Oops! It’s working 😁 as {{state}}</div>
-</ng-template>
+<app-room *ngIf="state != 'home'"></app-room>
 
 <div class="back-button-container">
     <button (click)="backToHome()">🔙 Back to Home</button>

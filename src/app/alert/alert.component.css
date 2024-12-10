@@ -46,6 +46,11 @@
     background: linear-gradient(135deg, #ff9800 0%, #e65100 100%);
 }
 
+/* Info alert */
+.info {
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+}
+
 /* Animation on show */
 @keyframes slideIn {
     from {

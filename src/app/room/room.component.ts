@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular
 import { RoomService } from './room.service';
 import { RoomUiComponent } from './room-ui/room-ui.component';
 import { AlertService } from '../services/alert.service';
+import { Store } from '@ngrx/store';
+import { selectPageState } from '../home/home.store.ts/home.selector';
+import { loadCreateRoom, loadEnterRoom, loadRoomBasics } from './room.store/room.actions';
 @Component({
   selector: 'app-room',
   standalone: true,
@@ -23,20 +26,16 @@ export class RoomComponent implements OnInit {
 
 
   constructor(
-    private fb: FormBuilder, 
-    private roomService:RoomService,
-    private alertService: AlertService,
-  ) {}
+    private readonly fb: FormBuilder, 
+    private readonly roomService:RoomService,
+    private readonly alertService: AlertService,
+    private readonly store: Store,
+  ) {
+    this.store.select(selectPageState).subscribe((pageState) => {this.state = pageState;});
+  }
   ngOnInit() {
     // Subscribe to state changes
-    this.stateSubscription=this.roomService.state$.subscribe(updatedState => {
-      this.state = updatedState;
-    });
-
-    this.roomService.room$.subscribe(updatedRoom => {
-      this.selectedRoom = updatedRoom;
-    })
-
+    this.roomService.room$.subscribe(updatedRoom => {this.selectedRoom = updatedRoom;})
     this.createForm = this.fb.group({
       roomName: ['', Validators.required],
       description: [''],
@@ -44,7 +43,6 @@ export class RoomComponent implements OnInit {
         [Validators.required, Validators.min(1), Validators.max(12)]
         ]
     });
-
     this.enterForm = this.fb.group({
       roomId: ['', Validators.required]
     });
@@ -52,30 +50,24 @@ export class RoomComponent implements OnInit {
   }
 
   onCreate() {
-      
-
     if (this.createForm.valid) {
       // Handle the creation of the room
       this.createForm.value.roomName = this.createForm.value.roomName.toUpperCase();
-      console.log('Creating room with data:', this.createForm.value);
-      console.log('Room ID', this.createForm.value.roomName)
-      // console.log('Room Name', this.createForm.value.duration)
-
-      // set time = current time + duration
-      this.createForm.value.duration = new Date().getTime() + this.createForm.value.duration * 3600000;
-      console.log('Duration', this.createForm.value.duration)
-      // set time = current time
-      // this.createForm.value.duration = new Date();
-      //  all caps for the roomname
-      
-      this.roomService.createRoom(this.createForm.value.roomName, this.createForm.value.duration);
-      this.selectedRoom=this.roomService.enterRoom(this.createForm.value.roomName);
-      console.log('selected Room at room component on create', this.selectedRoom)
-      this.roomService.setState('loggedin')
-      this.roomService.setRoom(this.selectedRoom)
-      this.roomService.setRoomData(this.selectedRoom.userId)
-
-      
+      // Get the current UTC timestamp
+      const utcTimestamp = new Date().getTime();
+      // Convert the UTC timestamp to IST by adding 5.5 hours (in milliseconds)
+      const istOffsetInMillis = 5.5 * 60 * 60 * 1000; // 5.5 hours in milliseconds
+      const istTimestamp = utcTimestamp + istOffsetInMillis;
+      // Now calculate the new timestamp with the duration in hours, using IST timestamp
+      this.createForm.value.duration = istTimestamp + this.createForm.value.duration * 3600000;
+      console.log('Creating room with name:', this.createForm.value);
+      const roomCreateData = {
+        userId: this.createForm.value.roomName,
+        description: this.createForm.value.description,
+        duration: this.createForm.value.duration
+      }
+      this.store.dispatch(loadCreateRoom({ roomCreateData }))
+      // this.roomService.createRoom(this.createForm.value.roomName, this.createForm.value.duration);
     }
     else
     {
@@ -91,24 +83,8 @@ export class RoomComponent implements OnInit {
       console.log('Checking room with ID:', this.enterForm.value.roomId);
       // make it all caps
       this.enterForm.value.roomId = this.enterForm.value.roomId.toUpperCase();
-      this.selectedRoom=this.roomService.enterRoom(this.enterForm.value.roomId);
-      // if(this.selectedRoom!=null){
-      // console.log('selected Room at room component on enter', this.selectedRoom)
-      // this.roomService.setRoomData(this.selectedRoom.userId)
-
-      // }
-      
-      // this.roomService.setRoom(this.selectedRoom);
-      // console.log('selected Room at room component on enter', this.selectedRoom)
-      // console.log('selected Room',this.selectedRoom)
-      // if (this.selectedRoom!=null){
-      // this.state='loggedin'
-      // console.log('Logged In')
-      // this.roomService.setState('loggedin')
-      // this.roomService.setRoom(this.selectedRoom)
-      // this.roomService.setRoomData(this.selectedRoom.userId)
-      // return this.selectedRoom
-      // }
+      this.store.dispatch(loadEnterRoom({ roomEnterData: this.enterForm.value.roomId }))
+      this.store.dispatch(loadRoomBasics({ roomEnterData: this.enterForm.value.roomId }))
     }
     else{
       console.log('Form is invalid');
