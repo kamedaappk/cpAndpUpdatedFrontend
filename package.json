@@ -3,13 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "nx serve",
-    "build": "nx build",
-    "watch": "nx build --watch --configuration development",
-    "test": "nx test",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
     "serve:ssr:cp-and-p-updated": "node dist/cp-and-p-updated/server/server.mjs",
-    "serve": "NODE_OPTIONS='--max-old-space-size=512' nx serve",
-    "serve:win": "set NODE_OPTIONS=--max-old-space-size=512 && nx serve"
+    "serve": "NODE_OPTIONS='--max-old-space-size=512' ng serve",
+    "serve:win": "set NODE_OPTIONS=--max-old-space-size=512 && ng serve"
   },
   "private": true,
   "dependencies": {
