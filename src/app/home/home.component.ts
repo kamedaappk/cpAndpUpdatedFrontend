@@ -83,9 +83,9 @@ export class HomeComponent implements OnInit {
     this.alertMessage = message
     this.alertType = type // Change this as needed
     this.showAlert = true;
-    setTimeout(() => {
-      this.showAlert = false;
-    }, 2000);
+    // setTimeout(() => {
+    //   this.showAlert = false;
+    // }, 2000);
 
   }
 
