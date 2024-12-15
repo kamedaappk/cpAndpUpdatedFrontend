@@ -66,7 +66,7 @@ export class AdminComponent implements OnInit {
 
   combineRoomData() {
     // Merging data from rooms and roomDetails
-    this.combinedRoomData = this.roomDetails.map((detail: { id: any; }) => {
+    this.combinedRoomData = this.roomDetails?.map((detail: { id: any; }) => {
       const room = this.rooms.find((r: { id: any; }) => r.id === detail.id);
       return {
         ...detail,
