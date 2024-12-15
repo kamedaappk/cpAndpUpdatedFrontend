@@ -7,6 +7,7 @@ import { AlertService } from '../services/alert.service';
 import { Store } from '@ngrx/store';
 import { selectPageState } from '../home/home.store.ts/home.selector';
 import { loadCreateRoom, loadEnterRoom, loadRoomBasics } from './room.store/room.actions';
+import { selectRoom } from './room-ui/room-ui.store/room-ui.selector';
 @Component({
   selector: 'app-room',
   standalone: true,
@@ -16,13 +17,14 @@ import { loadCreateRoom, loadEnterRoom, loadRoomBasics } from './room.store/room
 })
 export class RoomComponent implements OnInit {
   // @Input() roomName!: string;
-  state:any;
+  state?:any;
   stateSubscription:any;
 
-  selectedRoom:any;
+  selectedRoom?:any;
   createForm!: FormGroup; // Use '!' to assert that this will be initialized
   enterForm!: FormGroup;
-  roomList:any;
+  roomList?:any;
+  room?:any;
 
 
   constructor(
@@ -32,6 +34,7 @@ export class RoomComponent implements OnInit {
     private readonly store: Store,
   ) {
     this.store.select(selectPageState).subscribe((pageState) => {this.state = pageState;});
+    this.store.select(selectRoom).subscribe((room) => {this.room = room;});
   }
   ngOnInit() {
     // Subscribe to state changes
@@ -60,7 +63,7 @@ export class RoomComponent implements OnInit {
       const istTimestamp = utcTimestamp + istOffsetInMillis;
       // Now calculate the new timestamp with the duration in hours, using IST timestamp
       this.createForm.value.duration = istTimestamp + this.createForm.value.duration * 3600000;
-      console.log('Creating room with name:', this.createForm.value);
+      //console.log('Creating room with name:', this.createForm.value);
       const roomCreateData = {
         userId: this.createForm.value.roomName,
         description: this.createForm.value.description,
@@ -71,7 +74,7 @@ export class RoomComponent implements OnInit {
     }
     else
     {
-      console.log('Form is invalid');
+      //console.log('Form is invalid');
       this.alertService.showAlert("Please fill all the required values", "error")
       return;
     }
@@ -80,14 +83,14 @@ export class RoomComponent implements OnInit {
   onEnter() {
     if (this.enterForm.valid) {
       // Handle entering the room
-      console.log('Checking room with ID:', this.enterForm.value.roomId);
+      //console.log('Checking room with ID:', this.enterForm.value.roomId);
       // make it all caps
       this.enterForm.value.roomId = this.enterForm.value.roomId.toUpperCase();
       this.store.dispatch(loadEnterRoom({ roomEnterData: this.enterForm.value.roomId }))
       this.store.dispatch(loadRoomBasics({ roomEnterData: this.enterForm.value.roomId }))
     }
     else{
-      console.log('Form is invalid');
+      //console.log('Form is invalid');
       this.alertService.showAlert("Please fill all the required values", "error")
       return;
     }
@@ -108,7 +111,7 @@ onInputChange(event: Event) {
     this.roomService.getRooms().subscribe({
       next: (data: any) => {
         this.roomList = data;
-        console.log("Room List is", this.roomList)
+        //console.log("Room List is", this.roomList)
       },
       error: (err: any) => {
         console.error('Error fetching rooms:', err);      }

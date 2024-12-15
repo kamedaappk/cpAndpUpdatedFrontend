@@ -22,7 +22,7 @@ export class RoomUiEffects {
                 this.roomService.saveMessage(action.messageData).pipe(
                     concatMap(() => [
                         // Emit each action individually using `concatMap`
-                        loadEnterRoom({ roomEnterData: action.messageData.userId }),
+                        // loadEnterRoom({ roomEnterData: action.messageData.userId }),
                         sendChatMessageSuccess()
                     ]),
                     catchError((error) => of(sendChatMessageFailure({ error })))
@@ -38,7 +38,7 @@ export class RoomUiEffects {
                 this.roomService.uploadFile(action.messageData).pipe(
                     concatMap(() => [
                         // Emit each action individually using `concatMap`
-                        loadEnterRoom({ roomEnterData: action.messageData.userId }),
+                        // loadEnterRoom({ roomEnterData: action.messageData.userId }),
                         sendFileMessageSuccess()
                     ]),
                     catchError((error) => of(sendFileMessageFailure({ error })))

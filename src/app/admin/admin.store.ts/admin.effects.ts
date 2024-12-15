@@ -3,10 +3,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, map, mergeMap, of } from 'rxjs';
-import { loadServers, loadServersFailure, loadServersSuccess, loadResetAll, loadResetAllSuccess, loadResetAllFailure, loadDeleteAll, LoadRoomByKey, loadRoomByKeySuccess, loadRoomByKeyFailure, setRoom, setRoomSuccess, setRoomFailure } from './home.action';
-import { HomeService } from '../homeservice.ts/home.service';
 import { RoomService } from '../../room/room.service';
 import { loadEnterRoom } from '../../room/room.store/room.actions';
+import { HomeService } from '../../home/homeservice.ts/home.service';
+import { loadServers, loadServersSuccess, loadServersFailure, loadResetAll, loadResetAllSuccess, loadResetAllFailure, loadDeleteAll, LoadRoomByKey, loadRoomByKeySuccess, setRoom, loadRoomByKeyFailure, setRoomSuccess, setRoomFailure } from './admin.action';
 
 @Injectable()
 export class HomeEffects {
@@ -56,7 +56,7 @@ export class HomeEffects {
     this.actions$.pipe(
       ofType(LoadRoomByKey),
       mergeMap((action) =>
-        this.roomService.getRoomDataByKey(action.key).pipe(
+        this.roomService.getRoomDataById(action.key).pipe(
           concatMap((roomData) => [
             loadRoomByKeySuccess({ roomData, pageState:'loggedIn' }),setRoom({ roomData }) ]
           ),

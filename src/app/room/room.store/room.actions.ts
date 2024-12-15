@@ -8,7 +8,7 @@ export const loadCreateRoom = createAction('[Home] Load Create Room', props<{ ro
 export const createRoomSuccess = createAction('[Home] Create Room Success', props<{ roomCreateData: any }>());
 export const createRoomFailure = createAction('[Home] Create Room Failure', props<{ error: any }>());
 
-export const loadEnterRoom = createAction('[Home] Load Enter Room', props<{ roomEnterData: string }>());
+export const loadEnterRoom = createAction('[Home] Load Enter Room', props<{ roomEnterData: any }>());
 export const enterRoomSuccess = createAction('[Home] Enter Room Success', props<{ roomData: any, pageState:"loggedIn" }>());
 export const enterRoomFailure = createAction('[Home] Enter Room Failure', props<{ error: any }>());
 

@@ -1,14 +1,13 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { RoomService } from '../room.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { text } from 'stream/consumers';
-import { Console, timeStamp } from 'console';
 import { AlertService } from '../../services/alert.service';
 import { Store } from '@ngrx/store';
 import { selectPageState } from '../../home/home.store.ts/home.selector';
 import { selectRoom, selectRoomData } from './room-ui.store/room-ui.selector';
-import { LoadRefreshRoomData, sendChatMessage, sendFileMessage } from './room-ui.store/room-ui.actions';
+import { LoadRefreshRoomData, sendChatMessage, sendFileMessage, setInfo } from './room-ui.store/room-ui.actions';
+import * as QRCode from 'qrcode';
 
 @Component({
   selector: 'app-room-ui',
@@ -21,9 +20,9 @@ export class RoomUiComponent implements OnInit {
   state: any;
   room: any;
   constructor(
-    private roomService: RoomService,
-    private alertService: AlertService,
-    private store: Store,
+    private readonly roomService: RoomService,
+    private readonly alertService: AlertService,
+    private readonly store: Store,
   ) {
     this.store.select(selectPageState).subscribe((pageState) => this.state = pageState);
     this.store.select(selectRoomData).subscribe((roomData) => this.roomData = roomData);
@@ -36,39 +35,32 @@ export class RoomUiComponent implements OnInit {
   dateTime?: string;
   timestamp?: number;
   selectedFile: File | null = null;
-  refreshInterval: any;
-  countdownTime: number = 15;
-  countdown: number = this.countdownTime; // Countdown for 15 seconds
-  isRefreshing: boolean = true; // To track if the auto-refresh is on
+  isDragging: boolean = false; // Flag to track dragging state
+  sharedLink: string | null = null;
+  qrCodeDataUrl: string | null = null; // To store the generated QR code image URL
+
 
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement> | undefined;
-  // Method to handle file selection
-  // onFileSelected(event: any): void {
-  //   const file: File = event.target.files[0];
-  //   const maxSizeInMB = 5;
-  //   const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // 5 MB in bytes
+  @Inject(PLATFORM_ID) private readonly platformId: any // Inject the platform ID to check the environment
 
-  //   if (file) {
-  //     if (file.size > maxSizeInBytes) {
-  //       if (this.fileInput?.nativeElement) {
-  //         this.fileInput.nativeElement.value = '';
-  //       }
-  //       // File size exceeds the limit
-  //       this.alertService.showAlert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`, "warning");
-  //       // alert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`);
-  //     } else {
-  //       // File size is within the limit
-  //       this.selectedFile = file;
-  //       // Proceed with the file processing
-  //     }
-  //   }
-  // }
+  ngOnDestroy(): void {
+    if (isPlatformBrowser(this.platformId)) { // Only run this in the browser
+      // Clean up event listeners to avoid memory leaks
+      document.removeEventListener('dragenter', this.onDragEnterGlobal.bind(this));
+      document.removeEventListener('dragover', this.onDragOverGlobal.bind(this));
+      document.removeEventListener('dragleave', this.onDragLeaveGlobal.bind(this));
+      document.removeEventListener('drop', this.onDropGlobal.bind(this));
+
+      
+    }
+    this.roomService.exitRoom();
+  }
 
   copyMessageText(text: string): void {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text).then(
         () => {
-          console.log('Text copied to clipboard successfully!');
+          //console.log('Text copied to clipboard successfully!');
           // Optionally show a success message to the user
         },
         (err) => {
@@ -85,7 +77,7 @@ export class RoomUiComponent implements OnInit {
       textarea.select();
       try {
         document.execCommand('copy');
-        console.log('Text copied to clipboard successfully!');
+        //console.log('Text copied to clipboard successfully!');
         this.alertService.showAlert(`Text copied to clipboard successfully!`, "success");
       } catch (err) {
         console.error('Failed to copy text: ', err);
@@ -95,107 +87,108 @@ export class RoomUiComponent implements OnInit {
     }
   }
 
-  triggerFileInput(): void {
-    // Trigger a click on the hidden file input
+// Handle global dragenter event
+onDragEnterGlobal(event: DragEvent): void {
+  event.preventDefault(); // Prevent default behavior
+  this.isDragging = true; // Set dragging state to true
+}
+
+// Handle global dragover event
+onDragOverGlobal(event: DragEvent): void {
+  event.preventDefault(); // Prevent default behavior
+}
+
+// Handle global dragleave event
+onDragLeaveGlobal(event: DragEvent): void {
+  event.preventDefault(); // Prevent default behavior
+  this.isDragging = false; // Reset dragging state
+}
+
+// Handle global drop event
+onDropGlobal(event: DragEvent): void {
+  event.preventDefault(); // Prevent default behavior
+  this.isDragging = false; // Reset dragging state
+  const files = event.dataTransfer?.files;
+  if (files?.length) {
+    const file = files[0];
+    this.handleFileSelection(file); // Handle file selection
+  }
+}
+
+onFileSelected(event: any): void {
+  const file: File = event.target.files[0];
+  if (file) {
+    this.handleFileSelection(file);
+  }
+}
+
+// Handle file after selection or drop
+handleFileSelection(file: File): void {
+  const maxSizeInMB = 5;
+  const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // 5 MB in bytes
+  if (file.size > maxSizeInBytes) {
+    this.alertService.showAlert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`, "warning");
+    this.selectedFile = null; // Reset the file selection if it exceeds the size limit
+  } else {
+    this.selectedFile = file; // Set the selected file
+  }
+}
+
+// Trigger file input when the drop zone is clicked
+triggerFileInput(): void {
+  if (this.fileInput?.nativeElement) {
+    this.fileInput.nativeElement.click();
+  }
+}
+
+uploadFile(): void {
+  if (this.selectedFile) {
+    const messageData = {
+      userId: this.room.userId,
+      file: this.selectedFile
+    };
+    this.store.dispatch(sendFileMessage({ messageData }));
+    this.selectedFile = null;
     if (this.fileInput?.nativeElement) {
-      this.fileInput.nativeElement.click();
+      this.fileInput.nativeElement.value = '';
     }
   }
-  
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    // Optionally, you can add styles here for highlighting the drop area when dragging
+}
+
+removeFile(): void {
+  this.selectedFile = null;
+  if (this.fileInput?.nativeElement) {
+    this.fileInput.nativeElement.value = ''; // Clear the input
   }
-  
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    
-    const files = event.dataTransfer?.files;
-    if (files?.length) {
-      const file = files[0];
-      this.handleFileSelection(file);
-    }
-  }
-  
-  // File selection through input or drop
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.handleFileSelection(file);
-    }
-  }
-  
-  // Handle file after selection or drop
-  handleFileSelection(file: File): void {
-    const maxSizeInMB = 5;
-    const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // 5 MB in bytes
-  
-    if (file.size > maxSizeInBytes) {
-      if (this.fileInput?.nativeElement) {
-        this.fileInput.nativeElement.value = ''; // Reset input
-      }
-      this.alertService.showAlert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`, "warning");
-    } else {
-      this.selectedFile = file; // Set the selected file
-    }
-  }
-  
-  // Upload the selected file
-  uploadFile(): void {
-    console.log(this.selectedFile);
-    if (this.selectedFile) {
-      const messageData = {
-        userId: this.room.userId,
-        file: this.selectedFile
-      };
-      this.store.dispatch(sendFileMessage({ messageData }));
-      this.selectedFile = null;
-      if (this.fileInput?.nativeElement) {
-        this.fileInput.nativeElement.value = ''; // Reset the input after upload
-      }
-    }
-  }
-  
-  // // Method to upload the selected file
-  // uploadFile(): void {
-  //   console.log(this.selectedFile)
-  //   if (this.selectedFile) {
-  //     const messageData = {
-  //       userId: this.room.userId,
-  //       file: this.selectedFile
-  //     }
-  //     this.store.dispatch(sendFileMessage( {messageData} ))
-  //     this.selectedFile=null
-  //     if (this.fileInput?.nativeElement) {
-  //       this.fileInput.nativeElement.value = '';
-  //     }
-  //   }
-  // }
+}
 
   downloadFile(filePath: string): void {
-    console.log(filePath)
-    // const backendUrl = 'https://cpandpupdatedbackend.onrender.com'; // Your backend URL
+    //console.log(filePath)
     const backendUrl = this.roomService.getApi()
-    console.log("backendurl", backendUrl)
+    //console.log("backendUrl", backendUrl)
     window.open(`${backendUrl}${filePath}`, '_blank'); // Use full URL with backend port
   }
 
 
 
   ngOnInit(): void {
-    // Subscribe to state changes
-    this.alertService.showAlert(`Logged into Room`, "success")
-    // this.roomService.updateTime()
-    this.updateDateTime();
-    setInterval(() => {
-      this.updateDateTime();
-    }, 2000);
+    this.store.dispatch(setInfo({"info":"Connected to server"}))
+    if (isPlatformBrowser(this.platformId)) { // Only run this in the browser
+      this.alertService.showAlert(`Logged into Room`, "success");
+      
 
-    this.startAutoRefresh()
-    
+      document.addEventListener('dragenter', this.onDragEnterGlobal.bind(this));
+      document.addEventListener('dragover', this.onDragOverGlobal.bind(this));
+      document.addEventListener('dragleave', this.onDragLeaveGlobal.bind(this));
+      document.addEventListener('drop', this.onDropGlobal.bind(this));
+    }
+    // this.roomService.setUpdates();
+    this.updateDateTime();
+      setInterval(() => {
+        this.updateDateTime();
+      }, 2000);
   }
+
 
   updateDateTime() {
     this.timestamp = new Date().getTime(); // Get the current timestamp
@@ -217,8 +210,6 @@ export class RoomUiComponent implements OnInit {
     this.inputMessage = '';
   }
 
-  // Function that takes a timestamp and returns formatted date and time in IST
-  // Helper function to convert timestamp to IST and format it
   convertToIST(timestamp: number): string {
     const date = new Date(timestamp); // Create a Date object using the timestamp
     
@@ -247,38 +238,30 @@ export class RoomUiComponent implements OnInit {
     return date.toLocaleString('en-IN', options);
   }
 
-  // Refresh room logic
-  refreshRoom() {
-    console.log("Refreshing room...");
-    const roomId = this.room.userId;
-    console.log("Room ID:", roomId);
-    this.store.dispatch(LoadRefreshRoomData({ roomId }));
+  onShareClick() {
+    this.sharedLink = this.room?.key ? `${window.location.origin}/room/${this.room.key}` : null;
+    if (this.sharedLink) {
+      // Generate the QR code for the shared link
+      QRCode.toDataURL(this.sharedLink)
+        .then((url: string | null) => {
+          this.qrCodeDataUrl = url; // Store the QR code URL
+          //console.log('QR code generated successfully:', url);
+        })
+        .catch((err: any) => console.error('Error generating QR code', err));
+    }
   }
 
-  startAutoRefresh() {
-    this.countdown = this.countdownTime; // Set countdown to 15 seconds when starting
-    this.refreshInterval = setInterval(() => {
-      if (this.countdown > 0) {
-        this.countdown--; // Decrement countdown every second
-      } else {
-        this.autoRefresh(); // Trigger auto refresh when countdown reaches 0
-        this.countdown = this.countdownTime; // Reset countdown to 15 seconds after refresh
-      }
-    }, 1000); // Update every second
+  closeModal(){
+    this.sharedLink = null;
+    this.qrCodeDataUrl = null;
   }
+  
+  scrollToInput() {
+    const inputElement = document.getElementById('input');
+    if (inputElement) {
+      inputElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+  
 
-  autoRefresh() {
-    console.log("Auto refresh at", this.isRefreshing);
-    if (this.isRefreshing) {
-          this.refreshRoom();
-      } // else {
-    //   clearInterval(this.refreshInterval);
-    // }
-  }
-
-  // Manual refresh functionality
-  manualRefresh() {
-    this.refreshRoom(); // Trigger refresh immediately
-    this.countdown = this.countdownTime;
-  }
 }

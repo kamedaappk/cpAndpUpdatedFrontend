@@ -21,6 +21,7 @@ export class ConfigurationsService {
     {title:"On Render (2)",url:"https://cpandpupdatedbackend-1.onrender.com", active: this.endpointStatus.Checking},
   ]
   
+  // selectedEndPoint = "http://localhost:3000"
   selectedEndPoint = "https://cpandpupdatedbackend.onrender.com"
   
 

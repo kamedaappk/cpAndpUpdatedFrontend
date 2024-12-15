@@ -9,6 +9,16 @@ export interface HomeState {
     info : string | null;
 }
 
+export interface AdminState {
+    servers: Server[];
+    loading: boolean;
+    error: string | null;
+    pageState: PageState;
+    room : any;
+    roomData: any;
+    info : string | null;
+}
+
 export interface Server {
     id: string;
     name: string;

@@ -13,3 +13,7 @@ export const sendFileMessageFailure = createAction('[Room UI] Send File Message 
 export const LoadRefreshRoomData = createAction('[Room UI] Load Refresh Room Data', props<{ roomId: string }>());
 export const LoadRefreshRoomDataSuccess = createAction('[Room UI] Load Refresh Room Data Success', props<{ roomData: any }>());
 export const LoadRefreshRoomDataFailure = createAction('[Room UI] Load Refresh Room Data Failure', props<{ error: any }>());
+
+export const addMessage = createAction('[Room UI] Add Message', props<{ message: any }>());
+
+export const setInfo = createAction('[Room UI] Set Info', props<{ info: string }>());

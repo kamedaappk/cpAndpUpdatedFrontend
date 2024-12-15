@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject , Subscription } from 'rxjs';
+import { Observable, BehaviorSubject , Subscription, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';  
 import { ConfigurationsService } from '../services/configurations.service';
 import { AlertService } from '../services/alert.service';
+import { io, Socket } from 'socket.io-client';
+import { Store } from '@ngrx/store';
+import { addMessage, setInfo } from './room-ui/room-ui.store/room-ui.actions';
+import { selectRoom } from './room-ui/room-ui.store/room-ui.selector';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,14 +15,21 @@ export class RoomService {
   private backendSubscription: Subscription = new Subscription;
   private apiUrl = 'https://cpandpupdatedbackend.onrender.com'; // Your backend URL
   tempDetails:any;
+  room:any;
+  // private socket: Socket; // Socket.IO client instance
+  socket :any;
   constructor(
     private http: HttpClient, 
     private configurationsService:ConfigurationsService,
     private alertService:AlertService,
+    private store:Store,
 ) { 
     this.backendSubscription = this.configurationsService.selectedEndPoint$.subscribe(url => {
       this.apiUrl = url;
     });
+    this.store.select(selectRoom).subscribe((room) => this.room = room)
+
+    
     
   }
   private roomSubject = new BehaviorSubject<any>([]);
@@ -37,12 +48,13 @@ export class RoomService {
     const userId = messageData.userId;
     formData.append('file', file);
     formData.append('userId', userId);
+    // //console.log("file Send", formData);
     return this.http.post(`${this.apiUrl}/uploadFile`, formData);
   }
 
   getRoomBasics(roomEnterData: any) {
     const userId = roomEnterData
-    console.log("userId", userId)
+    // //console.log("userId", userId)
     return this.http.post(`${this.apiUrl}/enterRoom`, { userId })
   }
 
@@ -53,6 +65,20 @@ export class RoomService {
   
   deleteAll(){
     return this.http.get(`${this.apiUrl}/deleteAllAlone`)
+  }
+
+  getRoomDataById(key:any){
+    // //console.log("key", key)
+    ////console.log("this.apiUrl 1", this.apiUrl)
+    // console the reponse befrore returning
+    return this.http.post(`${this.apiUrl}/getRoomDataById`, {key});
+  }
+
+  getRoomDataByKey(key:any){
+    ////console.log("key", key)
+    ////console.log("this.apiUrl 1", this.apiUrl)
+    // console the reponse befrore returning
+    return this.http.post(`${this.apiUrl}/getRoomDataByKey`, {key});
   }
 
   resetAll(){
@@ -74,13 +100,15 @@ export class RoomService {
     setInterval(() => {
       const currentTime = new Date().getTime();
       this.setRealtime(currentTime);
-      console.log("currentTime", currentTime)
+      ////console.log("currentTime", currentTime)
     }, 1000); // Update every second
   }
 
-  saveMessage(messageData:any) {
-    const userId = messageData.userId
-    const message = messageData.message
+  saveMessage(messageData: any) {
+    const userId = messageData.userId;
+    const message = messageData.message;
+    // Emit the message via socket
+    ////console.log("message send", message)
     return this.http.post(`${this.apiUrl}/saveMessage`, { userId, message });
   }
 
@@ -98,9 +126,47 @@ export class RoomService {
 
   // // Enter a room by userId
   enterRoom(roomEnterData: string) {
-    console.log("roomEnterData", roomEnterData)
+    ////console.log("roomEnterData at serv1", roomEnterData)
+    // Initialize Socket.IO
+    ////console.log("this.apiUrl 2", this.apiUrl)
+    // Initialize Socket.IO if not already initialized
+    if (!this.socket) {
+      this.socket = io(this.apiUrl, { transports: ['websocket'] });
+    }
     const userId = roomEnterData
-    return this.http.post<any>(`${this.apiUrl}/getMessages`, { userId })
+    this.socket.emit('joinRoom', { userId });
+    
+    this.receiveMessages()
+    return this.http.post<any>(`${this.apiUrl}/getMessages`, { userId });
+  }
+
+  exitRoom() {
+    if (this.socket) {
+      this.socket.disconnect();
+      this.socket = null; // Reset the socket instance
+      this.store.dispatch(setInfo({"info":"Disconnected from Room"}))
+      ////console.log("Disconnected from Room")
+    }
+  }
+
+  receiveMessages() {
+    this.socket.on('message', (data: any) => {
+      ////console.log("message received", data)
+      this.store.dispatch(addMessage({message:data}))
+    });
+  }
+
+  setUpdates(){
+    if (!this.socket) {
+      this.socket = io(this.apiUrl, { transports: ['websocket'] });
+    }
+    // //console.log("room at update", this.room)
+    const userId = this.room.roomId
+    this.socket.emit('joinRoom', { userId });
+  }
+
+  pingSerer(){
+    return this.http.get(`${this.apiUrl}/ping`)
   }
     
   }

@@ -37,7 +37,7 @@ export class RoomEffects {
       mergeMap((action) =>
         this.roomService.enterRoom(action.roomEnterData).pipe(
           map((roomData) => enterRoomSuccess({ roomData, pageState:"loggedIn" })),
-          catchError((error) => of(createRoomFailure({ error })))
+          catchError((error) => of(enterRoomFailure({ error })))
         )
       )
     )
@@ -45,7 +45,7 @@ export class RoomEffects {
 
   loadRoomBasics$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadRoomBasics),
+      ofType(loadEnterRoom),
       mergeMap((action) =>
         this.roomService.getRoomBasics(action.roomEnterData).pipe(
           map((roomData) => roomBasicsSuccess({ roomData })),

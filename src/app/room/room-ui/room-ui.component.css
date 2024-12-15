@@ -1,39 +1,60 @@
+/* Base styles for responsive design */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Calm light background */
+    color: #333;
+    line-height: 1.6;
+    padding: 15px;
+}
+
 /* General room status message */
 .room-status {
     font-size: 1.5rem;
     color: #28a745; /* Green for positive status */
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 /* General container for the logged-in state */
 .loggedin {
-    max-width: 800px;
+    max-width: 90%;
     margin: 20px auto;
-    padding: 20px;
+    padding: 1.5rem;
     background-color: #fffbf0; /* Light warm background */
     border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.loggedin:hover {
+    transform: translateY(-5px); /* Slight lift effect */
 }
 
 /* Room information styling */
 h1 {
-    font-size: 2.5rem;
-    color: #007bff; /* Primary color */
-    margin-bottom: 10px;
+    font-size: 2rem;
+    color: #007bff; /* Calm primary blue */
+    margin-bottom: 15px;
 }
 
 /* General paragraph styling */
 p {
     font-size: 1rem;
-    color: #333;
-    margin-bottom: 10px;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
 }
 
-/* Timestamp styling for each message */
+/* Timestamp styling for messages */
 .timestamp {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #666;
     display: block;
     margin-top: 5px;
@@ -41,49 +62,18 @@ p {
 
 /* Message list styling */
 .messages {
-    padding: 10px;
-    margin-bottom: 15px;
-}
-
-.message-container {
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
     background-color: #fff;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid #eee;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-/* Button styling */
-button {
-    padding: 8px 15px;
-    font-size: 1rem;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 10px;
-}
-
-/* Download/Copy button color */
-button {
-    background-color: #007bff; /* Default button color */
-}
-
-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-button:active {
-    transform: scale(0.95);
 }
 
 /* Input message section */
 .input {
     margin-top: 20px;
-    padding: 10px;
+    padding: 15px;
     background-color: #f1f1f1;
     border-radius: 5px;
     display: flex;
@@ -102,8 +92,6 @@ button:active {
     font-size: 1rem;
     border-radius: 5px;
     border: 1px solid #ccc;
-    margin-right: 10px;
-    box-sizing: border-box;
     transition: border-color 0.3s ease;
 }
 
@@ -112,9 +100,16 @@ button:active {
     outline: none;
 }
 
-/* Message send button color */
+/* Message send button */
 .input button {
-    background-color: #28a745; /* Green for sending messages */
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .input button:hover {
@@ -124,7 +119,7 @@ button:active {
 /* File upload section */
 .file-upload {
     margin-top: 20px;
-    padding: 10px;
+    padding: 15px;
     background-color: #f1f1f1;
     border-radius: 5px;
     display: flex;
@@ -136,290 +131,200 @@ button:active {
 }
 
 .file-upload button {
-    background-color: #ffc107; /* Yellow for file upload */
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.file-upload button:hover {
+/* Upload button styles */
+.file-upload button:nth-of-type(1) {
+    background-color: #ffc107; /* Warm yellow */
+}
+
+.file-upload button:nth-of-type(1):hover {
     background-color: #e0a800;
 }
 
-.file-upload button:active {
-    transform: scale(0.95);
+/* Remove file button styles */
+.file-upload button:nth-of-type(2) {
+    background-color: #f44336; /* Red for danger */
 }
 
+.file-upload button:nth-of-type(2):hover {
+    background-color: #e53935;
+}
 
-/* Container for all the buttons and controls */
+/* Container for the button that will stay fixed on top */
 .refresh-controls-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;        /* Align buttons to the right */
-    gap: 20px;                    /* Space between buttons */
-    z-index: 9999;                /* Ensure the container stays above other elements */
-}
-
-/* Styling for all buttons */
-.refresh-button {
-    background-color: #007BFF;    /* Blue background for buttons */
-    color: white;                 /* Text color */
-    border: none;                 /* Remove borders */
-    padding: 12px 24px;           /* Padding around the text */
-    font-size: 16px;              /* Font size */
-    border-radius: 8px;           /* Rounded corners */
-    cursor: pointer;             /* Pointer cursor on hover */
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Smooth hover and active effects */
-    margin: 10px 0;               /* Space between buttons */
-    width: 220px;                 /* Set a fixed width for consistency */
-    text-align: center;           /* Center the button text */
-    display: inline-block;        /* Allows for better control over button layout */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-}
-
-/* Hover effect for buttons */
-.refresh-button:hover {
-    background-color: #0056b3;   /* Darken the background on hover */
-    transform: translateY(-2px);  /* Slight upward movement on hover */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
-}
-
-/* Active button state */
-.refresh-button:active {
-    transform: translateY(1px);  /* Slight downward movement on click */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow on click */
-}
-
-/* Styling for the countdown timer */
-.countdown-timer {
-    font-size: 18px;              /* Larger font for the countdown */
-    font-weight: bold;            /* Make text bold */
-    color: #dc3545;               /* Red color to emphasize urgency */
-    margin-top: 10px;             /* Margin above the countdown */
-    padding: 8px 15px;            /* Add some padding for the timer display */
-    border-radius: 5px;           /* Rounded corners for the timer */
-    background-color: rgba(220, 53, 69, 0.1);  /* Light background to highlight the timer */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for better visibility */
-}
-
-/* Ensure mobile responsiveness */
-@media (max-width: 768px) {
+    position: fixed;            /* Fixed position on the screen */
+    top: 20px;                  /* 20px from the top of the screen */
+    right: 20px;                /* 20px from the right of the screen */
+    z-index: 1000;              /* Ensure it's on top of other content */
+  }
+  
+  /* Style for the refresh button */
+  .refresh-button {
+    background-color: #4CAF50;  /* Green background */
+    color: white;               /* White text */
+    padding: 12px 25px;         /* Padding inside the button */
+    border: none;               /* No border */
+    border-radius: 8px;         /* Rounded corners */
+    cursor: pointer;           /* Pointer cursor on hover */
+    font-size: 16px;            /* Text size */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  }
+  
+  .refresh-button:hover {
+    background-color: #45a049;  /* Darker green on hover */
+    transform: scale(1.05);      /* Slightly enlarge the button on hover */
+  }
+  
+  .refresh-button:active {
+    transform: scale(0.98);      /* Slight shrink when clicked */
+  }
+  
+  /* Optional: For mobile responsiveness */
+  @media (max-width: 768px) {
     .refresh-controls-container {
-        top: 10px;
-        right: 10px;
-        gap: 10px;  /* Reduce the space between buttons on small screens */
+      top: 15px;  /* Adjust position for smaller screens */
+      right: 15px;
     }
-
+  
     .refresh-button {
-        width: 100%;   /* Make buttons full width on smaller screens */
-        font-size: 14px;  /* Adjust font size for better readability */
-        padding: 10px;   /* Slightly reduced padding for mobile */
+      font-size: 14px; /* Smaller button text size for mobile */
     }
+  }
+  
 
-    .countdown-timer {
-        font-size: 16px;  /* Adjust countdown font size for smaller screens */
-        padding: 6px 12px; /* Reduced padding for the timer on mobile */
-    }
-}
-
-/* From Uiverse.io by Nawsome */ 
-.plane-switch {
-    --dot: #fff;
-    --street: #6B6D76;
-    --street-line: #A8AAB4;
-    --street-line-mid: #C0C2C8;
-    --sky-1: #60A7FA;
-    --sky-2: #2F8EFC;
-    --light-1: rgba(255, 233, 0, 1);
-    --light-2: rgba(255, 233, 0, .3);
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  .plane-switch input {
-    display: none;
-  }
-  
-  .plane-switch input + div {
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
-    position: relative;
-    overflow: hidden;
-    width: 50px;
-    height: 25px;
-    padding: 1px;
-    border-radius: 13px;
-    background: linear-gradient(90deg, var(--street) 0%, var(--street) 25%, var(--sky-1) 75%, var(--sky-2) 100%) left var(--p, 0%) top 0;
-    background-position-x: var(--p, 0%);
-    background-size: 400% auto;
-    transition: background-position 0.6s;
-  }
-  
-  .plane-switch input + div:before, .plane-switch input + div:after {
-    content: "";
-    display: block;
-    position: absolute;
-    transform: translateX(var(--s, 0));
-    transition: transform 0.3s;
-  }
-  
-  .plane-switch input + div:before {
-    width: 42px;
-    right: 2px;
-    top: 4px;
-    height: 1px;
-    background: var(--street-line);
-    box-shadow: 0 16px 0 0 var(--street-line);
-  }
-  
-  .plane-switch input + div:after {
-    width: 2px;
-    height: 2px;
-    border-radius: 50%;
-    left: 23px;
-    top: 1px;
-    -webkit-animation: lights2 2s linear infinite;
-    animation: lights2 2s linear infinite;
-    box-shadow: inset 0 0 0 2px var(--light-1), 0 21px 0 var(--light-1), 8px 0 0 var(--light-2), 8px 21px 0 var(--light-2), 16px 0 0 var(--light-2), 16px 21px 0 var(--light-2);
-  }
-  
-  .plane-switch input + div span {
-    display: block;
-    position: absolute;
-  }
-  
-  .plane-switch input + div span.street-middle {
-    top: 12px;
-    left: 21px;
-    width: 3px;
-    height: 1px;
-    transform: translateX(var(--s, 0));
-    background: var(--street-line-mid);
-    box-shadow: 5px 0 0 var(--street-line-mid), 10px 0 0 var(--street-line-mid), 15px 0 0 var(--street-line-mid), 20px 0 0 var(--street-line-mid), 25px 0 0 var(--street-line-mid);
-    transition: transform 0.3s;
-  }
-  
-  .plane-switch input + div span.cloud {
-    width: 12px;
-    height: 4px;
-    border-radius: 2px;
-    background: #fff;
-    position: absolute;
-    top: var(--ct, 8px);
-    left: 100%;
-    opacity: var(--co, 0);
-    transition: opacity 0.3s;
-    -webkit-animation: clouds2 2s linear infinite var(--cd, 0s);
-    animation: clouds2 2s linear infinite var(--cd, 0s);
-  }
-  
-  .plane-switch input + div span.cloud:before, .plane-switch input + div span.cloud:after {
-    content: "";
-    position: absolute;
-    transform: translateX(var(--cx, 0));
-    border-radius: 50%;
-    width: var(--cs, 5px);
-    height: var(--cs, 5px);
-    background: #fff;
-    bottom: 1px;
-    left: 1px;
-  }
-  
-  .plane-switch input + div span.cloud:after {
-    --cs: 6px;
-    --cx: 4px;
-  }
-  
-  .plane-switch input + div span.cloud.two {
-    --ct: 20px;
-    --cd: 1s;
-    opacity: var(--co-2, 0);
-  }
-  
-  .plane-switch input + div div {
-    display: table;
-    position: relative;
-    z-index: 1;
-    padding: 5px;
-    border-radius: 50%;
-    background: var(--dot);
-    transform: translateX(var(--x, 0));
-    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.35, 1.2);
-  }
-  
-  .plane-switch input + div div svg {
-    width: 13px;
-    height: 13px;
-    display: block;
-    color: var(--c, var(--street));
-    transition: color 0.6s;
-  }
-  
-  .plane-switch input:checked + div {
-    --p: 100%;
-    --x: 25px;
-    --s: -50px;
-    --c: var(--sky-2);
-    --co: .8;
-    --co-2: .6;
-  }
-  
-  @keyframes lights2 {
-    20%, 30% {
-      box-shadow: inset 0 0 0 2px var(--light-2), 0 21px 0 var(--light-2), 8px 0 0 var(--light-1), 8px 21px 0 var(--light-1), 16px 0 0 var(--light-2), 16px 21px 0 var(--light-2);
-    }
-  
-    55%, 65% {
-      box-shadow: inset 0 0 0 2px var(--light-2), 0 21px 0 var(--light-2), 8px 0 0 var(--light-2), 8px 21px 0 var(--light-2), 16px 0 0 var(--light-1), 16px 21px 0 var(--light-1);
-    }
-  
-    90%, 100% {
-      box-shadow: inset 0 0 0 2px var(--light-1), 0 21px 0 var(--light-1), 8px 0 0 var(--light-2), 8px 21px 0 var(--light-2), 16px 0 0 var(--light-2), 16px 21px 0 var(--light-2);
-    }
-  }
-  
-  @keyframes clouds2 {
-    97% {
-      transform: translateX(-72px);
-      visibility: visible;
-    }
-  
-    98%, 100% {
-      visibility: hidden;
-    }
-  
-    99% {
-      transform: translateX(-72px);
-    }
-  
-    100% {
-      transform: translateX(0);
-    }
-  }
-
-
-  
-/* Style for the drag-and-drop area */
+/* Drop-zone styling */
 .drop-zone {
-  border: 2px dashed #007bff;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer; /* Make it clear that it's clickable */
-  margin-bottom: 10px;
+    border: 2px dashed #007bff;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    background-color: #f8f9ff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .drop-zone:hover {
-  background-color: #f0f0f0;
+    background-color: #e7f0ff;
 }
 
-input[type="file"] {
-  display: none; /* Hide the default file input */
+/* Disabled drop-zone */
+.drop-zone.disabled {
+    background-color: #e0e0e0;
+    border-color: #ccc;
+    pointer-events: none;
 }
 
-p {
-  font-size: 16px;
-  color: #555;
+/* Responsive design */
+@media (min-width: 768px) {
+    .loggedin {
+        max-width: 75%;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    button {
+        font-size: 1rem;
+        padding: 12px 20px;
+    }
 }
 
-button {
-  margin-top: 10px;
+@media (min-width: 1024px) {
+    .loggedin {
+        max-width: 60%;
+    }
+
+    .refresh-controls-container {
+        top: 30px;
+        right: 30px;
+    }
 }
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    text-align: center;
+  }
+  
+  button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Importing font awesome icons */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+/* Creative Share Room button */
+.share-room-btn {
+  background: linear-gradient(45deg, #6a11cb, #2575fc); /* Gradient background */
+  color: white;                                     /* White text color */
+  font-size: 18px;                                  /* Font size */
+  padding: 12px 30px;                               /* Padding for spacing */
+  border: none;                                     /* Remove border */
+  border-radius: 50px;                              /* Fully rounded button */
+  cursor: pointer;                                 /* Cursor pointer on hover */
+  display: inline-flex;                             /* Flexbox to align text and icon */
+  align-items: center;                             /* Center items vertically */
+  justify-content: center;                         /* Center items horizontally */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);       /* Shadow for a 3D effect */
+  transition: all 0.3s ease;                        /* Smooth transition for hover effect */
+  font-family: 'Arial', sans-serif;                 /* Clean, modern font */
+}
+
+.share-room-btn i {
+  margin-right: 10px;                              /* Space between icon and text */
+  font-size: 20px;                                 /* Icon size */
+}
+
+.share-room-btn:hover {
+  transform: scale(1.1);                           /* Slightly increase the size on hover */
+  background: linear-gradient(45deg, #2575fc, #6a11cb); /* Reverse gradient on hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);       /* More intense shadow on hover */
+}
+
+.share-room-btn:active {
+  transform: scale(0.98);                          /* Slight shrink when clicked */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);      /* Lighter shadow on click */
+}
+
+.share-room-btn:focus {
+  outline: none;                                   /* Remove default focus outline */
+}
+
