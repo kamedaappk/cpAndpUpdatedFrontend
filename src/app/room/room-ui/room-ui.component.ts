@@ -44,15 +44,15 @@ export class RoomUiComponent implements OnInit {
   @Inject(PLATFORM_ID) private readonly platformId: any // Inject the platform ID to check the environment
 
   ngOnDestroy(): void {
-    if (isPlatformBrowser(this.platformId)) { // Only run this in the browser
-      // Clean up event listeners to avoid memory leaks
-      document.removeEventListener('dragenter', this.onDragEnterGlobal.bind(this));
-      document.removeEventListener('dragover', this.onDragOverGlobal.bind(this));
-      document.removeEventListener('dragleave', this.onDragLeaveGlobal.bind(this));
-      document.removeEventListener('drop', this.onDropGlobal.bind(this));
+    // if (isPlatformBrowser(this.platformId)) { // Only run this in the browser
+    //   // Clean up event listeners to avoid memory leaks
+    //   document.removeEventListener('dragenter', this.onDragEnterGlobal.bind(this));
+    //   document.removeEventListener('dragover', this.onDragOverGlobal.bind(this));
+    //   document.removeEventListener('dragleave', this.onDragLeaveGlobal.bind(this));
+    //   document.removeEventListener('drop', this.onDropGlobal.bind(this));
 
       
-    }
+    // }
     this.roomService.exitRoom();
   }
 
@@ -173,15 +173,15 @@ removeFile(): void {
 
   ngOnInit(): void {
     this.store.dispatch(setInfo({"info":"Connected to server"}))
-    if (isPlatformBrowser(this.platformId)) { // Only run this in the browser
+    // if (isPlatformBrowser(this.platformId)) { // Only run this in the browser
       this.alertService.showAlert(`Logged into Room`, "success");
       
 
-      document.addEventListener('dragenter', this.onDragEnterGlobal.bind(this));
-      document.addEventListener('dragover', this.onDragOverGlobal.bind(this));
-      document.addEventListener('dragleave', this.onDragLeaveGlobal.bind(this));
-      document.addEventListener('drop', this.onDropGlobal.bind(this));
-    }
+    //   document.addEventListener('dragenter', this.onDragEnterGlobal.bind(this));
+    //   document.addEventListener('dragover', this.onDragOverGlobal.bind(this));
+    //   document.addEventListener('dragleave', this.onDragLeaveGlobal.bind(this));
+    //   document.addEventListener('drop', this.onDropGlobal.bind(this));
+    // }
     // this.roomService.setUpdates();
     this.updateDateTime();
       setInterval(() => {
