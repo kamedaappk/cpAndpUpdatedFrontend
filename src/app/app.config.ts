@@ -12,6 +12,8 @@ import { HomeEffects } from './home/home.store.ts/home.effects';
 import { homeReducer } from './home/home.store.ts/home.reducer';
 import { RoomEffects } from './room/room.store/room.effects';
 import { RoomUiEffects } from './room/room-ui/room-ui.store/room-ui.effects';
+import { AdminEffects } from './admin/admin.store.ts/admin.effects';
+import { adminReducer } from './admin/admin.store.ts/admin.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(), 
     provideAnimationsAsync(), 
     provideHttpClient(withFetch()), 
-    provideStore({home : homeReducer}), 
-    provideEffects(HomeEffects, RoomEffects, RoomUiEffects), 
+    provideStore({home : homeReducer, adminReducer}), 
+    provideEffects(HomeEffects, RoomEffects, RoomUiEffects, AdminEffects), 
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })]
 };

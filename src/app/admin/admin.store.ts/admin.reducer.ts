@@ -69,7 +69,7 @@ const initialAdminState: AdminState = {
     info: null
 }
 
-export const homeReducer = createReducer(
+export const adminReducer = createReducer(
     initialAdminState,
     on(loadDatas, (state) => ({ ...state, loading: true })),
     on(loadDatasSuccess, (state, { RoomDatas }) => ({ ...state, RoomDatas, loading: false, error: null })),

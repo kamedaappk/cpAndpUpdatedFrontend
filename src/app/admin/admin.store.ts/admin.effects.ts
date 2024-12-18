@@ -6,10 +6,10 @@ import { catchError, concatMap, map, mergeMap, of } from 'rxjs';
 import { RoomService } from '../../room/room.service';
 import { loadEnterRoom } from '../../room/room.store/room.actions';
 import { HomeService } from '../../home/homeservice.ts/home.service';
-import { loadServers, loadServersSuccess, loadServersFailure, loadResetAll, loadResetAllSuccess, loadResetAllFailure, loadDeleteAll, LoadRoomByKey, loadRoomByKeySuccess, setRoom, loadRoomByKeyFailure, setRoomSuccess, setRoomFailure } from './admin.action';
+import { loadServers, loadServersSuccess, loadServersFailure, loadResetAll, loadResetAllSuccess, loadResetAllFailure, loadDeleteAll, LoadRoomByKey, loadRoomByKeySuccess, setRoom, loadRoomByKeyFailure, setRoomSuccess, setRoomFailure } from '../../home/home.store.ts/home.action';
 
 @Injectable()
-export class HomeEffects {
+export class AdminEffects {
   constructor(
     private readonly actions$: Actions,
     private readonly homeService: HomeService,
