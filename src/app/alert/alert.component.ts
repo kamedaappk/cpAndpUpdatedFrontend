@@ -19,12 +19,12 @@ export class AlertComponent implements OnInit, OnDestroy {
       this.alert = alert;
       this.isVisible = true;
 
-      setTimeout(() => {
-        this.isVisible = false;
-        setTimeout(() => {
-          this.alert = null;
-        }, 300); // Time to wait for fade-out
-      }, 2000); // Hide after 2 seconds
+      // setTimeout(() => {
+      //   this.isVisible = false;
+      //   setTimeout(() => {
+      //     this.alert = null;
+      //   }, 300); // Time to wait for fade-out
+      // }, 2000); // Hide after 2 seconds
     });
   }
 
@@ -39,8 +39,8 @@ export class AlertComponent implements OnInit, OnDestroy {
   // Function to close the alert
 closeAlert(): void {
   this.isVisible = false; // Hide the alert
-  setTimeout(() => {
-      this.alert = null; // Optionally reset the alert after fade out
-  }, 500); // Matches the CSS transition duration
+  // setTimeout(() => {
+  //     this.alert = null; // Optionally reset the alert after fade out
+  // }, 500); // Matches the CSS transition duration
 }
 }
