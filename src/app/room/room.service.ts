@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';  
-import { io, Socket } from 'socket.io-client';
+// import { io, Socket } from 'socket.io-client';
 import { LoadingService } from '../services/loading.service';
 import { catchError, finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -247,11 +247,11 @@ export class RoomService {
   // // Enter a room by userId
   enterRoom(userId: string) {
     this.loadingService.show();
-    if (!this.socket) {
-      this.socket = io(this.apiUrl, { transports: ['websocket'] });
-    } 
-    this.socket.emit('joinRoom', { userId });
-    this.receiveMessages(userId)
+    // if (!this.socket) {
+    //   this.socket = io(this.apiUrl, { transports: ['websocket'] });
+    // } 
+    // this.socket.emit('joinRoom', { userId });
+    // this.receiveMessages(userId)
     const roomer = this.http.post(`${this.apiUrl}/enterRoom`, { userId }).pipe(
       finalize(() => this.loadingService.hide()), // Hide loading screen after request completes
       catchError((error) => {
