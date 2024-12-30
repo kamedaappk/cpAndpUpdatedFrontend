@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';  
-// import { io, Socket } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { LoadingService } from '../services/loading.service';
 import { catchError, finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { ConfigurationsService } from '../services/configurations.service';
 @Injectable({
   providedIn: 'root'
 })
-export class RoomService {
+export class RoomService implements OnDestroy {
 
 
   private backendSubscription: Subscription = new Subscription;
@@ -30,6 +30,9 @@ export class RoomService {
 ) { 
     // this.socket = io(this.apiUrl); // Initialize socket connection
     // this.apiUrl = this.configurationsService.getSelectedEndPoint();
+    if (typeof window !== 'undefined' && window.document) {
+      this.loadSocket();
+    }
     this.backendSubscription = this.configurationsService.selectedEndPoint$.subscribe(url => {
       this.apiUrl = url;
     });
@@ -45,8 +48,17 @@ export class RoomService {
   state$ = this.stateSubject.asObservable();
   roomData$ = this.roomDataSubject.asObservable();
   realTime$ = this.realTimeSubject.asObservable();
-
-
+  private socketLoaded = false;
+  private loadSocket() {
+    // Dynamically import socket.io-client
+    import('socket.io-client').then((socketIo) => {
+      this.socket = socketIo.io(this.apiUrl, { transports: ['websocket'] });
+      this.socketLoaded = true;
+      console.log('Socket initialized');
+    }).catch((err) => {
+      console.error('Error loading socket.io-client', err);
+    });
+  }
   uploadFile(userId: string, file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
@@ -247,11 +259,11 @@ export class RoomService {
   // // Enter a room by userId
   enterRoom(userId: string) {
     this.loadingService.show();
-    // if (!this.socket) {
-    //   this.socket = io(this.apiUrl, { transports: ['websocket'] });
-    // } 
-    // this.socket.emit('joinRoom', { userId });
-    // this.receiveMessages(userId)
+    if (!this.socket) {
+      this.socket = io(this.apiUrl, { transports: ['websocket'] });
+    } 
+    this.socket.emit('joinRoom', { userId });
+    this.receiveMessages(userId)
     const roomer = this.http.post(`${this.apiUrl}/enterRoom`, { userId }).pipe(
       finalize(() => this.loadingService.hide()), // Hide loading screen after request completes
       catchError((error) => {
@@ -277,5 +289,13 @@ export class RoomService {
     );
 }
     // if room undefined then no room exist
+
+    ngOnDestroy() {
+      // Clean up socket when component is destroyed
+      if (this.socket) {
+        this.socket.disconnect();
+        console.log("Socket disconnected");
+      }
+    }
     
   }
