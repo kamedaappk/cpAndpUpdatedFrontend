@@ -251,7 +251,7 @@ export class RoomService {
       this.socket = io(this.apiUrl, { transports: ['websocket'] });
     } 
     this.socket.emit('joinRoom', { userId });
-    this.receiveMessages(userId)
+    // this.receiveMessages(userId)
     const roomer = this.http.post(`${this.apiUrl}/enterRoom`, { userId }).pipe(
       finalize(() => this.loadingService.hide()), // Hide loading screen after request completes
       catchError((error) => {
