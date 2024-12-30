@@ -18,6 +18,7 @@ export class RoomService {
   
   private apiUrl = 'https://cpandpupdatedbackend.onrender.com'; // Your backend URL
   // private socket: Socket; // Add this line
+  socket :any;
 
   tempDetails:any;
 
@@ -171,7 +172,7 @@ export class RoomService {
     setInterval(() => {
       const currentTime = new Date().getTime();
       this.setRealtime(currentTime);
-      console.log("currentTime", currentTime)
+      // console.log("currentTime", currentTime)
     }, 1000); // Update every second
   }
 
@@ -237,9 +238,20 @@ export class RoomService {
     );
 }
 
+  receiveMessages(userId: string) {
+    this.socket.on('message', (data: any) => {
+      console.log("data at receiveMessages", data);
+      this.getRoomDataS(userId)
+    });
+  }
   // // Enter a room by userId
   enterRoom(userId: string) {
     this.loadingService.show();
+    if (!this.socket) {
+      this.socket = io(this.apiUrl, { transports: ['websocket'] });
+    } 
+    this.socket.emit('joinRoom', { userId });
+    this.receiveMessages(userId)
     const roomer = this.http.post(`${this.apiUrl}/enterRoom`, { userId }).pipe(
       finalize(() => this.loadingService.hide()), // Hide loading screen after request completes
       catchError((error) => {
