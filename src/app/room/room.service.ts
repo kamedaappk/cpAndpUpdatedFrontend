@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable, BehaviorSubject , Subscription, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';  
 import { ConfigurationsService } from '../services/configurations.service';
@@ -7,6 +7,7 @@ import { io, Socket } from 'socket.io-client';
 import { Store } from '@ngrx/store';
 import { addMessage, setInfo } from './room-ui/room-ui.store/room-ui.actions';
 import { selectRoom } from './room-ui/room-ui.store/room-ui.selector';
+import { isPlatformBrowser } from '@angular/common';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +24,7 @@ export class RoomService {
     private configurationsService:ConfigurationsService,
     private alertService:AlertService,
     private store:Store,
+    @Inject(PLATFORM_ID) private platformId: any
 ) { 
     this.backendSubscription = this.configurationsService.selectedEndPoint$.subscribe(url => {
       this.apiUrl = url;
@@ -126,18 +128,16 @@ export class RoomService {
 
   // // Enter a room by userId
   enterRoom(roomEnterData: string) {
-    ////console.log("roomEnterData at serv1", roomEnterData)
-    // Initialize Socket.IO
-    ////console.log("this.apiUrl 2", this.apiUrl)
-    // Initialize Socket.IO if not already initialized
-    if (!this.socket) {
-      this.socket = io(this.apiUrl, { transports: ['websocket'] });
+    if (isPlatformBrowser(this.platformId)) {
+      if (!this.socket) {
+        // Initialize socket only in the browser
+        this.socket = io(this.apiUrl, { transports: ['websocket'] });
+      }
+      const userId = roomEnterData;
+      this.socket.emit('joinRoom', { userId });
+      this.receiveMessages();
     }
-    const userId = roomEnterData
-    this.socket.emit('joinRoom', { userId });
-    
-    this.receiveMessages()
-    return this.http.post<any>(`${this.apiUrl}/getMessages`, { userId });
+    return this.http.post<any>(`${this.apiUrl}/getMessages`, { userId: roomEnterData });
   }
 
   exitRoom() {
