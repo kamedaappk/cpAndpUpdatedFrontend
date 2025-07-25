@@ -3,6 +3,12 @@
 <app-loading></app-loading>
 <app-home></app-home>
 
+<!-- Floating Theme Toggle Button -->
+<button class="theme-fab" type="button" (click)="toggleTheme()" aria-label="Toggle Dark Theme">
+  <span *ngIf="!darkTheme">🌙</span>
+  <span *ngIf="darkTheme">☀️</span>
+</button>
+
 <!-- Floating Changelog Button -->
 <button class="changelog-fab" type="button" (click)="openChangelog()" aria-label="Open Changelog">
   📝

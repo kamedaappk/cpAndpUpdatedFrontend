@@ -21,3 +21,27 @@
   background: #ff9800;
   color: #222;
 }
+
+.theme-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 5.5rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #222;
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1100;
+  transition: background 0.2s, color 0.2s;
+}
+.theme-fab:hover {
+  background: #ff9800;
+  color: #222;
+}

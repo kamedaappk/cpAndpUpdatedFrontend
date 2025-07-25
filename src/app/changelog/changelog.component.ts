@@ -14,6 +14,11 @@ export class ChangelogComponent {
 
     changelog = [
         {
+            date: '2025-07-25B',
+            title: 'Dark Theme Release',
+            description: 'Launched the Dark Theme feature! 🎉'
+        },
+        {
             date: '2025-07-25',
             title: 'Initial Release',
             description: 'Launched the changelog feature! 🎉'
