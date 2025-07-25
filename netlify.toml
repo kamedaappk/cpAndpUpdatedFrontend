@@ -2,5 +2,5 @@
 # No plugins are specified because @netlify/angular-runtime is not compatible with root-level NX workspaces.
 
 [build]
-  command = "npm run build"
+  command = "npx nx reset && npm run build"
   publish = "dist/cp-and-p-updated/browser"
