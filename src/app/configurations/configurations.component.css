@@ -1,61 +1,41 @@
-/* Global body styling */
-body {
-    background: radial-gradient(circle at 50% 50%, #1f1c2c, #928dab);
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: #fff;
-}
-
 /* Floating button container */
 .floating-button {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    animation: float 2s ease-in-out infinite;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
 }
 
 .floating-button button {
-    background: #00b894;
+    background: var(--accent-color);
     border: none;
     color: white;
-    padding: 15px;
+    padding: 1rem;
     border-radius: 50%;
-    font-size: 24px;
+    font-size: 2rem;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(0, 184, 148, 0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 20px rgba(13, 110, 253, 0.3);
+    transition: var(--transition);
+    border: 1px solid rgba(13, 110, 253, 0.3);
 }
 
 .floating-button button:hover {
-    transform: scale(1.1) rotate(15deg);
-    box-shadow: 0 12px 20px rgba(0, 184, 148, 0.6);
-}
-
-/* Animation for the floating button */
-@keyframes float {
-    0%, 100% {
-        transform: translatey(0px);
-    }
-    50% {
-        transform: translatey(-10px);
-    }
+    background: #0b5ed7;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(13, 110, 253, 0.4);
 }
 
 /* Endpoints container */
 .endpoints-container {
     text-align: center;
-    margin-top: 30px;
-}
-
-h2 {
-    color: #ecf0f1;
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+    margin-top: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
 }
 
 /* Endpoint styling */
@@ -63,85 +43,59 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(52, 73, 94, 0.9);
-    border-radius: 20px;
-    padding: 15px 20px;
-    margin-bottom: 15px;
-    transition: background 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
 }
 
 .endpoint:hover {
-    background: rgba(46, 204, 113, 0.9);
-    transform: scale(1.02);
+    background-color: var(--card-bg);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
 }
 
 /* Radio button styling */
 input[type="radio"] {
-    accent-color: #00b894;
+    accent-color: var(--accent-color);
     cursor: pointer;
-    width: 22px;
-    height: 22px;
-    margin-right: 15px;
+    width: 20px;
+    height: 20px;
+    margin-right: 1rem;
 }
 
 /* Labels for radio buttons */
 label {
-    font-size: 18px;
+    font-size: 1.125rem;
     display: flex;
     align-items: center;
-    color: #ecf0f1;
+    color: var(--text-color);
     font-weight: 500;
+    cursor: pointer;
+    flex: 1;
+    justify-content: space-between;
 }
 
 /* Selected Endpoint text styling */
 .selected-endpoint {
-    margin-top: 20px;
-    font-size: 22px;
+    margin-top: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 600;
-    color: #00b894;
+    color: var(--accent-color);
     text-align: center;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
 }
 
 /* Version styling */
 .version {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #95a5a6;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .floating-button button {
-        padding: 10px;
-        font-size: 20px;
-    }
-
-    .endpoint {
-        padding: 10px 15px;
-        margin-bottom: 10px;
-    }
-
-    label {
-        font-size: 16px;
-    }
-
-    .selected-endpoint {
-        font-size: 18px;
-    }
-}
-
-/* Active endpoint - green text */
-.active-endpoint label {
-    color: #2ecc71; /* Bright green when active */
-}
-
-/* Inactive endpoint - red text */
-.inactive-endpoint label {
-    color: #e74c3c; /* Bright red when inactive */
-}
-
-/* Checking endpoint - orange text */
-.checking-endpoint label {
-    color: #f39c12; /* Orange for checking */
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: var(--secondary-color);
+    text-align: center;
 }

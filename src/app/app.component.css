@@ -5,21 +5,23 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #222;
+  background: var(--accent-color);
   color: #fff;
   border: none;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 16px rgba(13, 110, 253, 0.3);
   font-size: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 1100;
-  transition: background 0.2s, color 0.2s;
+  transition: var(--transition);
+  border: 1px solid rgba(13, 110, 253, 0.3);
 }
 .changelog-fab:hover {
-  background: #ff9800;
-  color: #222;
+  background: #0b5ed7;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(13, 110, 253, 0.4);
 }
 
 .theme-fab {
@@ -29,19 +31,21 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #222;
+  background: var(--accent-color);
   color: #fff;
   border: none;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 16px rgba(13, 110, 253, 0.3);
   font-size: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 1100;
-  transition: background 0.2s, color 0.2s;
+  transition: var(--transition);
+  border: 1px solid rgba(13, 110, 253, 0.3);
 }
 .theme-fab:hover {
-  background: #ff9800;
-  color: #222;
+  background: #0b5ed7;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(13, 110, 253, 0.4);
 }
