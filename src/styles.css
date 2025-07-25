@@ -17,10 +17,112 @@
 }
 
 html, body { height: 100%; }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background: var(--bg-color);
   color: var(--text-color);
   transition: background 0.3s, color 0.3s;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Responsive font scaling */
+@media (max-width: 600px) {
+  body {
+    font-size: 15px;
+  }
+}
+@media (max-width: 400px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Container utility */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Flex utilities */
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+.justify-center {
+  justify-content: center;
+}
+.align-center {
+  align-items: center;
+}
+
+/* Card utility */
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+
+/* Button base styles */
+button, .btn {
+  font-family: inherit;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  padding: 0.6em 1.2em;
+  background: var(--accent-color);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+}
+button:active, .btn:active {
+  background: #ffa726;
+}
+button:focus, .btn:focus {
+  box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+/* Responsive utility for floating buttons */
+@media (max-width: 600px) {
+  .changelog-fab, .theme-fab {
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+    bottom: 1rem;
+    right: 1rem;
+  }
+  .theme-fab {
+    right: 4rem;
+  }
+}
+
+/* Touch-friendly tap targets */
+button, .btn, input, textarea, select {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Hide scrollbars on mobile for modals */
+@media (max-width: 600px) {
+  .changelog-modal, .modal {
+    align-items: flex-end;
+    padding-bottom: 0;
+  }
+  .changelog-list, .modal-content {
+    max-height: 60vh;
+    min-width: 90vw;
+    border-radius: 16px 16px 0 0;
+  }
 }
