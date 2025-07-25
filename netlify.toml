@@ -1,0 +1,4 @@
+[[plugins]]
+  package = "@netlify/angular-runtime"
+  [plugins.inputs]
+    packagePath = "."
