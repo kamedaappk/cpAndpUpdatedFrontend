@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { LoadingService } from '../services/loading.service';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { selectLoading } from '../home/home.store.ts/home.selector';
 
 @Component({
   selector: 'app-loading',
@@ -12,9 +13,9 @@ import { CommonModule } from '@angular/common';
 export class LoadingComponent {
   isLoading = false;
 
-  constructor(private loadingService: LoadingService) {
-    this.loadingService.loading$.subscribe(loading => {
+  constructor(private readonly store:Store) {
+    this.store.select(selectLoading).subscribe((loading) => {
       this.isLoading = loading;
-    });
+    })
   }
 }

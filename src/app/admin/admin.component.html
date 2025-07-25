@@ -1,0 +1,26 @@
+  <!-- Modal Popup -->
+
+  <app-loading></app-loading>
+  <app-configurations [state]="state"></app-configurations>
+  
+  <app-alert></app-alert>
+  
+  <div *ngFor="let room of combinedRoomData">
+    <div class="room-container">
+      <h3>Room ID: {{ room.id }} (User: {{ room.userId }})</h3>
+      <p>Room Duration: {{ room.duration | date: 'short' }}</p>
+      <p>Room Key: {{ room.key }}</p>
+  
+      <div *ngIf="room.messages.length > 0">
+        <h4>Messages:</h4>
+        <div *ngFor="let message of room.messages">
+          <p><strong>{{ formatTimestamp(message.timestamp) }}:</strong> {{ message.text }}</p>
+          <p *ngIf="message.filename">Filename: <a [href]="message.filePath" target="_blank">{{ message.filename }}</a></p>
+        </div>
+      </div>
+      <div *ngIf="room.messages.length === 0">
+        <p>No messages in this room.</p>
+      </div>
+    </div>
+  </div>
+  

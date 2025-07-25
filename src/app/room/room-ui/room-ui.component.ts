@@ -1,10 +1,13 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { RoomService } from '../room.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { text } from 'stream/consumers';
-import { Console, timeStamp } from 'console';
 import { AlertService } from '../../services/alert.service';
+import { Store } from '@ngrx/store';
+import { selectPageState } from '../../home/home.store.ts/home.selector';
+import { selectRoom, selectRoomData } from './room-ui.store/room-ui.selector';
+import { LoadRefreshRoomData, sendChatMessage, sendFileMessage, setInfo } from './room-ui.store/room-ui.actions';
+import * as QRCode from 'qrcode';
 
 @Component({
   selector: 'app-room-ui',
@@ -13,207 +16,252 @@ import { AlertService } from '../../services/alert.service';
   templateUrl: './room-ui.component.html',
   styleUrls: ['./room-ui.component.css']
 })
-export class RoomUiComponent implements OnInit{
-  state:any;
-  room:any;
+export class RoomUiComponent implements OnInit {
+  state: any;
+  room: any;
   constructor(
-    private roomService:RoomService,
-    private alertService: AlertService,
-  ){}
-  roomData:any=[];
-  username:string='';
-  inputMessage:any='';
-  messages:any;
-  time:any;
+    private readonly roomService: RoomService,
+    private readonly alertService: AlertService,
+    private readonly store: Store,
+  ) {
+    this.store.select(selectPageState).subscribe((pageState) => this.state = pageState);
+    this.store.select(selectRoomData).subscribe((roomData) => this.roomData = roomData);
+    this.store.select(selectRoom).subscribe((room) => this.room = room);
+  }
+  roomData: any = [];
+  username: string = '';
+  inputMessage: any = '';
+  messages: any;
+  dateTime?: string;
+  timestamp?: number;
   selectedFile: File | null = null;
+  isDragging: boolean = false; // Flag to track dragging state
+  sharedLink: string | null = null;
+  qrCodeDataUrl: string | null = null; // To store the generated QR code image URL
+
 
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement> | undefined;
-  // Method to handle file selection
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    const maxSizeInMB = 5;
-    const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // 5 MB in bytes
+  @Inject(PLATFORM_ID) private readonly platformId: any // Inject the platform ID to check the environment
 
-    if (file) {
-        if (file.size > maxSizeInBytes) {
-          if (this.fileInput && this.fileInput.nativeElement) {
-            this.fileInput.nativeElement.value = '';
-          }
-            // File size exceeds the limit
-            this.alertService.showAlert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`, "warning");
-            // alert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`);
-        } else {
-            // File size is within the limit
-            this.selectedFile = file;
-            // Proceed with the file processing
-        }
-    }
-}
+  ngOnDestroy(): void {
+    // if (isPlatformBrowser(this.platformId)) { // Only run this in the browser
+    //   // Clean up event listeners to avoid memory leaks
+    //   document.removeEventListener('dragenter', this.onDragEnterGlobal.bind(this));
+    //   document.removeEventListener('dragover', this.onDragOverGlobal.bind(this));
+    //   document.removeEventListener('dragleave', this.onDragLeaveGlobal.bind(this));
+    //   document.removeEventListener('drop', this.onDropGlobal.bind(this));
 
-copyMessageText(text: string): void {
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(
-      () => {
-        console.log('Text copied to clipboard successfully!');
-        // Optionally show a success message to the user
-      },
-      (err) => {
-        console.error('Failed to copy text: ', err);
-        this.alertService.showAlert(`Failed to copy text: ${err}`, "error");
-        // Optionally show an error message to the user
-      }
-    );
-  } else {
-    // Fallback for older browsers
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    try {
-      document.execCommand('copy');
-      console.log('Text copied to clipboard successfully!');
-      this.alertService.showAlert(`Text copied to clipboard successfully!`, "success");
-    } catch (err) {
-      console.error('Failed to copy text: ', err);
-      this.alertService.showAlert(`Failed to copy text: ${err}`, "error");
-    }
-    document.body.removeChild(textarea);
+      
+    // }
+    this.roomService.exitRoom();
   }
-}
 
-
-  // Method to upload the selected file
-  uploadFile(): void {
-    if (this.selectedFile) {
-      // const userId = 'user1'; // Replace with dynamic userId
-      this.roomService.uploadFile(this.room.userId, this.selectedFile).subscribe(
-        (response) => {
-          console.log('File uploaded successfully', response);
-          this.alertService.showAlert(`File uploaded successfully`, "success");
-          this.roomService.getRoomDataS(this.room.userId)
-          // this.selectedFile=null
-          // Reset the file input
-          if (this.fileInput && this.fileInput.nativeElement) {
-            this.fileInput.nativeElement.value = '';
-          }
+  copyMessageText(text: string): void {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(
+        () => {
+          //console.log('Text copied to clipboard successfully!');
+          // Optionally show a success message to the user
         },
-        (error) => {
-          console.error('Error uploading file', error);
-          this.alertService.showAlert(`Error uploading file: ${error}`, "error");
+        (err) => {
+          console.error('Failed to copy text: ', err);
+          this.alertService.showAlert(`Failed to copy text: ${err}`, "error");
+          // Optionally show an error message to the user
         }
       );
+    } else {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        //console.log('Text copied to clipboard successfully!');
+        this.alertService.showAlert(`Text copied to clipboard successfully!`, "success");
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+        this.alertService.showAlert(`Failed to copy text: ${err}`, "error");
+      }
+      document.body.removeChild(textarea);
     }
   }
 
+// Handle global dragenter event
+onDragEnterGlobal(event: DragEvent): void {
+  event.preventDefault(); // Prevent default behavior
+  this.isDragging = true; // Set dragging state to true
+}
+
+// Handle global dragover event
+onDragOverGlobal(event: DragEvent): void {
+  event.preventDefault(); // Prevent default behavior
+}
+
+// Handle global dragleave event
+onDragLeaveGlobal(event: DragEvent): void {
+  event.preventDefault(); // Prevent default behavior
+  this.isDragging = false; // Reset dragging state
+}
+
+// Handle global drop event
+onDropGlobal(event: DragEvent): void {
+  event.preventDefault(); // Prevent default behavior
+  this.isDragging = false; // Reset dragging state
+  const files = event.dataTransfer?.files;
+  if (files?.length) {
+    const file = files[0];
+    this.handleFileSelection(file); // Handle file selection
+  }
+}
+
+onFileSelected(event: any): void {
+  const file: File = event.target.files[0];
+  if (file) {
+    this.handleFileSelection(file);
+  }
+}
+
+// Handle file after selection or drop
+handleFileSelection(file: File): void {
+  const maxSizeInMB = 5;
+  const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // 5 MB in bytes
+  if (file.size > maxSizeInBytes) {
+    this.alertService.showAlert(`File size exceeds ${maxSizeInMB} MB. Please select a smaller file.`, "warning");
+    this.selectedFile = null; // Reset the file selection if it exceeds the size limit
+  } else {
+    this.selectedFile = file; // Set the selected file
+  }
+}
+
+// Trigger file input when the drop zone is clicked
+triggerFileInput(): void {
+  if (this.fileInput?.nativeElement) {
+    this.fileInput.nativeElement.click();
+  }
+}
+
+uploadFile(): void {
+  if (this.selectedFile) {
+    const messageData = {
+      userId: this.room.userId,
+      file: this.selectedFile
+    };
+    this.store.dispatch(sendFileMessage({ messageData }));
+    this.selectedFile = null;
+    if (this.fileInput?.nativeElement) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
+}
+
+removeFile(): void {
+  this.selectedFile = null;
+  if (this.fileInput?.nativeElement) {
+    this.fileInput.nativeElement.value = ''; // Clear the input
+  }
+}
+
   downloadFile(filePath: string): void {
-    console.log(filePath)
-    // const backendUrl = 'https://cpandpupdatedbackend.onrender.com'; // Your backend URL
+    //console.log(filePath)
     const backendUrl = this.roomService.getApi()
-    console.log("backendurl",backendUrl)
+    //console.log("backendUrl", backendUrl)
     window.open(`${backendUrl}${filePath}`, '_blank'); // Use full URL with backend port
   }
 
-  
+
 
   ngOnInit(): void {
-    // Subscribe to state changes
-    this.roomService.state$.subscribe(updatedState => {
-      this.state = updatedState;
-      console.log("state at ng", this.state)
-    });
-
-    this.alertService.showAlert(`Logged into Room`, "success")
-      this.roomService.updateTime()
-    // Join the room
-    // this.roomService.joinRoom(this.room.userId);
-
-    // Listen for incoming messages
-    // this.roomService.onMessage().subscribe((message) => {
-    //   this.messages.push(message);
-    // });
-    this.roomService.realTime$.subscribe(updatedTime =>{
-      // this.time = updatedTime
-      const date = new Date(updatedTime);
-
-    // Construct the formatted string
-    this.time = this.formatTimestamp(date);
-    }
-    )
-    this.roomService.room$.subscribe(updatedRoom => {
-      this.room = updatedRoom;
-      this.username=this.room.userId;
-      // this.room.duration = this.convertTime(this.room.duration)
-      this.room.duration = this.formatTimestamp(this.room.duration);
-      // console.log("room at ng", this.room)
-      // console.log("username at ng", this.username)
-      // this.messages=this.roomService.getRoomDataS(this.username)
-      // console.log("room expiry", this.roomData.duration)
-      // console.log("messages at ng", this.messages)
-      // this.roomService.getRoomData(this.room.userId)
-      });
-
-    this.roomService.roomData$.subscribe(updatedRoomData =>{
-      this.roomData = updatedRoomData
-      console.log("roomData at ng", this.roomData)
-      // for all messages format timestamp
-      this.roomData.messages.forEach((message:any) => {message.timestamp=this.formatTimestamp(message.timestamp)});
-      // this.roomData.messages.timestamp=this.formatTimestamp(this.roomData.messages.timestamp)
-      // this.messages=this.roomData.messages
-      // console.log("roomData at ng", this.roomData)
-      // console.log("messages at ng", this.messages)
+    this.store.dispatch(setInfo({"info":"Connected to server"}))
+    // if (isPlatformBrowser(this.platformId)) { // Only run this in the browser
+      this.alertService.showAlert(`Logged into Room`, "success");
       
-    });
 
-    
-
-    // this.roomData=this.roomService.getRoomDetails(this.room.userId)
-    // console.log("roomData", this.roomData)
-
-  // this.roomData=this.roomService.getRoomDetails(this.room.userId)
-  // this.roomService.getRoomDetails(this.room.userId)
-
+    //   document.addEventListener('dragenter', this.onDragEnterGlobal.bind(this));
+    //   document.addEventListener('dragover', this.onDragOverGlobal.bind(this));
+    //   document.addEventListener('dragleave', this.onDragLeaveGlobal.bind(this));
+    //   document.addEventListener('drop', this.onDropGlobal.bind(this));
+    // }
+    // this.roomService.setUpdates();
+    this.updateDateTime();
+      setInterval(() => {
+        this.updateDateTime();
+      }, 2000);
   }
 
-  // Function to convert a numeric timestamp to yy-mm-dd-hh-mm-ss format
-formatTimestamp(timestamp: any): string {
-  // Create a new Date object from the timestamp
-  const date = new Date(timestamp);
 
-  // Extract each component of the date
-  const year = date.getFullYear().toString().slice(-2); // Last 2 digits of the year
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
-  const day = date.getDate().toString().padStart(2, '0');
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const seconds = date.getSeconds().toString().padStart(2, '0');
+  updateDateTime() {
+    this.timestamp = new Date().getTime(); // Get the current timestamp
+    this.dateTime = this.convertToIST(this.timestamp); // Call helper function to convert timestamp to IST
+  }
+  
 
-  // Construct the formatted string
-  return ` ${day}/${month}/${year} @ ${hours}:${minutes}:${seconds}`;
-}
-  saveMessage(){
-    console.log("message", this.inputMessage)
-    // if message = '' avoid
-    if(this.inputMessage==='') return;
-    this.inputMessage = {
+  saveMessage() {
+    if (this.inputMessage === '') return;
+    const message = {
       text: this.inputMessage,
-      timestamp: new Date().getTime()}
-    this.roomService.saveMessage(this.room.userId, this.inputMessage)
-    this.inputMessage=''
+      timestamp: this.timestamp,
+    };
+    const messageData = {
+      userId: this.room.userId,
+      message,
+    };
+    this.store.dispatch(sendChatMessage({ messageData }));
+    this.inputMessage = '';
   }
 
+  convertToIST(timestamp: number): string {
+    const date = new Date(timestamp); // Create a Date object using the timestamp
+    
+    // Define options for formatting the date and time in IST (Indian Standard Time)
+    const options: { 
+      timeZone: string; 
+      hour12: boolean; 
+      year: 'numeric' | '2-digit'; 
+      month: 'numeric' | '2-digit' | 'long'; 
+      day: 'numeric' | '2-digit'; 
+      hour: '2-digit' | 'numeric'; 
+      minute: '2-digit' | 'numeric'; 
+      second: '2-digit' | 'numeric' 
+    } = {
+      timeZone: 'Asia/Kolkata',  // Automatically adjusts to IST
+      hour12: true,              // 12-hour format
+      year: 'numeric', 
+      month: 'long', 
+      day: '2-digit',
+      hour: '2-digit',          // 2-digit hour
+      minute: '2-digit',        // 2-digit minute
+      second: '2-digit'         // 2-digit second
+    };
 
-  ngOnDestroy() {
-    if (this.state.subscription) {
-      this.state.subscription.unsubscribe();
-    }
-    if (this.room.subscription) {
-      this.room.subscription.unsubscribe();
-    }
-    if (this.roomData.subscription) {
-      this.roomData.subscription.unsubscribe();
-    }
-    if (this.time.subscription) {
-      this.time.subscription.unsubscribe();
+    // Format the date and time based on the options (in IST)
+    return date.toLocaleString('en-IN', options);
+  }
+
+  onShareClick() {
+    this.sharedLink = this.room?.key ? `${window.location.origin}/room/${this.room.key}` : null;
+    if (this.sharedLink) {
+      // Generate the QR code for the shared link
+      QRCode.toDataURL(this.sharedLink)
+        .then((url: string | null) => {
+          this.qrCodeDataUrl = url; // Store the QR code URL
+          //console.log('QR code generated successfully:', url);
+        })
+        .catch((err: any) => console.error('Error generating QR code', err));
     }
   }
+
+  closeModal(){
+    this.sharedLink = null;
+    this.qrCodeDataUrl = null;
+  }
+  
+  scrollToInput() {
+    const inputElement = document.getElementById('input');
+    if (inputElement) {
+      inputElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+  
+
 }

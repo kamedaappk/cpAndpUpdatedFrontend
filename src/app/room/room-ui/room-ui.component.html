@@ -1,39 +1,83 @@
-<p class="room-status">Room UI is up and running! 🎉</p>
+<div  *ngIf="sharedLink" class="modal-overlay">
+    <div class="modal-content">
+      <h3>Share the URL</h3>
+      <p>{{ sharedLink }}</p>
+        <!-- Display the QR code if available -->
+    <div *ngIf="qrCodeDataUrl">
+        <img [src]="qrCodeDataUrl" alt="QR Code" style="width: 200px; height: 200px;">
+      </div>
+      <button (click)="closeModal()">Close</button>
+      <button (click)="copyMessageText(sharedLink)">Copy</button>
+    </div>
+  </div>
 
-<div *ngIf="state === 'loggedin'" class="loggedin">
+<div *ngIf="state === 'loggedIn'" class="loggedin">
     <p>Hello, fabulous user!</p>
-    <h1>{{username}} 👋</h1>
-    <p>You're in the room with ID: <strong>{{room.id}}</strong></p>
-    <p>Room expires in: <strong>{{room.duration}}</strong></p>
-    <p>Current time: {{time | json}}</p>
+    <h1 *ngIf="room?.userId">{{ room.userId }} 🙌</h1>
+    <p *ngIf="room?.id"> 
+        You're in the room with ID: <strong>{{ room.id }}</strong> 
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<input type="button" value="Share Room" (click)="onShareClick()" class="share-room-btn">
+    </p>
+    
+    <p>
+        Room expires in: <strong>{{ convertToIST(room?.duration) }}</strong> <u><i>//corrections OTW 🚶‍♀️🚶‍♂️</i></u>
+    </p>
+    <p>Current time: {{ dateTime }}</p>
 
     <div class="messages" *ngFor="let message of roomData.messages">
-        <div class="message-container">
+        <div *ngIf="message" class="message-container">
             <p>{{ message.text }}</p>
-            <label>{{message.filename}}</label>
-            <span class="timestamp">Time: {{message.timestamp}}</span>
+            <label>{{ message.filename }}</label>
+            <span class="timestamp">Time: {{ convertToIST(message.timestamp)
+                }}</span>
             <div *ngIf="message.filePath; else copy">
-                <button (click)="downloadFile(message.filePath)">📥 Download File</button>
+                <button (click)="downloadFile(message.filePath)">
+                    📥 Download File
+                </button>
             </div>
             <ng-template #copy>
-                <button (click)="copyMessageText(message.text)">📋 Copy</button>
+                <button (click)="copyMessageText(message?.text)">📋 Copy</button>
             </ng-template>
         </div>
     </div>
 
-    <div class="input">
+    <div class="input" id="input">
         <label for="messageInput">Message:</label>
-        <input
-            id="messageInput"
-            type="text"
-            [(ngModel)]="inputMessage"
-            placeholder="Type your message here"
-        />
+        <input id="messageInput" type="text" [(ngModel)]="inputMessage" placeholder="Type your message here" (keydown.enter)="saveMessage()"/>
         <button (click)="saveMessage()">💬 Send</button>
     </div>
 
-    <div class="file-upload">
-        <input type="file" #fileInput (change)="onFileSelected($event)" />
-        <button (click)="uploadFile()">📤 Upload File</button>
+<!-- File Upload Section -->
+<div class="file-upload">
+    <!-- Drag and Drop Area -->
+    <div 
+      class="drop-zone"
+      [class.expanded]="isDragging"
+      [class.disabled]="selectedFile !== null" 
+      (click)="triggerFileInput()">
+      <p *ngIf="selectedFile === null">Drag and drop your file here or click to select a file</p> <!-- Hide text when file is selected -->
     </div>
-</div>
+  
+    <!-- Hidden File Input -->
+    <input type="file" #fileInput (change)="onFileSelected($event)" />
+  
+    <!-- Show selected file name -->
+    <p *ngIf="selectedFile">Selected File: {{ selectedFile.name }}</p>
+  
+    <!-- Upload Button -->
+    <button *ngIf="selectedFile" (click)="uploadFile()">📤 Upload File</button>
+  
+    <!-- Remove Button for uploaded file -->
+    <button *ngIf="selectedFile" (click)="removeFile()">❌ Remove File</button>
+  </div>
+  
+
+  <div class="refresh-controls-container">
+    <!-- Go to Input Button -->
+    <button (click)="scrollToInput()" class="refresh-button">
+      Scroll Down
+    </button>
+  </div>

@@ -49,7 +49,6 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
 
   toggleConfig() {
     // Implement any toggle functionality if needed
-    console.log('Config toggled');
     this.toggler=!this.toggler;
     if (this.toggler){
     // this.configurationsService.getApiEndpointsState()

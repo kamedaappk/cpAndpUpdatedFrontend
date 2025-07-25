@@ -46,3 +46,7 @@ Thumbs.db
 .Firebase
 .github
 .firebaserc
+
+
+.nx/cache
+.nx/workspace-data

@@ -1,4 +1,3 @@
-<p class="room-status">Room works! 🎉</p>
 
 <div *ngIf="state === 'create'" class="state">
     <form [formGroup]="createForm" (ngSubmit)="onCreate()">
@@ -46,8 +45,6 @@
     <button (click)="getRoomList()">List Rooms 📋</button>
 </div>
 
-<div *ngIf="state === 'loggedin'">
+<div *ngIf="room">
     <app-room-ui></app-room-ui>
 </div>
-
-<!-- <div *ngIf="selectedRoom"> selectedRoom {{ selectedRoom | json }}</div> -->

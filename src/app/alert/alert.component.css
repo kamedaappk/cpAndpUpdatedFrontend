@@ -1,49 +1,54 @@
 .alert-container {
     position: fixed; /* Fix the position relative to the viewport */
-    top: 20px; /* Position near the top */
+    top: 10px; /* Adjust for larger screens */
     left: 50%; /* Center horizontally */
     transform: translateX(-50%); /* Adjust for element's own width */
-    padding: 15px 25px; /* Comfortable padding */
-    margin: 10px 0;
-    border-radius: 10px; /* Rounded corners for a softer appearance */
-    color: #fff;
+    padding: 10px 20px; /* Comfortable padding for all sizes */
+    margin: 5px 0;
+    border-radius: 12px; /* Slightly more rounded for a friendly feel */
+    color: #ffffff;
     z-index: 1000; /* Ensure it appears above other content */
     transition: opacity 0.5s ease, transform 0.3s ease; /* Smooth fade and slide effect */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Add depth with shadow */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
     text-align: center; /* Center text */
     font-family: 'Arial', sans-serif; /* Modern font */
-    backdrop-filter: blur(5px); /* Slight blur effect for a glassy look */
+    backdrop-filter: blur(8px); /* Enhance glassy look */
     animation: slideIn 0.5s ease; /* Slide-in effect */
 }
 
 /* Close button styling */
 .close-button {
     position: absolute;
-    top: 10px;
-    right: 15px;
+    top: 8px;
+    right: 12px;
     cursor: pointer;
-    font-size: 1.2rem;
-    color: #fff;
-    transition: color 0.3s;
+    font-size: 1.4rem;
+    color: #ffffff;
+    transition: color 0.3s ease;
 }
 
 .close-button:hover {
-    color: #ffdddd; /* Change color on hover for feedback */
+    color: #ffecec; /* Softer hover effect for calm feedback */
 }
 
 /* Success alert */
 .success {
-    background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%); /* Gradient for modern look */
+    background: linear-gradient(135deg, #6be585 0%, #3fae60 100%);
 }
 
 /* Error alert */
 .error {
-    background: linear-gradient(135deg, #f44336 0%, #c62828 100%);
+    background: linear-gradient(135deg, #ff6b6b 0%, #e63939 100%);
 }
 
 /* Warning alert */
 .warning {
-    background: linear-gradient(135deg, #ff9800 0%, #e65100 100%);
+    background: linear-gradient(135deg, #ffc94b 0%, #d88700 100%);
+}
+
+/* Info alert */
+.info {
+    background: linear-gradient(135deg, #64b5f6 0%, #0d47a1 100%);
 }
 
 /* Animation on show */
@@ -67,4 +72,32 @@
 .alert.ng-leave-active {
     transform: scale(0.9);
     opacity: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .alert-container {
+        padding: 8px 16px;
+        top: 5px;
+        font-size: 0.9rem;
+    }
+
+    .close-button {
+        font-size: 1.2rem;
+        top: 5px;
+        right: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .alert-container {
+        padding: 6px 12px;
+        top: 5px;
+        font-size: 0.8rem;
+        border-radius: 8px;
+    }
+
+    .close-button {
+        font-size: 1rem;
+    }
 }

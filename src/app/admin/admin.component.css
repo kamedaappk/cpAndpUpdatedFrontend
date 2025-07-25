@@ -1,0 +1,19 @@
+.room-container {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
+  }
+  
+  .room-container h3 {
+    margin-top: 0;
+  }
+  
+  .room-container h4 {
+    margin-bottom: 5px;
+  }
+  
+  .room-container p {
+    margin: 5px 0;
+  }
+  
