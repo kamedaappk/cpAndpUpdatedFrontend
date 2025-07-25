@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "nx build cp-and-p-updated",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:cp-and-p-updated": "node dist/cp-and-p-updated/server/server.mjs",
