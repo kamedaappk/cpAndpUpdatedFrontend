@@ -2,3 +2,11 @@
 <router-outlet />
 <app-loading></app-loading>
 <app-home></app-home>
+
+<!-- Floating Changelog Button -->
+<button class="changelog-fab" type="button" (click)="openChangelog()" aria-label="Open Changelog">
+  📝
+</button>
+
+<!-- Changelog Modal -->
+<app-changelog *ngIf="showChangelog" (close)="closeChangelog()"></app-changelog>
