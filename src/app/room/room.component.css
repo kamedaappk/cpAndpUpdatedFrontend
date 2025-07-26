@@ -5,6 +5,10 @@
     text-align: center;
     margin-bottom: 1.5rem;
     font-weight: 600;
+    background: var(--gradient-success);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* General form container styling */
@@ -12,12 +16,14 @@ form {
     max-width: 600px;
     margin: 0 auto;
     padding: 2rem;
-    background-color: var(--card-bg);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow);
+    background: var(--glass-bg);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--glass-shadow);
     text-align: left;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--glass-border);
     transition: var(--transition);
+    backdrop-filter: blur(10px);
+    margin-top: 2rem;
 }
 
 /* Form heading */
@@ -26,6 +32,10 @@ form h2 {
     margin-bottom: 1rem;
     font-size: 2rem;
     font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* General paragraph styling */
@@ -73,26 +83,47 @@ button {
     font-size: 1rem;
     font-weight: 600;
     color: #fff;
-    background-color: var(--accent-color);
+    background: var(--gradient-primary);
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: var(--transition);
     margin-top: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--elevation-low);
+    position: relative;
+    overflow: hidden;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    transition: width 0.6s, height 0.6s;
+}
+
+button:active::before {
+    width: 300px;
+    height: 300px;
 }
 
 /* Hover effect for buttons */
 button:hover {
-    background-color: #0b5ed7;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: var(--elevation-med);
+    background: var(--gradient-primary);
 }
 
 /* Active state for buttons */
 button:active {
     transform: translateY(0);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--elevation-low);
 }
 
 /* Specific form container for create/enter state */
@@ -125,29 +156,31 @@ button:active {
     appearance: none;
     width: 20px;
     height: 20px;
-    background-color: var(--accent-color);
+    background: var(--gradient-primary);
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid var(--card-bg);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s;
+    transition: all 0.2s;
 }
 .styled-slider::-webkit-slider-thumb:hover {
-    background-color: #0b5ed7;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .styled-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
-    background-color: var(--accent-color);
+    background: var(--gradient-primary);
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid var(--card-bg);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s;
+    transition: all 0.2s;
 }
 .styled-slider::-moz-range-thumb:hover {
-    background-color: #0b5ed7;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .slider-value {
@@ -156,6 +189,10 @@ button:active {
     color: var(--accent-color);
     min-width: 80px;
     text-align: center;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .required {

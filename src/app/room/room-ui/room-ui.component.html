@@ -1,11 +1,11 @@
 <p class="room-status">Room is up and running! 🎉</p>
 
 <div *ngIf="state === 'loggedin'" class="loggedin">
-    <p>Hello, fabulous user!</p>
-    <h1>{{username}} 👋</h1>
-    <p>You're in the room with ID: <strong>{{room.id}}</strong></p>
-    <p>Room expires in: <strong>{{room.duration}}</strong></p>
-    <p>Current time: {{time | json}}</p>
+    <p><i class="fas fa-smile"></i> Hello, fabulous user!</p>
+    <h1>{{username}} <i class="fas fa-hand-spock"></i></h1>
+    <p><i class="fas fa-door-open"></i> You're in the room with ID: <strong>{{room.id}}</strong></p>
+    <p><i class="fas fa-hourglass-half"></i> Room expires in: <strong>{{room.duration}}</strong></p>
+    <p><i class="fas fa-clock"></i> Current time: {{time | json}}</p>
 
     <div class="messages" *ngFor="let message of roomData.messages">
         <div class="message-container">
@@ -13,27 +13,35 @@
             <label>{{message.filename}}</label>
             <span class="timestamp">Time: {{message.timestamp}}</span>
             <div *ngIf="message.filePath; else copy">
-                <button (click)="downloadFile(message.filePath)">📥 Download File</button>
+                <button (click)="downloadFile(message.filePath)">
+                    <i class="fas fa-download"></i> Download File
+                </button>
             </div>
             <ng-template #copy>
-                <button (click)="copyMessageText(message.text)">📋 Copy</button>
+                <button (click)="copyMessageText(message.text)">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
             </ng-template>
         </div>
     </div>
 
     <div class="input">
-        <label for="messageInput">Message:</label>
+        <label for="messageInput"><i class="fas fa-comment"></i> Message:</label>
         <input
             id="messageInput"
             type="text"
             [(ngModel)]="inputMessage"
             placeholder="Type your message here"
         />
-        <button (click)="saveMessage()">💬 Send</button>
+        <button (click)="saveMessage()">
+            <i class="fas fa-paper-plane"></i> Send
+        </button>
     </div>
 
     <div class="file-upload">
         <input type="file" #fileInput (change)="onFileSelected($event)" />
-        <button (click)="uploadFile()">📤 Upload File</button>
+        <button (click)="uploadFile()">
+            <i class="fas fa-upload"></i> Upload File
+        </button>
     </div>
 </div>

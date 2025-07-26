@@ -5,13 +5,12 @@
 
 <!-- Floating Theme Toggle Button -->
 <button class="theme-fab" type="button" (click)="toggleTheme()" aria-label="Toggle Dark Theme">
-  <span *ngIf="!darkTheme">🌙</span>
-  <span *ngIf="darkTheme">☀️</span>
+  <i class="fas" [class.fa-moon]="!darkTheme" [class.fa-sun]="darkTheme"></i>
 </button>
 
 <!-- Floating Changelog Button -->
 <button class="changelog-fab" type="button" (click)="openChangelog()" aria-label="Open Changelog">
-  📝
+  <i class="fas fa-file-alt"></i>
 </button>
 
 <!-- Changelog Modal -->

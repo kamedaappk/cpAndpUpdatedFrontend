@@ -5,10 +5,10 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--accent-color);
+  background: var(--gradient-primary);
   color: #fff;
   border: none;
-  box-shadow: 0 4px 16px rgba(13, 110, 253, 0.3);
+  box-shadow: var(--elevation-med);
   font-size: 2rem;
   display: flex;
   align-items: center;
@@ -16,12 +16,13 @@
   cursor: pointer;
   z-index: 1100;
   transition: var(--transition);
-  border: 1px solid rgba(13, 110, 253, 0.3);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
 }
 .changelog-fab:hover {
-  background: #0b5ed7;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(13, 110, 253, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: var(--elevation-high);
+  background: var(--gradient-primary);
 }
 
 .theme-fab {
@@ -31,10 +32,10 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--accent-color);
+  background: var(--gradient-primary);
   color: #fff;
   border: none;
-  box-shadow: 0 4px 16px rgba(13, 110, 253, 0.3);
+  box-shadow: var(--elevation-med);
   font-size: 2rem;
   display: flex;
   align-items: center;
@@ -42,10 +43,11 @@
   cursor: pointer;
   z-index: 1100;
   transition: var(--transition);
-  border: 1px solid rgba(13, 110, 253, 0.3);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
 }
 .theme-fab:hover {
-  background: #0b5ed7;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(13, 110, 253, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: var(--elevation-high);
+  background: var(--gradient-primary);
 }

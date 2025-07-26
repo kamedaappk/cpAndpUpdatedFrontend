@@ -20,8 +20,8 @@
   --border-radius-sm: 0.25rem;
   --border-radius-lg: 0.5rem;
   --border-radius-xl: 1rem;
-  --transition: all 0.3s ease-in-out;
-  --transition-fast: all 0.15s ease-in-out;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --font-family-sans-serif: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-family-monospace: 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   --font-size-base: 1rem;
@@ -35,10 +35,23 @@
   --line-height-lg: 1.25;
   --focus-ring-color: rgba(13, 110, 253, 0.25);
   --focus-ring-width: 0.25rem;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --neon-accent: #00f3ff;
+  --neon-accent-dark: #00aaff;
+  --gradient-primary: linear-gradient(135deg, var(--accent-color), var(--neon-accent));
+  --gradient-success: linear-gradient(135deg, #198754, #00f3ff);
+  --gradient-warning: linear-gradient(135deg, #ffc107, #ff6b00);
+  --gradient-danger: linear-gradient(135deg, #dc3545, #ff0055);
+  --elevation-low: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --elevation-med: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --elevation-high: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --satisfaction-curve: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .dark-theme {
-  --bg-color: #121212;
+  --bg-color: #0a0a0a;
   --text-color: #e9ecef;
   --accent-color: #0d6efd;
   --secondary-color: #6c757d;
@@ -48,9 +61,21 @@
   --info-color: #0dcaf0;
   --light-color: #1f1f1f;
   --dark-color: #e9ecef;
-  --card-bg: #1f1f1f;
+  --card-bg: #121212;
   --border-color: #333333;
   --focus-ring-color: rgba(13, 110, 253, 0.5);
+  --glass-bg: rgba(18, 18, 18, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --neon-accent: #00f3ff;
+  --neon-accent-dark: #00aaff;
+  --gradient-primary: linear-gradient(135deg, var(--accent-color), var(--neon-accent));
+  --gradient-success: linear-gradient(135deg, #198754, #00f3ff);
+  --gradient-warning: linear-gradient(135deg, #ffc107, #ff6b00);
+  --gradient-danger: linear-gradient(135deg, #dc3545, #ff0055);
+  --elevation-low: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --elevation-med: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --elevation-high: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 html, body {

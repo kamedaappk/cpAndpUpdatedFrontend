@@ -6,8 +6,12 @@
 <div *ngIf="state === 'home'; else elseblock" class="container">
     <h1>Welcome to the Home Page!</h1>
     <div class="button-container">
-        <button (click)="createRoom()">Create Room 🏠</button>
-        <button (click)="enterRoom()">Enter Room 🚪</button>
+        <button (click)="createRoom()">
+            <i class="fas fa-plus-circle"></i> Create Room
+        </button>
+        <button (click)="enterRoom()">
+            <i class="fas fa-sign-in-alt"></i> Enter Room
+        </button>
     </div>
 </div>
 
@@ -18,9 +22,13 @@
 </ng-template>
 
 <div class="back-button-container">
-    <button (click)="backToHome()">🔙 Back to Home</button>
+    <button (click)="backToHome()">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </button>
 </div>
 
 <div class="configButtons">
-    <button (click)="resetAll()">🔄 Reset All</button>
+    <button (click)="resetAll()">
+        <i class="fas fa-redo"></i> Reset All
+    </button>
 </div>

@@ -7,22 +7,23 @@
 }
 
 .floating-button button {
-    background: var(--accent-color);
+    background: var(--gradient-primary);
     border: none;
     color: white;
     padding: 1rem;
     border-radius: 50%;
     font-size: 2rem;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(13, 110, 253, 0.3);
+    box-shadow: var(--elevation-med);
     transition: var(--transition);
-    border: 1px solid rgba(13, 110, 253, 0.3);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
 }
 
 .floating-button button:hover {
-    background: #0b5ed7;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(13, 110, 253, 0.4);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: var(--elevation-high);
+    background: var(--gradient-primary);
 }
 
 /* Endpoints container */
@@ -32,10 +33,11 @@
     max-width: 600px;
     margin: 2rem auto;
     padding: 2rem;
-    background-color: var(--card-bg);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
+    background: var(--glass-bg);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--glass-shadow);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
 }
 
 /* Endpoint styling */
@@ -43,19 +45,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--bg-color);
+    background: var(--glass-bg);
     border-radius: var(--border-radius);
     padding: 1rem;
     margin-bottom: 1rem;
     transition: var(--transition);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--glass-border);
     cursor: pointer;
+    backdrop-filter: blur(10px);
 }
 
 .endpoint:hover {
-    background-color: var(--card-bg);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+    box-shadow: var(--elevation-med);
+    background: var(--glass-bg);
 }
 
 /* Radio button styling */
@@ -87,9 +90,10 @@ label {
     color: var(--accent-color);
     text-align: center;
     padding: 1rem;
-    background-color: var(--bg-color);
+    background: var(--glass-bg);
     border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
 }
 
 /* Version styling */
