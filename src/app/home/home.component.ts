@@ -64,10 +64,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  resetAll() {
-    console.log('reset all')
-    this.roomService.resetAll()
-  }
+
   deleteAll() {
     console.log('delete all')
     this.roomService.deleteAll()

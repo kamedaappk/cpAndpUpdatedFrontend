@@ -19,7 +19,6 @@ export class RoomComponent implements OnInit {
   selectedRoom: any;
   createForm!: FormGroup; // Use '!' to assert that this will be initialized
   enterForm!: FormGroup;
-  roomList: any;
 
 
   constructor(
@@ -126,18 +125,7 @@ export class RoomComponent implements OnInit {
     input.value = input.value.toUpperCase();
   }
 
-  getRoomList() {
 
-    this.roomService.getRooms().subscribe({
-      next: (data: any) => {
-        this.roomList = data;
-        console.log("Room List is", this.roomList)
-      },
-      error: (err: any) => {
-        console.error('Error fetching rooms:', err);
-      }
-    });
-  }
 
   ngOnDestroy() {
     this.stateSubscription?.unsubscribe();

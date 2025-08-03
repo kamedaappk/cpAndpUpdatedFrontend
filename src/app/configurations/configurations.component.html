@@ -5,6 +5,18 @@
 </div>
 
 <div *ngIf="toggler && state === 'home'" class="endpoints-container">
+    <div class="configButtons">
+        <button (click)="resetAll()">
+            <i class="fas fa-redo"></i> Reset All
+        </button>
+    </div>
+
+    <div class="button-container">
+        <button (click)="getRoomList()">
+            <i class="fas fa-list"></i> List Rooms
+        </button>
+    </div>
+    
     <h2><i class="fas fa-network-wired"></i> Select an API Endpoint</h2>
     <div *ngFor="let endpoint of apiEndpoints"
          [ngClass]="{'inactive-endpoint': endpoint.active === 'inactive', 'active-endpoint': endpoint.active === 'active', 'checking-endpoint': endpoint.active === 'checking'}"
@@ -32,3 +44,4 @@
 <p class="selected-endpoint">
     <i class="fas fa-check-circle"></i> Selected Endpoint: {{ selectedEndpoint }}
 </p>
+
