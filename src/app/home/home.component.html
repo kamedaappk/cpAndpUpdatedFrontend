@@ -1,15 +1,15 @@
 <app-configurations [state]="state"></app-configurations>
-<h1 align="center" class="main-title"><i><u><b>CpAndP Returns....</b></u></i></h1>
+<h1 class="main-title text-center"><i><u><b>CpAndP Returns....</b></u></i></h1>
 
 <app-alert></app-alert>
 
 <div *ngIf="state === 'home'; else elseblock" class="container">
     <h1>Welcome to the Home Page!</h1>
     <div class="button-container">
-        <button (click)="createRoom()">
+        <button type="button" (click)="createRoom()">
             <i class="fas fa-plus-circle"></i> Create Room
         </button>
-        <button (click)="enterRoom()">
+        <button type="button" (click)="enterRoom()">
             <i class="fas fa-sign-in-alt"></i> Enter Room
         </button>
     </div>
@@ -22,7 +22,7 @@
 </ng-template>
 
 <div class="back-button-container">
-    <button (click)="backToHome()">
+    <button type="button" (click)="backToHome()">
         <i class="fas fa-arrow-left"></i> Back to Home
     </button>
 </div>
