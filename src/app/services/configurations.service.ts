@@ -74,28 +74,38 @@ export class ConfigurationsService {
   getApiEndpointsState() {
     console.log('Checking the state of API endpoints...');
 
-    const pingRequests = this.apiEndpointsList.map(endpoint => {
+    // Create an array of observables for each endpoint check
+    const endpointChecks = this.apiEndpointsList.map(endpoint => {
       console.log(`Pinging endpoint: ${endpoint.url}`);
+
+      // Find the current index of this endpoint
+      const index = this.apiEndpointsList.findIndex(e => e.url === endpoint.url);
+
+      // Update status to checking
+      this.apiEndpointsList[index].active = this.endpointStatus.Checking;
+      this.apiEndpointsListSubject.next([...this.apiEndpointsList]);
+
       return this.http.get(`${endpoint.url}/ping`, { responseType: 'text' }).pipe(
         map(() => {
           console.log(`Endpoint is active: ${endpoint.url}`);
-          return { ...endpoint, active: this.endpointStatus.Active };
+          // Update the specific endpoint to active
+          this.apiEndpointsList[index].active = this.endpointStatus.Active;
+          this.apiEndpointsListSubject.next([...this.apiEndpointsList]);
+          return { ...this.apiEndpointsList[index] };
         }),
         catchError(err => {
           console.error(`Error pinging endpoint ${endpoint.url}:`, err);
-          return of({ ...endpoint, active: this.endpointStatus.Inactive }); // If it fails, set active to false
+          // Update the specific endpoint to inactive
+          this.apiEndpointsList[index].active = this.endpointStatus.Inactive;
+          this.apiEndpointsListSubject.next([...this.apiEndpointsList]);
+          return of({ ...this.apiEndpointsList[index] });
         })
       );
     });
 
-    return forkJoin(pingRequests).pipe(
-      map(endpointsWithState => {
-        console.log('API endpoints state updated:', endpointsWithState);
-        this.apiEndpointsList = endpointsWithState; // Update the state of the endpoints list
-        return this.apiEndpointsList;
-      })
-    );
-
+    // Return a new observable that completes when all requests are done
+    // but the UI updates happen immediately through the BehaviorSubject
+    return forkJoin(endpointChecks);
   }
 
 

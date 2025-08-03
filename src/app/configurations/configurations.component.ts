@@ -15,6 +15,7 @@ import { RoomService } from '../room/room.service';
 export class ConfigurationsComponent implements OnInit, OnDestroy {
   apiEndpoints;
   selectedEndpoint: string;
+  selectedEndpointTitle: string;
   toggler: boolean = false;
   roomList: any;
   maxUploadSize: number;
@@ -31,6 +32,9 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   ) {
     this.apiEndpoints = configurationsService.getApiEndpointsList();
     this.selectedEndpoint = configurationsService.getSelectedEndPoint();
+    // Find the title of the initially selected endpoint
+    const initialEndpoint = configurationsService.getApiEndpointsList().find(e => e.url === this.selectedEndpoint);
+    this.selectedEndpointTitle = initialEndpoint ? initialEndpoint.title : this.selectedEndpoint;
     this.maxUploadSize = configurationsService.getMaxUploadSize();
     this.maxUploadSizeInMB = this.maxUploadSize / (1024 * 1024);
   }
@@ -38,6 +42,9 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.configurationsService.selectedEndPoint$.subscribe(url => {
       this.selectedEndpoint = url;
+      // Find the title of the selected endpoint
+      const endpoint = this.apiEndpoints.find(e => e.url === url);
+      this.selectedEndpointTitle = endpoint ? endpoint.title : url;
     });
     this.endpointActiveSubscription = this.configurationsService.apiEndpointsList$.subscribe(list => {
       this.apiEndpoints = list;
