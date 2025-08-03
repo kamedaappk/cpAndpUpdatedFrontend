@@ -44,7 +44,7 @@ export class RoomService {
 
   }
   private roomSubject = new BehaviorSubject<any>([]);
-  private stateSubject = new BehaviorSubject<any>({});
+  private stateSubject = new BehaviorSubject<any>('home');
   private roomDataSubject = new BehaviorSubject<any>({});
   private realTimeSubject = new BehaviorSubject<any>([]);
 

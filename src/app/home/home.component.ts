@@ -40,7 +40,6 @@ export class HomeComponent implements OnInit {
       this.state = updatedState;
     });
 
-    this.state = 'home';
     console.log(this.state);
   }
 
