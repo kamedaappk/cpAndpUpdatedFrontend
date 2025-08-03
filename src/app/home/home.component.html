@@ -32,7 +32,7 @@
 </ng-template>
 
 <!-- Navigation -->
-<div class="home-navigation">
+<div *ngIf="state !== 'home'" class="home-navigation">
     <button type="button" class="home-back-button" (click)="backToHome()">
         <i class="fas fa-arrow-left"></i> Back to Home
     </button>
