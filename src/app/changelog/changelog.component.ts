@@ -16,6 +16,11 @@ export class ChangelogComponent {
 
         {
             date: '2025-08-03',
+            title: 'Independent Endpoint Status Display',
+            description: 'Updated backend endpoint checking to display active/inactive status independently for each endpoint. Each endpoint now updates in real-time as its status is determined, rather than waiting for all endpoints to be checked. Also updated the display to show endpoint titles instead of URLs for better user experience.'
+        },
+        {
+            date: '2025-08-03',
             title: 'File Size Limit Configuration',
             description: 'Added configurable maximum upload file size limit with default 5 MB. Users can now set limits between 1-100 MB using a slider interface.'
         },
