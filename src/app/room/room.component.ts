@@ -15,6 +15,7 @@ export class RoomComponent implements OnInit {
   // @Input() roomName!: string;
   state: any;
   stateSubscription: any;
+  roomSubscription: any;
 
   selectedRoom: any;
   createForm!: FormGroup; // Use '!' to assert that this will be initialized
@@ -32,9 +33,9 @@ export class RoomComponent implements OnInit {
       this.state = updatedState;
     });
 
-    this.roomService.room$.subscribe(updatedRoom => {
+    this.roomSubscription = this.roomService.room$.subscribe(updatedRoom => {
       this.selectedRoom = updatedRoom;
-    })
+    });
 
     this.createForm = this.fb.group({
       roomName: ['', Validators.required],
@@ -110,7 +111,7 @@ export class RoomComponent implements OnInit {
     this.stateSubscription?.unsubscribe();
     this.state.subscription?.unsubscribe();
     this.selectedRoom.subscription?.unsubscribe();
-
+    this.roomSubscription?.unsubscribe();
   }
 
 }

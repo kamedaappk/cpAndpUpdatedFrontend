@@ -25,6 +25,10 @@ export class RoomUiComponent implements OnInit {
 
   maxUploadSizeInBytes: number = 5 * 1024 * 1024; // Default to 5MB
   private maxUploadSizeSubscription: any;
+  private stateSubscription: any;
+  private timeSubscription: any;
+  private roomSubscription: any;
+  private roomDataSubscription: any;
 
   roomData: any = [];
   username: string = '';
@@ -150,22 +154,21 @@ export class RoomUiComponent implements OnInit {
 
   ngOnInit(): void {
     // Subscribe to state changes
-    this.roomService.state$.subscribe(updatedState => {
+    this.stateSubscription = this.roomService.state$.subscribe(updatedState => {
       this.state = updatedState;
       console.log("state at ng", this.state)
     });
 
     this.alertService.showAlert(`Logged into Room`, "success")
     this.roomService.updateTime()
-    this.roomService.realTime$.subscribe(updatedTime => {
+    this.timeSubscription = this.roomService.realTime$.subscribe(updatedTime => {
       // this.time = updatedTime
       const date = new Date(updatedTime);
 
       // Construct the formatted string
       this.time = this.formatTimestamp(date);
-    }
-    )
-    this.roomService.room$.subscribe(updatedRoom => {
+    });
+    this.roomSubscription = this.roomService.room$.subscribe(updatedRoom => {
       this.room = updatedRoom;
       this.username = this.room.userId;
       this.room.duration = this.formatTimestamp(this.room.duration);

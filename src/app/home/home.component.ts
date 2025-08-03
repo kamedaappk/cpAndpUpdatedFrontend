@@ -15,6 +15,7 @@ import { AlertComponent } from "../alert/alert.component";
 })
 export class HomeComponent implements OnInit {
   state: string = 'home'
+  private stateSubscription: any;
 
 
   // Alerts
@@ -33,14 +34,20 @@ export class HomeComponent implements OnInit {
       (error: any) => {
         console.error('Error fetching rooms:', error);
       }
-    )
+    );
     // Subscribe to state changes
-    this.roomService.state$.subscribe(updatedState => {
+    this.stateSubscription = this.roomService.state$.subscribe(updatedState => {
       this.state = updatedState;
     });
 
-    this.state = 'home'
-    console.log(this.state)
+    this.state = 'home';
+    console.log(this.state);
+  }
+
+  ngOnDestroy() {
+    if (this.stateSubscription) {
+      this.stateSubscription.unsubscribe();
+    }
   }
 
   createRoom() {

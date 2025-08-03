@@ -49,7 +49,15 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.endpointActiveSubscription) {
+      this.endpointActiveSubscription.unsubscribe();
+    }
+    if (this.maxUploadSizeSubscription) {
+      this.maxUploadSizeSubscription.unsubscribe();
+    }
   }
 
 
