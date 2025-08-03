@@ -164,7 +164,7 @@ export class RoomUiComponent implements OnInit {
       console.log("state at ng", this.state)
     });
 
-    this.alertService.showAlert(`Logged into Room`, "success")
+    // Remove immediate alert on init - alerts should be triggered by user actions
     this.roomService.updateTime()
     this.timeSubscription = this.roomService.realTime$.subscribe(updatedTime => {
       // this.time = updatedTime
@@ -194,17 +194,17 @@ export class RoomUiComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.state.subscription) {
-      this.state.subscription.unsubscribe();
+    if (this.stateSubscription) {
+      this.stateSubscription.unsubscribe();
     }
-    if (this.room.subscription) {
-      this.room.subscription.unsubscribe();
+    if (this.roomSubscription) {
+      this.roomSubscription.unsubscribe();
     }
-    if (this.roomData.subscription) {
-      this.roomData.subscription.unsubscribe();
+    if (this.roomDataSubscription) {
+      this.roomDataSubscription.unsubscribe();
     }
-    if (this.time.subscription) {
-      this.time.subscription.unsubscribe();
+    if (this.timeSubscription) {
+      this.timeSubscription.unsubscribe();
     }
     // Clean up subscription
     if (this.maxUploadSizeSubscription) {

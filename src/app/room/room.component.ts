@@ -131,8 +131,6 @@ export class RoomComponent implements OnInit {
 
   ngOnDestroy() {
     this.stateSubscription?.unsubscribe();
-    this.state.subscription?.unsubscribe();
-    this.selectedRoom.subscription?.unsubscribe();
     this.roomSubscription?.unsubscribe();
   }
 
