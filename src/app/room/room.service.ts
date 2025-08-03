@@ -221,7 +221,7 @@ export class RoomService {
         console.error('Error creating room:', error); // Log the error
         // Check if the error is due to room already existing
         if (error.status === 400) {
-          this.alertService.showAlert(error.error?.message, "error");
+          this.alertService.showAlert(error.error?.message, "warning");
         } else {
           this.alertService.showAlert("Room creation failed. Please try again!!!", "error");
         }
