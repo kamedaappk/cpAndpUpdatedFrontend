@@ -21,6 +21,13 @@ export class RoomService {
   socket: any;
 
   tempDetails: any;
+  // Default room structure
+  private defaultRoom = {
+    userId: '',
+    id: '',
+    duration: 0,
+    messages: []
+  };
 
   constructor(
     private http: HttpClient,
@@ -203,7 +210,7 @@ export class RoomService {
     return this.rooms;
   }
 
-  createRoom(userId: string, duration: any) {
+  createRoom(userId: string, duration: any): Observable<any> {
     console.log("userId", userId);
     console.log("Expiry", duration);
     this.loadingService.show();
@@ -212,22 +219,9 @@ export class RoomService {
       finalize(() => this.loadingService.hide()), // Hide loading screen after request completes
       catchError((error) => {
         console.error('Error creating room:', error); // Log the error
-
+        this.alertService.showAlert("Room creation failed. Please try again!!!", "error");
         return of(null); // Return an observable with a null value to continue the stream
       })
-    ).subscribe(
-      (data) => {
-        if (!data) {
-          console.log("Room creation failed.");
-          this.alertService.showAlert("Room creation failed. Please try again!!!", "error");
-          return;
-        }
-        this.roomSelected = data;
-        console.log("Room Created", this.roomSelected);
-        this.alertService.showAlert("Room Created Successfully", "success")
-        this.setRoom(this.roomSelected);
-        this.setState('loggedin');
-      }
     );
   }
 

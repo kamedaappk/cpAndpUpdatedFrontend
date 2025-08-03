@@ -15,8 +15,13 @@ import { ConfigurationsService } from '../services/configurations.service';
   styleUrls: ['./room-ui.component.css']
 })
 export class RoomUiComponent implements OnInit {
-  state: any;
-  room: any;
+  state: any = null;
+  room: any = {
+    userId: '',
+    id: '',
+    duration: 0,
+    messages: []
+  };
   constructor(
     private roomService: RoomService,
     private alertService: AlertService,
@@ -33,8 +38,8 @@ export class RoomUiComponent implements OnInit {
   roomData: any = [];
   username: string = '';
   inputMessage: any = '';
-  messages: any;
-  time: any;
+  messages: any = [];
+  time: any = '';
   selectedFile: File | null = null;
 
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement> | undefined;

@@ -64,12 +64,34 @@ export class RoomComponent implements OnInit {
       this.createForm.value.duration = new Date().getTime() + this.createForm.value.duration * 3600000;
       console.log('Duration', this.createForm.value.duration)
 
-      this.roomService.createRoom(this.createForm.value.roomName, this.createForm.value.duration);
-      this.selectedRoom = this.roomService.enterRoom(this.createForm.value.roomName);
-      console.log('selected Room at room component on create', this.selectedRoom)
-      this.roomService.setState('loggedin')
-      this.roomService.setRoom(this.selectedRoom)
-      this.roomService.setRoomData(this.selectedRoom.userId)
+      // Store room name locally to avoid multiple lookups
+      const roomName = this.createForm.value.roomName;
+
+      // Create room and handle the response
+      this.roomService.createRoom(roomName, this.createForm.value.duration).subscribe({
+        next: (data: any) => {
+          if (data) {
+            // Use the data from createRoom response
+            this.selectedRoom = data;
+            console.log('selected Room at room component on create', this.selectedRoom);
+
+            // Ensure room has proper structure
+            const roomWithDefaults = {
+              ...this.roomService['defaultRoom'],
+              ...data
+            };
+
+            // Set state and room data
+            this.roomService.setState('loggedin');
+            this.roomService.setRoom(roomWithDefaults);
+            this.roomService.setRoomData(this.selectedRoom.userId);
+          }
+        },
+        error: (error: any) => {
+          console.error('Error creating room:', error);
+          this.alertService.showAlert("Room creation failed. Please try again!!!", "error");
+        }
+      });
 
 
     }
