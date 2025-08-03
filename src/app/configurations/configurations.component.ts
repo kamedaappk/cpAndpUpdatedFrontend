@@ -44,11 +44,6 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   }
 
 
-  // updateSelectedEndpoint(url: string) {
-  //   this.configurationsService.setEndPoint(url);
-  //   this.selectedEndpoint = url;
-  // }
-
   updateSelectedEndpoint(url: string) {
     this.configurationsService.setEndPoint(url);
   }

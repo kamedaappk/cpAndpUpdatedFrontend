@@ -58,14 +58,10 @@ export class RoomComponent implements OnInit {
       this.createForm.value.roomName = this.createForm.value.roomName.toUpperCase();
       console.log('Creating room with data:', this.createForm.value);
       console.log('Room ID', this.createForm.value.roomName)
-      // console.log('Room Name', this.createForm.value.duration)
 
       // set time = current time + duration
       this.createForm.value.duration = new Date().getTime() + this.createForm.value.duration * 3600000;
       console.log('Duration', this.createForm.value.duration)
-      // set time = current time
-      // this.createForm.value.duration = new Date();
-      //  all caps for the roomname
 
       this.roomService.createRoom(this.createForm.value.roomName, this.createForm.value.duration);
       this.selectedRoom = this.roomService.enterRoom(this.createForm.value.roomName);
@@ -90,23 +86,6 @@ export class RoomComponent implements OnInit {
       // make it all caps
       this.enterForm.value.roomId = this.enterForm.value.roomId.toUpperCase();
       this.selectedRoom = this.roomService.enterRoom(this.enterForm.value.roomId);
-      // if(this.selectedRoom!=null){
-      // console.log('selected Room at room component on enter', this.selectedRoom)
-      // this.roomService.setRoomData(this.selectedRoom.userId)
-
-      // }
-
-      // this.roomService.setRoom(this.selectedRoom);
-      // console.log('selected Room at room component on enter', this.selectedRoom)
-      // console.log('selected Room',this.selectedRoom)
-      // if (this.selectedRoom!=null){
-      // this.state='loggedin'
-      // console.log('Logged In')
-      // this.roomService.setState('loggedin')
-      // this.roomService.setRoom(this.selectedRoom)
-      // this.roomService.setRoomData(this.selectedRoom.userId)
-      // return this.selectedRoom
-      // }
     }
     else {
       console.log('Form is invalid');

@@ -9,7 +9,7 @@ import { AlertComponent } from "../alert/alert.component";
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RoomComponent, RoomUiComponent, ConfigurationsComponent, AlertComponent],
+  imports: [CommonModule, RoomComponent, ConfigurationsComponent, AlertComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -39,7 +39,6 @@ export class HomeComponent implements OnInit {
       this.state = updatedState;
     });
 
-    // this.triggerAlert("Heyy", "success")
     this.state = 'home'
     console.log(this.state)
   }
@@ -53,7 +52,6 @@ export class HomeComponent implements OnInit {
 
   enterRoom() {
     console.log('enter room')
-    // this.state='enter'
     this.roomService.setState('enter')
   }
 

@@ -91,8 +91,6 @@ export class RoomUiComponent implements OnInit {
           console.log('File uploaded successfully', response);
           this.alertService.showAlert(`File uploaded successfully`, "success");
           this.roomService.getRoomDataS(this.room.userId)
-          // this.selectedFile=null
-          // Reset the file input
           if (this.fileInput && this.fileInput.nativeElement) {
             this.fileInput.nativeElement.value = '';
           }
@@ -107,7 +105,6 @@ export class RoomUiComponent implements OnInit {
 
   downloadFile(filePath: string): void {
     console.log(filePath)
-    // const backendUrl = 'https://cpandpupdatedbackend.onrender.com'; // Your backend URL
     const backendUrl = this.roomService.getApi()
     console.log("backendurl", backendUrl)
     window.open(`${backendUrl}${filePath}`, '_blank'); // Use full URL with backend port
@@ -124,13 +121,6 @@ export class RoomUiComponent implements OnInit {
 
     this.alertService.showAlert(`Logged into Room`, "success")
     this.roomService.updateTime()
-    // Join the room
-    // this.roomService.joinRoom(this.room.userId);
-
-    // Listen for incoming messages
-    // this.roomService.onMessage().subscribe((message) => {
-    //   this.messages.push(message);
-    // });
     this.roomService.realTime$.subscribe(updatedTime => {
       // this.time = updatedTime
       const date = new Date(updatedTime);
@@ -142,14 +132,7 @@ export class RoomUiComponent implements OnInit {
     this.roomService.room$.subscribe(updatedRoom => {
       this.room = updatedRoom;
       this.username = this.room.userId;
-      // this.room.duration = this.convertTime(this.room.duration)
       this.room.duration = this.formatTimestamp(this.room.duration);
-      // console.log("room at ng", this.room)
-      // console.log("username at ng", this.username)
-      // this.messages=this.roomService.getRoomDataS(this.username)
-      // console.log("room expiry", this.roomData.duration)
-      // console.log("messages at ng", this.messages)
-      // this.roomService.getRoomData(this.room.userId)
     });
 
     this.roomService.roomData$.subscribe(updatedRoomData => {
@@ -157,21 +140,8 @@ export class RoomUiComponent implements OnInit {
       console.log("roomData at ng", this.roomData)
       // for all messages format timestamp
       this.roomData.messages.forEach((message: any) => { message.timestamp = this.formatTimestamp(message.timestamp) });
-      // this.roomData.messages.timestamp=this.formatTimestamp(this.roomData.messages.timestamp)
-      // this.messages=this.roomData.messages
-      // console.log("roomData at ng", this.roomData)
-      // console.log("messages at ng", this.messages)
 
     });
-
-
-
-    // this.roomData=this.roomService.getRoomDetails(this.room.userId)
-    // console.log("roomData", this.roomData)
-
-    // this.roomData=this.roomService.getRoomDetails(this.room.userId)
-    // this.roomService.getRoomDetails(this.room.userId)
-
   }
 
   // Function to convert a numeric timestamp to yy-mm-dd-hh-mm-ss format

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';  
+import { HttpClient } from '@angular/common/http';
 import { io, Socket } from 'socket.io-client';
 import { LoadingService } from '../services/loading.service';
 import { catchError, finalize } from 'rxjs/operators';
@@ -15,32 +15,32 @@ export class RoomService {
 
 
   private backendSubscription: Subscription = new Subscription;
-  
+
   private apiUrl = 'https://cpandpupdatedbackend.onrender.com'; // Your backend URL
   // private socket: Socket; // Add this line
-  socket :any;
+  socket: any;
 
-  tempDetails:any;
+  tempDetails: any;
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private loadingService: LoadingService,
-    private configurationsService:ConfigurationsService,
-    private alertService:AlertService,
-) { 
+    private configurationsService: ConfigurationsService,
+    private alertService: AlertService,
+  ) {
     // this.socket = io(this.apiUrl); // Initialize socket connection
     // this.apiUrl = this.configurationsService.getSelectedEndPoint();
     this.backendSubscription = this.configurationsService.selectedEndPoint$.subscribe(url => {
       this.apiUrl = url;
     });
-    
+
 
   }
   private roomSubject = new BehaviorSubject<any>([]);
   private stateSubject = new BehaviorSubject<any>({});
   private roomDataSubject = new BehaviorSubject<any>({});
   private realTimeSubject = new BehaviorSubject<any>([]);
-  
+
   room$ = this.roomSubject.asObservable();
   state$ = this.stateSubject.asObservable();
   roomData$ = this.roomDataSubject.asObservable();
@@ -56,20 +56,20 @@ export class RoomService {
       finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
     );
   }
-  
-  getApi(){
+
+  getApi() {
     // this.apiUrl = this.configurationsService.getSelectedEndPoint();
     return this.apiUrl
   }
-  
-  deleteAll(){
+
+  deleteAll() {
     this.loadingService.show(); // Show loading screen
     this.http.get(`${this.apiUrl}/deleteAllAlone`).pipe(
       finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
     ).subscribe()
   }
 
-  resetAll(){
+  resetAll() {
     this.loadingService.show(); // Show loading screen
     this.http.get(`${this.apiUrl}/resetAll`).pipe(
       finalize(() => this.loadingService.hide()) // Hide loading screen after request completes
@@ -112,31 +112,31 @@ export class RoomService {
   //   return this.roomSubject.asObservable();
   // }
 
-  getRealtime(){
+  getRealtime() {
     // current date and time
     return this.realTimeSubject.asObservable();
   }
 
-  setRealtime(data:any){
+  setRealtime(data: any) {
     this.realTimeSubject.next(data)
   }
-  
+
 
   setRoom(room: any[]): void {
     console.log("room at setRoom", room)
     this.roomSubject.next(room);
   }
 
-  setRoomData(room:any){
+  setRoomData(room: any) {
     console.log("room at setRoomData", room)
     this.roomDataSubject.next(room)
   }
-  
+
 
   getRoomData(): Observable<any> {
     return this.roomDataSubject.asObservable();
   }
-  
+
 
   getRoomDataS(userId: any) {
     console.log("user id for message request", userId);
@@ -164,10 +164,10 @@ export class RoomService {
     this.stateSubject.next(newState);
   }
 
-  roomSelected:any;
+  roomSelected: any;
   rooms: any; // In-memory data store
 
-// update the current time automatically
+  // update the current time automatically
   updateTime() {
     setInterval(() => {
       const currentTime = new Date().getTime();
@@ -186,21 +186,15 @@ export class RoomService {
       (data) => {
         this.setRoomData(data)
         // this.sendMessage(userId, message);
-  
+
         console.log("Message saved successfully");
       }
-      
+
     );
   }
 
-  // getRoomDetails(userId:any) {
-  //   const room = this.roomDetails.find(room => room.userId === userId);
-  //   this.setRoomData(room)
-  //   return room
 
-  // }
-
-  getRooms(){
+  getRooms() {
     this.loadingService.show(); // Show loading screen
     console.log("getRooms via", this.apiUrl)
     this.rooms = this.http.get<any[]>(`${this.apiUrl}/rooms`).pipe(
@@ -213,13 +207,12 @@ export class RoomService {
     console.log("userId", userId);
     console.log("Expiry", duration);
     this.loadingService.show();
-    
+
     return this.http.post<any>(`${this.apiUrl}/createRoom`, { userId, duration }).pipe(
       finalize(() => this.loadingService.hide()), // Hide loading screen after request completes
       catchError((error) => {
         console.error('Error creating room:', error); // Log the error
-        // Notify the user of the error
-        // alert('Failed to create the room. Please try again.'); // Example notification
+
         return of(null); // Return an observable with a null value to continue the stream
       })
     ).subscribe(
@@ -236,7 +229,7 @@ export class RoomService {
         this.setState('loggedin');
       }
     );
-}
+  }
 
   receiveMessages(userId: string) {
     this.socket.on('message', (data: any) => {
@@ -256,8 +249,6 @@ export class RoomService {
       finalize(() => this.loadingService.hide()), // Hide loading screen after request completes
       catchError((error) => {
         console.error('Error entering room:', error); // Log the error
-        // You can also show a user-friendly message or notification here
-        // alert('Failed to enter the room. Please try again.'); // Example notification
         return of(null); // Return an observable with a null value to continue the stream
       })
     ).subscribe(
@@ -275,7 +266,7 @@ export class RoomService {
         this.setState('loggedin');
       }
     );
-}
-    // if room undefined then no room exist
-    
   }
+  // if room undefined then no room exist
+
+}

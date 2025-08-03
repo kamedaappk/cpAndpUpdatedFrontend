@@ -9,20 +9,20 @@ import { catchError, map } from 'rxjs/operators';
 export class ConfigurationsService {
 
   endpointStatus = {
-    Active :'active',
-    Inactive : 'inactive',
-    Error : 'error', // New state for handling errors
-    Checking : 'checking' // New state for checking the status
+    Active: 'active',
+    Inactive: 'inactive',
+    Error: 'error', // New state for handling errors
+    Checking: 'checking' // New state for checking the status
   }
   apiEndpointsList = [
-    {title:"Local",url:"http://localhost:3000", active: this.endpointStatus.Checking},
-    {title:"On Render",url:"https://cpandpupdatedbackend.onrender.com", active: this.endpointStatus.Checking},
-    {title:"On Back4App",url:"https://cpandpbackend02-0xc7ys9t.b4a.run", active: this.endpointStatus.Checking},
-    {title:"On Render (2)",url:"https://cpandpupdatedbackend-1.onrender.com", active: this.endpointStatus.Checking},
+    { title: "Local", url: "http://localhost:3000", active: this.endpointStatus.Checking },
+    { title: "On Render", url: "https://cpandpupdatedbackend.onrender.com", active: this.endpointStatus.Checking },
+    { title: "On Back4App", url: "https://cpandpbackend02-0xc7ys9t.b4a.run", active: this.endpointStatus.Checking },
+    { title: "On Render (2)", url: "https://cpandpupdatedbackend-1.onrender.com", active: this.endpointStatus.Checking },
   ]
-  
+
   selectedEndPoint = "https://cpandpupdatedbackend.onrender.com"
-  
+
 
   constructor(private http: HttpClient) { }
 
@@ -31,26 +31,26 @@ export class ConfigurationsService {
   selectedEndPoint$ = this.selectedEndPointSubject.asObservable();
   apiEndpointsList$ = this.apiEndpointsListSubject.asObservable();
 
-  setEndPoint(endPoint:any){
+  setEndPoint(endPoint: any) {
     // this.selectedEndPoint = endPoint
     this.selectedEndPointSubject.next(endPoint);
   }
 
-  setEndpointsList(endpoints:any[]){
+  setEndpointsList(endpoints: any[]) {
     this.apiEndpointsListSubject.next(endpoints);
   }
 
-  getSelectedEndPoint(){
+  getSelectedEndPoint() {
     return this.selectedEndPoint
   }
 
-  getApiEndpointsList(){
+  getApiEndpointsList() {
     return this.apiEndpointsList;
   }
 
   getApiEndpointsState() {
     console.log('Checking the state of API endpoints...');
-  
+
     const pingRequests = this.apiEndpointsList.map(endpoint => {
       console.log(`Pinging endpoint: ${endpoint.url}`);
       return this.http.get(`${endpoint.url}/ping`, { responseType: 'text' }).pipe(
@@ -64,7 +64,7 @@ export class ConfigurationsService {
         })
       );
     });
-  
+
     return forkJoin(pingRequests).pipe(
       map(endpointsWithState => {
         console.log('API endpoints state updated:', endpointsWithState);
@@ -72,13 +72,8 @@ export class ConfigurationsService {
         return this.apiEndpointsList;
       })
     );
-  
+
   }
-
-
-
-
-  
 
 
 }
