@@ -1,0 +1,200 @@
+/* Changelog Modal - Modern, Dropbox & Toffeeshare Inspired UI */
+
+.changelog-modal-container {
+    width: 90vw;
+    max-width: 720px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 10px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    animation: fadeInUp 0.4s ease-out;
+    margin: 40px auto;
+    position: relative;
+    border: 1px solid #eaeaea;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.changelog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    background: linear-gradient(135deg, #0061ff, #0047cc);
+    color: white;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.changelog-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.changelog-header h2::before {
+    content: '📋';
+    font-size: 20px;
+}
+
+.changelog-close-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 28px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.changelog-close-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.changelog-entries-list {
+    padding: 32px;
+    max-height: 60vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #0061ff #f5f7ff;
+}
+
+.changelog-entries-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.changelog-entries-list::-webkit-scrollbar-track {
+    background: #f5f7ff;
+    border-radius: 10px;
+}
+
+.changelog-entries-list::-webkit-scrollbar-thumb {
+    background: #0061ff;
+    border-radius: 10px;
+}
+
+.changelog-entry-item {
+    margin-bottom: 28px;
+    padding-left: 16px;
+    border-left: 3px solid #e0e7ff;
+    transition: transform 0.2s ease;
+    opacity: 0;
+    animation: slideInRight 0.4s ease-out forwards;
+    animation-delay: calc(var(--delay) * 0.1s);
+}
+
+.changelog-entry-item:nth-child(1) {
+    --delay: 1;
+}
+
+.changelog-entry-item:nth-child(2) {
+    --delay: 2;
+}
+
+.changelog-entry-item:nth-child(3) {
+    --delay: 3;
+}
+
+.changelog-entry-item:nth-child(4) {
+    --delay: 4;
+}
+
+.changelog-entry-item:nth-child(5) {
+    --delay: 5;
+}
+
+.changelog-entry-date {
+    font-size: 13px;
+    color: #0061ff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+}
+
+.changelog-entry-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e1e2d;
+    margin-bottom: 8px;
+}
+
+.changelog-entry-description {
+    font-size: 15px;
+    color: #4a4a68;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .changelog-modal-container {
+        width: 95vw;
+        margin: 20px auto;
+        border-radius: 12px;
+    }
+
+    .changelog-header,
+    .changelog-entries-list {
+        padding: 20px;
+    }
+
+    .changelog-header h2 {
+        font-size: 20px;
+    }
+
+    .changelog-entry-title {
+        font-size: 16px;
+    }
+
+    .changelog-entry-description {
+        font-size: 14px;
+    }
+}
+
+/* Optional: Add subtle background pattern */
+.changelog-modal-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230061ff' fill-opacity='0.08'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.6;
+    transform: rotate(45deg);
+    z-index: 0;
+}

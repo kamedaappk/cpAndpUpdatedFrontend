@@ -1,1 +1,279 @@
+/* === GLOBAL UTILITY RESETS === */
+* {
+    box-sizing: border-box;
+}
 
+.room-create-state,
+.room-enter-state,
+.room-loggedin-state {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    color: #1e1e2d;
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* === TYPOGRAPHY & TEXT STYLES === */
+.room-create-title,
+.room-enter-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0061ff;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.room-create-description,
+.room-enter-description {
+    font-size: 16px;
+    color: #4a4a68;
+    margin: 0 0 24px 0;
+    font-weight: 500;
+}
+
+/* === FORM STYLES === */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.room-field-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e1e2d;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.required {
+    color: #ff3b30;
+    font-weight: 600;
+}
+
+/* === INPUT & TEXTAREA STYLES === */
+input[type="text"],
+input[type="password"],
+input[type="search"],
+input[type="email"],
+input[type="url"],
+textarea,
+input[type="range"] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #d0d0da;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #1e1e2d;
+    background-color: #f9f9fc;
+    transition: all 0.25s ease;
+    outline: none;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+    border-color: #0061ff;
+    box-shadow: 0 0 0 3px rgba(0, 97, 255, 0.15);
+    background-color: #ffffff;
+    transform: scale(1.01);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #a0a0b3;
+    font-weight: 400;
+}
+
+/* Uppercase input styling */
+input[style*="text-transform: uppercase"] {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* === TEXTAREA === */
+textarea {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* === SLIDER STYLES === */
+.room-duration-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.room-duration-slider {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: #e0e0e0;
+    outline: none;
+    cursor: pointer;
+}
+
+.room-duration-slider::-webkit-slider-thumb {
+    appearance: none;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: #0061ff;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 97, 255, 0.3);
+    transition: transform 0.2s ease;
+}
+
+.room-duration-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.room-duration-slider::-moz-range-thumb {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: #0061ff;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 97, 255, 0.3);
+}
+
+.room-duration-value {
+    font-weight: 600;
+    color: #0061ff;
+    min-width: 60px;
+    font-size: 15px;
+}
+
+/* === BUTTONS === */
+.room-create-button,
+.room-enter-button {
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(0, 97, 255, 0.2);
+}
+
+.room-create-button {
+    background: #0061ff;
+    color: white;
+}
+
+.room-enter-button {
+    background: #ff6f00;
+    color: white;
+}
+
+.room-create-button:hover {
+    background: #0052d4;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 97, 255, 0.3);
+}
+
+.room-enter-button:hover {
+    background: #e65b00;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 111, 0, 0.3);
+}
+
+.room-create-button:active,
+.room-enter-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === ICONS (Font Awesome) === */
+i.fas {
+    font-size: 18px;
+    color: #0061ff;
+}
+
+.room-enter-title i.fas {
+    color: #ff6f00;
+}
+
+.room-field-label i.fas {
+    color: #5a5a78;
+    transition: color 0.2s ease;
+}
+
+input:focus+label i.fas,
+textarea:focus+label i.fas {
+    color: #0061ff;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 600px) {
+
+    .room-create-state,
+    .room-enter-state {
+        padding: 24px 20px;
+        margin: 20px 16px;
+        border-radius: 14px;
+    }
+
+    .room-create-title,
+    .room-enter-title {
+        font-size: 24px;
+    }
+
+    .room-create-description,
+    .room-enter-description {
+        font-size: 15px;
+    }
+
+    input,
+    textarea,
+    .room-create-button,
+    .room-enter-button {
+        font-size: 15px;
+    }
+
+    .room-duration-slider-container {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .room-duration-value {
+        order: -1;
+        font-size: 14px;
+    }
+}
