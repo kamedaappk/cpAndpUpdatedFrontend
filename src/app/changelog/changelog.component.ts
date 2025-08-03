@@ -13,6 +13,12 @@ export class ChangelogComponent {
     @Output() close = new EventEmitter<void>();
 
     changelog = [
+
+        {
+            date: '2025-08-03',
+            title: 'Dest.Change',
+            description: 'Moved Reset and List Rooms to Configurations Component.'
+        },
         {
             date: '2025-07-25B',
             title: 'Dark Theme Release',
