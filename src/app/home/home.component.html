@@ -1,29 +1,39 @@
+<!-- Page Layout Container -->
 <app-configurations [state]="state"></app-configurations>
-<h1 class="main-title text-center"><i><u><b>CpAndP Returns....</b></u></i></h1>
-<p class="motto">Share files? No fear!</p>
 
+<!-- Main Header -->
+<div class="home-header">
+    <h1 class="main-title text-center"><i><u><b>CpAndP Returns....</b></u></i></h1>
+    <p class="motto">Share files? No fear!</p>
+</div>
+
+<!-- Alert Component -->
 <app-alert></app-alert>
 
-<div *ngIf="state === 'home'; else elseblock" class="container">
-    <h1>Zero-hassle file sharing</h1>
-    <div class="button-container">
-        <button type="button" (click)="createRoom()">
+<!-- Home State Container -->
+<div *ngIf="state === 'home'; else elseblock" class="home-state-container">
+    <h1 class="home-title">Zero-hassle file sharing</h1>
+    <div class="home-action-buttons">
+        <button type="button" class="home-create-room-button" (click)="createRoom()">
             <i class="fas fa-plus-circle"></i> Create Room
         </button>
-        <button type="button" (click)="enterRoom()">
+        <button type="button" class="home-enter-room-button" (click)="enterRoom()">
             <i class="fas fa-sign-in-alt"></i> Enter Room
         </button>
     </div>
 </div>
 
+<!-- Room Component -->
 <app-room *ngIf="state === 'enter' || state === 'create' || state === 'loggedin'"></app-room>
 
+<!-- Alternative State Template -->
 <ng-template #elseblock>
     <!-- <div class="error-message">Oops! It’s working 😁 as {{state}}</div> -->
 </ng-template>
 
-<div class="back-button-container">
-    <button type="button" (click)="backToHome()">
+<!-- Navigation -->
+<div class="home-navigation">
+    <button type="button" class="home-back-button" (click)="backToHome()">
         <i class="fas fa-arrow-left"></i> Back to Home
     </button>
 </div>

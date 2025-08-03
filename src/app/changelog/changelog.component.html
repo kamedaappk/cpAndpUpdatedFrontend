@@ -1,13 +1,14 @@
-<div class="changelog-modal">
+<!-- Changelog Modal Container -->
+<div class="changelog-modal-container">
   <div class="changelog-header">
     <h2>Changelog</h2>
-    <button class="close-btn" type="button" (click)="close.emit()">&times;</button>
+    <button class="changelog-close-button" type="button" (click)="close.emit()">&times;</button>
   </div>
-  <div class="changelog-list">
-    <div class="changelog-entry" *ngFor="let entry of changelog">
-      <div class="changelog-date">{{ entry.date }}</div>
-      <div class="changelog-title">{{ entry.title }}</div>
-      <div class="changelog-description">{{ entry.description }}</div>
+  <div class="changelog-entries-list">
+    <div class="changelog-entry-item" *ngFor="let entry of changelog">
+      <div class="changelog-entry-date">{{ entry.date }}</div>
+      <div class="changelog-entry-title">{{ entry.title }}</div>
+      <div class="changelog-entry-description">{{ entry.description }}</div>
     </div>
   </div>
 </div>

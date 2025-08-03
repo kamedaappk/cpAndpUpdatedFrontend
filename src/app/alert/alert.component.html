@@ -1,7 +1,8 @@
-<div *ngIf="alert" 
-     [ngClass]="['alert', alert.type]" 
+<!-- Alert Notification Container -->
+<div *ngIf="alert"
+     [ngClass]="['alert-notification', alert.type]"
      [style.opacity]="isVisible ? 1 : 0"
      class="alert-container">
-    <span class="close-button" (click)="closeAlert()">✖</span>
-    {{ alert.message }}
+    <span class="alert-close-button" (click)="closeAlert()">✖</span>
+    <div class="alert-message">{{ alert.message }}</div>
 </div>

@@ -1,46 +1,52 @@
-<!-- <p class="room-status">Room is up and running! 🎉</p> -->
+<!-- Room UI Container -->
+<div *ngIf="state === 'loggedin'" class="room-ui-container">
+    <!-- User Greeting -->
+    <p class="room-greeting">Ready to share?</p>
+    <h1 class="room-username">{{username}} <i class="fas fa-hand-spock"></i></h1>
+    
+    <!-- Room Information -->
+    <p class="room-id"><i class="fas fa-door-open"></i> Room: <strong>{{room?.id}}</strong></p>
+    <p class="room-expiry"><i class="fas fa-hourglass-half"></i> Expires in: <strong>{{room?.duration}}</strong></p>
+    <p class="room-time"><i class="fas fa-clock"></i> Time: {{time}}</p>
 
-<div *ngIf="state === 'loggedin'" class="loggedin">
-    <p>Ready to share?</p>
-    <h1>{{username}} <i class="fas fa-hand-spock"></i></h1>
-    <p><i class="fas fa-door-open"></i> Room: <strong>{{room?.id}}</strong></p>
-    <p><i class="fas fa-hourglass-half"></i> Expires in: <strong>{{room?.duration}}</strong></p>
-    <p><i class="fas fa-clock"></i> Time: {{time}}</p>
-
-    <div class="messages" *ngFor="let message of roomData?.messages">
-        <div class="message-container">
-            <p>{{ message?.text }}</p>
-            <label>{{message?.filename}}</label>
-            <span class="timestamp">Time: {{message?.timestamp}}</span>
+    <!-- Messages List -->
+    <div class="room-messages-list" *ngFor="let message of roomData?.messages">
+        <div class="room-message-item">
+            <p class="room-message-text">{{ message?.text }}</p>
+            <label class="room-message-filename">{{message?.filename}}</label>
+            <span class="room-message-timestamp">Time: {{message?.timestamp}}</span>
+            
             <div *ngIf="message?.filePath; else copy">
-                <button type="button" (click)="downloadFile(message.filePath)">
+                <button type="button" class="room-download-button" (click)="downloadFile(message.filePath)">
                     <i class="fas fa-download"></i> Download File
                 </button>
             </div>
             <ng-template #copy>
-                <button type="button" (click)="copyMessageText(message.text)">
+                <button type="button" class="room-copy-button" (click)="copyMessageText(message.text)">
                     <i class="fas fa-copy"></i> Copy
                 </button>
             </ng-template>
         </div>
     </div>
 
-    <div class="input">
-        <label for="messageInput"><i class="fas fa-comment"></i> Message:</label>
+    <!-- Message Input Section -->
+    <div class="room-message-input">
+        <label for="messageInput" class="room-input-label"><i class="fas fa-comment"></i> Message:</label>
         <input
             id="messageInput"
             type="text"
             [(ngModel)]="inputMessage"
             placeholder="Share a message"
         />
-        <button type="button" (click)="saveMessage()">
+        <button type="button" class="room-send-button" (click)="saveMessage()">
             <i class="fas fa-paper-plane"></i> Send
         </button>
     </div>
 
-    <div class="file-upload">
+    <!-- File Upload Section -->
+    <div class="room-file-upload">
         <input type="file" #fileInput (change)="onFileSelected($event)" />
-        <button type="button" (click)="uploadFile()">
+        <button type="button" class="room-share-file-button" (click)="uploadFile()">
             <i class="fas fa-upload"></i> Share File
         </button>
     </div>

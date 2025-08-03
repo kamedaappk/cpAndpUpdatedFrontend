@@ -1,19 +1,17 @@
-<!-- <p class="room-status">Room works! 🎉</p> -->
-
-<div *ngIf="state === 'create'" class="state">
+<!-- Room State Container -->
+<div *ngIf="state === 'create'" class="room-create-state">
     <form [formGroup]="createForm" (ngSubmit)="onCreate()">
-        <h2><i class="fas fa-plus-circle"></i> Create Room</h2>
-                <p>Share files in seconds</p>
-                
-                <label for="roomName"><i class="fas fa-signature"></i> Room ID <span class="required">*</span>:</label>
+        <h2 class="room-create-title"><i class="fas fa-plus-circle"></i> Create Room</h2>
+        <p class="room-create-description">Share files in seconds</p>
+        
+        <label for="roomName" class="room-field-label"><i class="fas fa-signature"></i> Room ID <span class="required">*</span>:</label>
         <input id="roomName" formControlName="roomName" placeholder="UNIQUE ROOM ID" (input)="onInputChange($event)" style="text-transform: uppercase;" />
-
-        <label for="description"><i class="fas fa-align-left"></i> Description:</label>
+        
+        <label for="description" class="room-field-label"><i class="fas fa-align-left"></i> Description:</label>
         <textarea id="description" formControlName="description" placeholder="Short Description [optional]"></textarea>
-
-        <label for="duration"><i class="fas fa-clock"></i> Duration in Hours <span class="required">*</span>:</label>
-         <div class="slider-container">
-            
+        
+        <label for="duration" class="room-field-label"><i class="fas fa-clock"></i> Duration in Hours <span class="required">*</span>:</label>
+        <div class="room-duration-slider-container">
             <input
                 type="range"
                 id="duration"
@@ -21,33 +19,32 @@
                 min="1"
                 max="12"
                 step="1"
-                class="styled-slider"
+                class="room-duration-slider"
             />
-            <span class="slider-value">{{ createForm.get('duration')?.value }} hrs</span>
+            <span class="room-duration-value">{{ createForm.get('duration')?.value }} hrs</span>
         </div>
         
-        <button type="submit">
+        <button type="submit" class="room-create-button">
             <i class="fas fa-plus"></i> Create Room
         </button>
     </form>
 </div>
 
-<div *ngIf="state === 'enter'" class="state">
+<div *ngIf="state === 'enter'" class="room-enter-state">
     <form [formGroup]="enterForm" (ngSubmit)="onEnter()">
-        <h2><i class="fas fa-sign-in-alt"></i> Enter Room</h2>
-                <p>Access your files instantly</p>
-                
-                <label for="roomId"><i class="fas fa-door-open"></i> Room ID:</label>
+        <h2 class="room-enter-title"><i class="fas fa-sign-in-alt"></i> Enter Room</h2>
+        <p class="room-enter-description">Access your files instantly</p>
+        
+        <label for="roomId" class="room-field-label"><i class="fas fa-door-open"></i> Room ID:</label>
         <input id="roomId" formControlName="roomId" placeholder="UNIQUE ROOM ID" (input)="onInputChange($event)" style="text-transform: uppercase;" />
         
-        <button type="submit">
+        <button type="submit" class="room-enter-button">
             <i class="fas fa-sign-in-alt"></i> Enter Room
         </button>
     </form>
 </div>
 
-
-<div *ngIf="state === 'loggedin'">
+<div *ngIf="state === 'loggedin'" class="room-loggedin-state">
     <app-room-ui></app-room-ui>
 </div>
 

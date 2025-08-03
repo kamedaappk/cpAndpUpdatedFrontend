@@ -1,17 +1,23 @@
 
-<router-outlet />
-<app-loading></app-loading>
-<app-home></app-home>
-
-<!-- Floating Theme Toggle Button -->
-<button class="theme-fab" type="button" (click)="toggleTheme()" aria-label="Toggle Dark Theme">
-  <i class="fas" [class.fa-moon]="!darkTheme" [class.fa-sun]="darkTheme"></i>
-</button>
-
-<!-- Floating Changelog Button -->
-<button class="changelog-fab" type="button" (click)="openChangelog()" aria-label="Open Changelog">
-  <i class="fas fa-file-alt"></i>
-</button>
-
-<!-- Changelog Modal -->
-<app-changelog *ngIf="showChangelog" (close)="closeChangelog()"></app-changelog>
+<!-- Main Application Container -->
+<div class="app-container">
+  <!-- Main Application Container -->
+  <div class="app-container">
+    <router-outlet></router-outlet>
+    <app-loading></app-loading>
+    <app-home></app-home>
+  
+    <!-- Floating Theme Toggle Button -->
+    <button class="theme-toggle-button" type="button" (click)="toggleTheme()" aria-label="Toggle Dark Theme">
+      <i class="fas" [class.fa-moon]="!darkTheme" [class.fa-sun]="darkTheme"></i>
+    </button>
+  
+    <!-- Floating Changelog Button -->
+    <button class="changelog-button" type="button" (click)="openChangelog()" aria-label="Open Changelog">
+      <i class="fas fa-file-alt"></i>
+    </button>
+  
+    <!-- Changelog Modal -->
+    <app-changelog *ngIf="showChangelog" (close)="closeChangelog()"></app-changelog>
+  </div>
+</div>
