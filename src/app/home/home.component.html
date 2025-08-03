@@ -1,10 +1,11 @@
 <app-configurations [state]="state"></app-configurations>
 <h1 class="main-title text-center"><i><u><b>CpAndP Returns....</b></u></i></h1>
+<p class="motto">Share files? No fear!</p>
 
 <app-alert></app-alert>
 
 <div *ngIf="state === 'home'; else elseblock" class="container">
-    <h1>Welcome to the Home Page!</h1>
+    <h1>Zero-hassle file sharing</h1>
     <div class="button-container">
         <button type="button" (click)="createRoom()">
             <i class="fas fa-plus-circle"></i> Create Room

@@ -1,11 +1,11 @@
-<p class="room-status">Room works! 🎉</p>
+<!-- <p class="room-status">Room works! 🎉</p> -->
 
 <div *ngIf="state === 'create'" class="state">
     <form [formGroup]="createForm" (ngSubmit)="onCreate()">
-        <h2><i class="fas fa-plus-circle"></i> Create Your Room</h2>
-        <p>Let's get this party started! 🎊</p>
-        
-        <label for="roomName"><i class="fas fa-signature"></i> Room Name <span class="required">*</span>:</label>
+        <h2><i class="fas fa-plus-circle"></i> Create Room</h2>
+                <p>Share files in seconds</p>
+                
+                <label for="roomName"><i class="fas fa-signature"></i> Room ID <span class="required">*</span>:</label>
         <input id="roomName" formControlName="roomName" placeholder="UNIQUE ROOM ID" (input)="onInputChange($event)" style="text-transform: uppercase;" />
 
         <label for="description"><i class="fas fa-align-left"></i> Description:</label>
@@ -34,10 +34,10 @@
 
 <div *ngIf="state === 'enter'" class="state">
     <form [formGroup]="enterForm" (ngSubmit)="onEnter()">
-        <h2><i class="fas fa-sign-in-alt"></i> Enter Your Room</h2>
-        <p>Let's get you in there! 🕺</p>
-        
-        <label for="roomId"><i class="fas fa-door-open"></i> Room ID:</label>
+        <h2><i class="fas fa-sign-in-alt"></i> Enter Room</h2>
+                <p>Access your files instantly</p>
+                
+                <label for="roomId"><i class="fas fa-door-open"></i> Room ID:</label>
         <input id="roomId" formControlName="roomId" placeholder="UNIQUE ROOM ID" (input)="onInputChange($event)" style="text-transform: uppercase;" />
         
         <button type="submit">
@@ -51,4 +51,3 @@
     <app-room-ui></app-room-ui>
 </div>
 
-<!-- <div *ngIf="selectedRoom"> selectedRoom {{ selectedRoom | json }}</div> -->

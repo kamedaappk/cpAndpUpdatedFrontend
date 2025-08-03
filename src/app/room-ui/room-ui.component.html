@@ -1,11 +1,11 @@
-<p class="room-status">Room is up and running! 🎉</p>
+<!-- <p class="room-status">Room is up and running! 🎉</p> -->
 
 <div *ngIf="state === 'loggedin'" class="loggedin">
-    <p><i class="fas fa-smile"></i> Hello, fabulous user!</p>
+    <p>Ready to share?</p>
     <h1>{{username}} <i class="fas fa-hand-spock"></i></h1>
-    <p><i class="fas fa-door-open"></i> You're in the room with ID: <strong>{{room?.id}}</strong></p>
-    <p><i class="fas fa-hourglass-half"></i> Room expires in: <strong>{{room?.duration}}</strong></p>
-    <p><i class="fas fa-clock"></i> Current time: {{time}}</p>
+    <p><i class="fas fa-door-open"></i> Room: <strong>{{room?.id}}</strong></p>
+    <p><i class="fas fa-hourglass-half"></i> Expires in: <strong>{{room?.duration}}</strong></p>
+    <p><i class="fas fa-clock"></i> Time: {{time}}</p>
 
     <div class="messages" *ngFor="let message of roomData?.messages">
         <div class="message-container">
@@ -31,7 +31,7 @@
             id="messageInput"
             type="text"
             [(ngModel)]="inputMessage"
-            placeholder="Type your message here"
+            placeholder="Share a message"
         />
         <button type="button" (click)="saveMessage()">
             <i class="fas fa-paper-plane"></i> Send
@@ -41,7 +41,7 @@
     <div class="file-upload">
         <input type="file" #fileInput (change)="onFileSelected($event)" />
         <button type="button" (click)="uploadFile()">
-            <i class="fas fa-upload"></i> Upload File
+            <i class="fas fa-upload"></i> Share File
         </button>
     </div>
 </div>
