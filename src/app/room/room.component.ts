@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms'; // Import ReactiveFormsModule
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule
 import { RoomService } from './room.service';
-import { RoomUiComponent } from './room-ui/room-ui.component';
+import { RoomUiComponent } from '../room-ui/room-ui.component';
 import { AlertService } from '../services/alert.service';
 @Component({
   selector: 'app-room',
@@ -13,23 +13,23 @@ import { AlertService } from '../services/alert.service';
 })
 export class RoomComponent implements OnInit {
   // @Input() roomName!: string;
-  state:any;
-  stateSubscription:any;
+  state: any;
+  stateSubscription: any;
 
-  selectedRoom:any;
+  selectedRoom: any;
   createForm!: FormGroup; // Use '!' to assert that this will be initialized
   enterForm!: FormGroup;
-  roomList:any;
+  roomList: any;
 
 
   constructor(
-    private fb: FormBuilder, 
-    private roomService:RoomService,
+    private fb: FormBuilder,
+    private roomService: RoomService,
     private alertService: AlertService,
-  ) {}
+  ) { }
   ngOnInit() {
     // Subscribe to state changes
-    this.stateSubscription=this.roomService.state$.subscribe(updatedState => {
+    this.stateSubscription = this.roomService.state$.subscribe(updatedState => {
       this.state = updatedState;
     });
 
@@ -42,17 +42,17 @@ export class RoomComponent implements OnInit {
       description: [''],
       duration: ['',
         [Validators.required, Validators.min(1), Validators.max(12)]
-        ]
+      ]
     });
 
     this.enterForm = this.fb.group({
       roomId: ['', Validators.required]
     });
-    
+
   }
 
   onCreate() {
-      
+
 
     if (this.createForm.valid) {
       // Handle the creation of the room
@@ -67,18 +67,17 @@ export class RoomComponent implements OnInit {
       // set time = current time
       // this.createForm.value.duration = new Date();
       //  all caps for the roomname
-      
+
       this.roomService.createRoom(this.createForm.value.roomName, this.createForm.value.duration);
-      this.selectedRoom=this.roomService.enterRoom(this.createForm.value.roomName);
+      this.selectedRoom = this.roomService.enterRoom(this.createForm.value.roomName);
       console.log('selected Room at room component on create', this.selectedRoom)
       this.roomService.setState('loggedin')
       this.roomService.setRoom(this.selectedRoom)
       this.roomService.setRoomData(this.selectedRoom.userId)
 
-      
+
     }
-    else
-    {
+    else {
       console.log('Form is invalid');
       this.alertService.showAlert("Please fill all the required values", "error")
       return;
@@ -91,13 +90,13 @@ export class RoomComponent implements OnInit {
       console.log('Checking room with ID:', this.enterForm.value.roomId);
       // make it all caps
       this.enterForm.value.roomId = this.enterForm.value.roomId.toUpperCase();
-      this.selectedRoom=this.roomService.enterRoom(this.enterForm.value.roomId);
+      this.selectedRoom = this.roomService.enterRoom(this.enterForm.value.roomId);
       // if(this.selectedRoom!=null){
       // console.log('selected Room at room component on enter', this.selectedRoom)
       // this.roomService.setRoomData(this.selectedRoom.userId)
 
       // }
-      
+
       // this.roomService.setRoom(this.selectedRoom);
       // console.log('selected Room at room component on enter', this.selectedRoom)
       // console.log('selected Room',this.selectedRoom)
@@ -110,22 +109,22 @@ export class RoomComponent implements OnInit {
       // return this.selectedRoom
       // }
     }
-    else{
+    else {
       console.log('Form is invalid');
       this.alertService.showAlert("Please fill all the required values", "error")
       return;
     }
   }
-  
+
   onDurationChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.createForm.get('duration')?.setValue(value);
-}
+  }
 
-onInputChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-  input.value = input.value.toUpperCase();
-}
+  onInputChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.toUpperCase();
+  }
 
   getRoomList() {
 
@@ -135,13 +134,14 @@ onInputChange(event: Event) {
         console.log("Room List is", this.roomList)
       },
       error: (err: any) => {
-        console.error('Error fetching rooms:', err);      }
+        console.error('Error fetching rooms:', err);
+      }
     });
   }
 
   ngOnDestroy() {
     this.stateSubscription?.unsubscribe();
-    this. state.subscription?.unsubscribe();
+    this.state.subscription?.unsubscribe();
     this.selectedRoom.subscription?.unsubscribe();
 
   }
