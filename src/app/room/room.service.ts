@@ -219,7 +219,12 @@ export class RoomService {
       finalize(() => this.loadingService.hide()), // Hide loading screen after request completes
       catchError((error) => {
         console.error('Error creating room:', error); // Log the error
-        this.alertService.showAlert("Room creation failed. Please try again!!!", "error");
+        // Check if the error is due to room already existing
+        if (error.status === 400) {
+          this.alertService.showAlert(error.error?.message, "error");
+        } else {
+          this.alertService.showAlert("Room creation failed. Please try again!!!", "error");
+        }
         return of(null); // Return an observable with a null value to continue the stream
       })
     );
