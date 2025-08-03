@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { text } from 'stream/consumers';
 import { Console, timeStamp } from 'console';
 import { AlertService } from '../services/alert.service';
+import { ConfigurationsService } from '../services/configurations.service';
 
 @Component({
   selector: 'app-room-ui',
@@ -19,7 +20,12 @@ export class RoomUiComponent implements OnInit {
   constructor(
     private roomService: RoomService,
     private alertService: AlertService,
+    private configurationsService: ConfigurationsService,
   ) { }
+
+  maxUploadSizeInBytes: number = 5 * 1024 * 1024; // Default to 5MB
+  private maxUploadSizeSubscription: any;
+
   roomData: any = [];
   username: string = '';
   inputMessage: any = '';
@@ -31,8 +37,8 @@ export class RoomUiComponent implements OnInit {
   // Method to handle file selection
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
-    const maxSizeInMB = 5;
-    const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // 5 MB in bytes
+    const maxSizeInMB = this.maxUploadSizeInBytes / (1024 * 1024);
+    const maxSizeInBytes = this.maxUploadSizeInBytes;
 
     if (file) {
       if (file.size > maxSizeInBytes) {
@@ -112,37 +118,6 @@ export class RoomUiComponent implements OnInit {
 
 
 
-  ngOnInit(): void {
-    // Subscribe to state changes
-    this.roomService.state$.subscribe(updatedState => {
-      this.state = updatedState;
-      console.log("state at ng", this.state)
-    });
-
-    this.alertService.showAlert(`Logged into Room`, "success")
-    this.roomService.updateTime()
-    this.roomService.realTime$.subscribe(updatedTime => {
-      // this.time = updatedTime
-      const date = new Date(updatedTime);
-
-      // Construct the formatted string
-      this.time = this.formatTimestamp(date);
-    }
-    )
-    this.roomService.room$.subscribe(updatedRoom => {
-      this.room = updatedRoom;
-      this.username = this.room.userId;
-      this.room.duration = this.formatTimestamp(this.room.duration);
-    });
-
-    this.roomService.roomData$.subscribe(updatedRoomData => {
-      this.roomData = updatedRoomData
-      console.log("roomData at ng", this.roomData)
-      // for all messages format timestamp
-      this.roomData.messages.forEach((message: any) => { message.timestamp = this.formatTimestamp(message.timestamp) });
-
-    });
-  }
 
   // Function to convert a numeric timestamp to yy-mm-dd-hh-mm-ss format
   formatTimestamp(timestamp: any): string {
@@ -173,6 +148,43 @@ export class RoomUiComponent implements OnInit {
   }
 
 
+  ngOnInit(): void {
+    // Subscribe to state changes
+    this.roomService.state$.subscribe(updatedState => {
+      this.state = updatedState;
+      console.log("state at ng", this.state)
+    });
+
+    this.alertService.showAlert(`Logged into Room`, "success")
+    this.roomService.updateTime()
+    this.roomService.realTime$.subscribe(updatedTime => {
+      // this.time = updatedTime
+      const date = new Date(updatedTime);
+
+      // Construct the formatted string
+      this.time = this.formatTimestamp(date);
+    }
+    )
+    this.roomService.room$.subscribe(updatedRoom => {
+      this.room = updatedRoom;
+      this.username = this.room.userId;
+      this.room.duration = this.formatTimestamp(this.room.duration);
+    });
+
+    this.roomService.roomData$.subscribe(updatedRoomData => {
+      this.roomData = updatedRoomData
+      console.log("roomData at ng", this.roomData)
+      // for all messages format timestamp
+      this.roomData.messages.forEach((message: any) => { message.timestamp = this.formatTimestamp(message.timestamp) });
+
+    });
+
+    // Subscribe to max upload size changes
+    this.maxUploadSizeSubscription = this.configurationsService.maxUploadSize$.subscribe(size => {
+      this.maxUploadSizeInBytes = size;
+    });
+  }
+
   ngOnDestroy() {
     if (this.state.subscription) {
       this.state.subscription.unsubscribe();
@@ -185,6 +197,10 @@ export class RoomUiComponent implements OnInit {
     }
     if (this.time.subscription) {
       this.time.subscription.unsubscribe();
+    }
+    // Clean up subscription
+    if (this.maxUploadSizeSubscription) {
+      this.maxUploadSizeSubscription.unsubscribe();
     }
   }
 }

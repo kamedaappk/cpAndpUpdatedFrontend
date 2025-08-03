@@ -23,6 +23,10 @@ export class ConfigurationsService {
 
   selectedEndPoint = "https://cpandpupdatedbackend.onrender.com"
 
+  private maxUploadSize = 5 * 1024 * 1024; // 5 MB default
+
+  private maxUploadSizeSubject = new BehaviorSubject<number>(this.maxUploadSize);
+  maxUploadSize$ = this.maxUploadSizeSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -42,6 +46,25 @@ export class ConfigurationsService {
 
   getSelectedEndPoint() {
     return this.selectedEndPoint
+  }
+
+  getMaxUploadSize(): number {
+    return this.maxUploadSize;
+  }
+
+  setMaxUploadSize(sizeInBytes: number): void {
+    // Validate size is between 1MB and 100MB
+    const minSize = 1 * 1024 * 1024; // 1 MB
+    const maxSize = 100 * 1024 * 1024; // 100 MB
+
+    if (sizeInBytes < minSize) {
+      sizeInBytes = minSize;
+    } else if (sizeInBytes > maxSize) {
+      sizeInBytes = maxSize;
+    }
+
+    this.maxUploadSize = sizeInBytes;
+    this.maxUploadSizeSubject.next(sizeInBytes);
   }
 
   getApiEndpointsList() {

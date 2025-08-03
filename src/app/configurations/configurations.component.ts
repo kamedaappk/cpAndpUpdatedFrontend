@@ -17,6 +17,9 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   selectedEndpoint: string;
   toggler: boolean = false;
   roomList: any;
+  maxUploadSize: number;
+  maxUploadSizeInMB: number;
+  private maxUploadSizeSubscription: Subscription = new Subscription();
 
   @Input() state: any
   private subscription: Subscription = new Subscription;
@@ -28,6 +31,8 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   ) {
     this.apiEndpoints = configurationsService.getApiEndpointsList();
     this.selectedEndpoint = configurationsService.getSelectedEndPoint();
+    this.maxUploadSize = configurationsService.getMaxUploadSize();
+    this.maxUploadSizeInMB = this.maxUploadSize / (1024 * 1024);
   }
 
   ngOnInit() {
@@ -36,6 +41,10 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
     });
     this.endpointActiveSubscription = this.configurationsService.apiEndpointsList$.subscribe(list => {
       this.apiEndpoints = list;
+    });
+    this.maxUploadSizeSubscription = this.configurationsService.maxUploadSize$.subscribe(size => {
+      this.maxUploadSize = size;
+      this.maxUploadSizeInMB = size / (1024 * 1024);
     });
   }
 
@@ -82,6 +91,16 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
         console.error('Error fetching rooms:', err);
       }
     });
+  }
+
+  onMaxUploadSizeChange(): void {
+    const sizeInBytes = this.maxUploadSizeInMB * 1024 * 1024;
+    this.configurationsService.setMaxUploadSize(sizeInBytes);
+  }
+
+  onMaxUploadSizeInput(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.maxUploadSizeInMB = Number(target.value);
   }
 
 }

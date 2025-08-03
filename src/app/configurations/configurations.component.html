@@ -38,6 +38,26 @@
             </i>
         </label>
     </div>
+    
+    <h2><i class="fas fa-upload"></i> File Upload Settings</h2>
+    <div class="setting">
+        <label for="maxUploadSize">Maximum Upload Size (MB):</label>
+        <div class="slider-container">
+            <input
+                type="range"
+                id="maxUploadSize"
+                [(ngModel)]="maxUploadSizeInMB"
+                (input)="onMaxUploadSizeInput($event)"
+                (change)="onMaxUploadSizeChange()"
+                min="1"
+                max="100"
+                step="1"
+                class="styled-slider"
+            />
+            <span class="slider-value">{{ maxUploadSizeInMB }} MB</span>
+        </div>
+        <span class="setting-description">Limits the size of files that can be uploaded. Valid range: 1-100 MB.</span>
+    </div>
 </div>
 
 <i class="version">v2025.08.03</i>
