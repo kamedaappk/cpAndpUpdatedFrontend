@@ -35,6 +35,7 @@ export class RoomUiComponent implements OnInit {
   private roomSubscription: any;
   private roomDataSubscription: any;
 
+
   roomData: any = [];
   username: string = '';
   inputMessage: any = '';
@@ -42,9 +43,11 @@ export class RoomUiComponent implements OnInit {
   time: any = '';
   selectedFile: File | null = null;
 
-  @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement> | undefined;
-  // Method to handle file selection
-  onFileSelected(event: any): void {
+
+
+@ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement> | undefined;
+// Method to handle file selection
+onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     const maxSizeInMB = this.maxUploadSizeInBytes / (1024 * 1024);
     const maxSizeInBytes = this.maxUploadSizeInBytes;
@@ -66,22 +69,26 @@ export class RoomUiComponent implements OnInit {
   }
 
   copyMessageText(text: string): void {
+    // Create a temporary element to convert HTML to plain text
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = text;
+    const plainText = tempElement.textContent || tempElement.innerText || '';
+    
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(text).then(
+      navigator.clipboard.writeText(plainText).then(
         () => {
           console.log('Text copied to clipboard successfully!');
-          // Optionally show a success message to the user
+          this.alertService.showAlert(`Text copied to clipboard successfully!`, "success");
         },
         (err) => {
           console.error('Failed to copy text: ', err);
           this.alertService.showAlert(`Failed to copy text: ${err}`, "error");
-          // Optionally show an error message to the user
         }
       );
     } else {
       // Fallback for older browsers
       const textarea = document.createElement('textarea');
-      textarea.value = text;
+      textarea.value = plainText;
       document.body.appendChild(textarea);
       textarea.select();
       try {
@@ -148,11 +155,11 @@ export class RoomUiComponent implements OnInit {
     console.log("message", this.inputMessage)
     // if message = '' avoid
     if (this.inputMessage === '') return;
-    this.inputMessage = {
+    const message = {
       text: this.inputMessage,
       timestamp: new Date().getTime()
     }
-    this.roomService.saveMessage(this.room.userId, this.inputMessage)
+    this.roomService.saveMessage(this.room.userId, message)
     this.inputMessage = ''
   }
 

@@ -5,10 +5,11 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { Subscription } from 'rxjs';
 import { Input } from '@angular/core';
 import { RoomService } from '../room/room.service';
+import { ChangelogComponent } from '../changelog/changelog.component';
 @Component({
   selector: 'app-configurations',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ChangelogComponent],
   templateUrl: './configurations.component.html',
   styleUrls: ['./configurations.component.css'] // Note: Changed to 'styleUrls'
 })
@@ -21,6 +22,17 @@ export class ConfigurationsComponent implements OnInit, OnDestroy {
   maxUploadSize: number;
   maxUploadSizeInMB: number;
   private maxUploadSizeSubscription: Subscription = new Subscription();
+
+  // Get the latest version from changelog
+  get latestVersion(): string {
+    const changelog = new ChangelogComponent().changelog;
+    if (changelog && changelog.length > 0) {
+      const latestEntry = changelog[0]; // First entry is the latest
+      // Format the date as vYYYY.MM.DD
+      return `v${latestEntry.date.replace(/-/g, '.')}`;
+    }
+    return 'vUnknown';
+  }
 
   @Input() state: any
   private subscription: Subscription = new Subscription;

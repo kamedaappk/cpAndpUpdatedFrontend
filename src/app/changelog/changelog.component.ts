@@ -15,6 +15,11 @@ export class ChangelogComponent {
     changelog = [
 
         {
+            date: '2025-09-16',
+            title: 'Text Formatting Preservation',
+            description: 'Updated the message input to use a textarea instead of a single-line input field, and added CSS to preserve line breaks and whitespace when displaying messages. This allows users to enter multi-line messages with proper formatting preserved.'
+        },
+        {
             date: '2025-08-03',
             title: 'Independent Endpoint Status Display',
             description: 'Updated backend endpoint checking to display active/inactive status independently for each endpoint. Each endpoint now updates in real-time as its status is determined, rather than waiting for all endpoints to be checked. Also updated the display to show endpoint titles instead of URLs for better user experience.'

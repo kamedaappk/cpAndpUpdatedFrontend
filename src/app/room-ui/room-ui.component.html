@@ -12,7 +12,7 @@
     <!-- Messages List -->
     <div class="room-messages-list" *ngFor="let message of roomData?.messages">
         <div class="room-message-item">
-            <p class="room-message-text">{{ message?.text }}</p>
+            <div class="room-message-text" [innerHTML]="message?.text"></div>
             <label class="room-message-filename">{{message?.filename}}</label>
             <span class="room-message-timestamp">Time: {{message?.timestamp}}</span>
             
@@ -32,12 +32,12 @@
     <!-- Message Input Section -->
     <div class="room-message-input">
         <label for="messageInput" class="room-input-label"><i class="fas fa-comment"></i> Message:</label>
-        <input
+        <textarea
             id="messageInput"
-            type="text"
             [(ngModel)]="inputMessage"
-            placeholder="Share a message"
-        />
+            placeholder="Share a message (line breaks will be preserved)"
+            rows="4">
+        </textarea>
         <button type="button" class="room-send-button" (click)="saveMessage()">
             <i class="fas fa-paper-plane"></i> Send
         </button>
