@@ -8,7 +8,7 @@
 }
 
 .config-toggle-button button {
-    background: #0061ff;
+    background: var(--button-primary-bg);
     border: none;
     color: white;
     width: 50px;
@@ -56,9 +56,9 @@
     right: 20px;
     width: 380px;
     max-height: 80vh;
-    background: white;
+    background: var(--background-card);
     border-radius: 16px;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 10px 30px -10px var(--shadow-heavy);
     padding: 24px;
     font-family: 'Inter', 'Segoe UI', sans-serif;
     z-index: 999;
@@ -66,7 +66,7 @@
     transform: translateY(-10px);
     opacity: 0;
     animation: slideIn 0.4s ease forwards;
-    border: 1px solid #eaeaea;
+    border: 1px solid var(--border-color);
 }
 
 /* Animation for panel entrance */
@@ -80,7 +80,7 @@
 .config-panel h2.config-section-title {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #1e1e2d;
+    color: var(--text-heading);
     margin: 24px 0 12px 0;
     display: flex;
     align-items: center;
@@ -89,7 +89,7 @@
 }
 
 .config-panel h2.config-section-title i {
-    color: #0061ff;
+    color: var(--button-primary-bg);
 }
 
 
@@ -101,9 +101,9 @@
 
 .config-reset-button,
 .config-list-button {
-    background: #f0f4ff;
-    border: 1px solid #d0e0ff;
-    color: #0061ff;
+    background: var(--button-secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--button-primary-bg);
     padding: 10px 16px;
     border-radius: 10px;
     font-size: 0.95rem;
@@ -119,7 +119,7 @@
 
 .config-reset-button:hover,
 .config-list-button:hover {
-    background: #e1eaff;
+    background: var(--button-secondary-hover);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 97, 255, 0.1);
 }
@@ -135,19 +135,19 @@
     margin: 10px 0;
     padding: 12px 16px;
     border-radius: 12px;
-    background: #fafafa;
+    background: var(--background-secondary);
     transition: all 0.25s ease;
-    border: 1px solid #eee;
+    border: 1px solid var(--border-color);
 }
 
 .endpoint-item:hover {
-    border-color: #0061ff;
-    background: #f5f9ff;
+    border-color: var(--button-primary-bg);
+    background: var(--button-secondary-bg);
 }
 
 .endpoint-item.active-endpoint {
-    background: #e6f0ff;
-    border: 1px solid #0061ff;
+    background: var(--button-secondary-bg);
+    border: 1px solid var(--button-primary-bg);
     box-shadow: 0 2px 8px rgba(0, 97, 255, 0.15);
 }
 
@@ -168,7 +168,7 @@
     align-items: center;
     gap: 10px;
     font-size: 0.95rem;
-    color: #1e1e2d;
+    color: var(--text-heading);
     cursor: pointer;
     width: 100%;
 }
@@ -220,7 +220,7 @@
 .setting-label {
     display: block;
     font-size: 0.95rem;
-    color: #1e1e2d;
+    color: var(--text-heading);
     margin-bottom: 8px;
     font-weight: 500;
 }
@@ -236,7 +236,7 @@
     flex: 1;
     height: 6px;
     border-radius: 4px;
-    background: #e0e7ff;
+    background: var(--button-secondary-bg);
     outline: none;
     -webkit-appearance: none;
 }
@@ -246,7 +246,7 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #0061ff;
+    background: var(--button-primary-bg);
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0, 97, 255, 0.4);
     border: 2px solid white;
@@ -254,7 +254,7 @@
 }
 
 .upload-slider::-webkit-slider-thumb:hover {
-    background: #0052d4;
+    background: var(--button-primary-hover);
 }
 
 .upload-slider::-moz-range-thumb {
@@ -269,14 +269,14 @@
 
 .upload-slider-value {
     font-weight: 600;
-    color: #0061ff;
+    color: var(--button-primary-bg);
     min-width: 60px;
     font-size: 0.95rem;
 }
 
 .upload-setting-description {
     font-size: 0.85rem;
-    color: #6b6b76;
+    color: var(--text-secondary);
     line-height: 1.4;
     margin-top: 4px;
 }
@@ -287,13 +287,13 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #e6f0ff;
-    color: #0061ff;
+    background: var(--button-secondary-bg);
+    color: var(--button-primary-bg);
     font-size: 0.85rem;
     padding: 8px 14px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 97, 255, 0.1);
-    border: 1px solid #cce5ff;
+    border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     gap: 6px;
@@ -311,7 +311,7 @@
     bottom: 20px;
     left: 20px;
     font-size: 0.8rem;
-    color: #aaa;
+    color: var(--text-secondary);
     z-index: 100;
     font-family: 'Inter', sans-serif;
 }

@@ -3,14 +3,14 @@
 .changelog-modal-container {
     width: 90vw;
     max-width: 720px;
-    background: #ffffff;
+    background: var(--background-card);
     border-radius: 16px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 10px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 40px var(--shadow-heavy), 0 10px 15px var(--shadow-medium);
     overflow: hidden;
     animation: fadeInUp 0.4s ease-out;
     margin: 40px auto;
     position: relative;
-    border: 1px solid #eaeaea;
+    border: 1px solid var(--border-color);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
@@ -19,9 +19,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 24px 32px;
-    background: linear-gradient(135deg, #0061ff, #0047cc);
+    background: linear-gradient(135deg, var(--button-primary-bg), var(--button-primary-hover));
     color: white;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .changelog-header h2 {
@@ -64,7 +64,7 @@
     max-height: 60vh;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #0061ff #f5f7ff;
+    scrollbar-color: var(--button-primary-bg) var(--background-secondary);
 }
 
 .changelog-entries-list::-webkit-scrollbar {
@@ -72,19 +72,19 @@
 }
 
 .changelog-entries-list::-webkit-scrollbar-track {
-    background: #f5f7ff;
+    background: var(--background-secondary);
     border-radius: 10px;
 }
 
 .changelog-entries-list::-webkit-scrollbar-thumb {
-    background: #0061ff;
+    background: var(--button-primary-bg);
     border-radius: 10px;
 }
 
 .changelog-entry-item {
     margin-bottom: 28px;
     padding-left: 16px;
-    border-left: 3px solid #e0e7ff;
+    border-left: 3px solid var(--border-color);
     transition: transform 0.2s ease;
     opacity: 0;
     animation: slideInRight 0.4s ease-out forwards;
@@ -113,7 +113,7 @@
 
 .changelog-entry-date {
     font-size: 13px;
-    color: #0061ff;
+    color: var(--button-primary-bg);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.8px;
@@ -123,13 +123,13 @@
 .changelog-entry-title {
     font-size: 18px;
     font-weight: 600;
-    color: #1e1e2d;
+    color: var(--text-heading);
     margin-bottom: 8px;
 }
 
 .changelog-entry-description {
     font-size: 15px;
-    color: #4a4a68;
+    color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: 0;
 }

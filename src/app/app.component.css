@@ -9,8 +9,8 @@
     border: none;
     border-radius: 50%;
     background: #ffffff;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    color: #0061ff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    color: #4a4a68;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,8 +22,8 @@
 
 .theme-toggle-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
-    background: #f5f5ff;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
+    background: #f0f0f6;
 }
 
 .theme-toggle-button:active {
@@ -31,39 +31,31 @@
 }
 
 .theme-toggle-button:focus-visible {
-    outline: 3px solid #0061ff33;
-    box-shadow: 0 0 0 4px #0061ff33;
+    outline: 3px solid #ff6f0033;
+    box-shadow: 0 0 0 4px #ff6f0033;
 }
 
-.theme-toggle-button .fa-moon {
-    font-size: 1.4rem;
-    transition: opacity 0.3s ease;
+.theme-toggle-button .fa-paint-brush {
+    font-size: 1.3rem;
+    transition: color 0.3s ease;
 }
 
-.theme-toggle-button .fa-sun {
-    font-size: 1.4rem;
-    opacity: 0;
-    position: absolute;
-    transition: opacity 0.3s ease;
+.theme-toggle-button:hover .fa-paint-brush {
+    color: #0061ff;
 }
 
 /* Dark Theme State */
-.app-container.dark-theme .theme-toggle-button {
+body.dark-theme .theme-toggle-button {
     background: #1e1e2d;
-    color: #ffdd57;
+    color: #e0e0e6;
 }
 
-.app-container.dark-theme .theme-toggle-button:hover {
+body.dark-theme .theme-toggle-button:hover {
     background: #2a2a3c;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
 }
 
-.app-container.dark-theme .fa-sun {
-    opacity: 1;
-}
-
-.app-container.dark-theme .fa-moon {
-    opacity: 0;
+body.dark-theme .theme-toggle-button .fa-paint-brush {
+    color: #ff6f00;
 }
 
 
@@ -114,16 +106,16 @@
 }
 
 /* Dark Theme - Changelog Button */
-.app-container.dark-theme .changelog-button {
+body.dark-theme .changelog-button {
     background: #1e1e2d;
     color: #e0e0e6;
 }
 
-.app-container.dark-theme .changelog-button:hover {
+body.dark-theme .changelog-button:hover {
     background: #2a2a3c;
 }
 
-.app-container.dark-theme .changelog-button .fa-file-alt {
+body.dark-theme .changelog-button .fa-file-alt {
     color: #ff6f00;
 }
 
@@ -147,38 +139,4 @@
 
 .changelog-button {
     animation-delay: 0.1s;
-}
-
-/* Optional: Add subtle pulse on first load to draw attention */
-.theme-toggle-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: 2px solid #0061ff33;
-    border-radius: 50%;
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
-    pointer-events: none;
-    animation: pulse-ring 1.5s infinite;
-    z-index: -1;
-}
-
-@keyframes pulse-ring {
-    0% {
-        transform: translate(-50%, -50%) scale(0.8);
-        opacity: 0.6;
-    }
-
-    100% {
-        transform: translate(-50%, -50%) scale(1.4);
-        opacity: 0;
-    }
-}
-
-.app-container.dark-theme .theme-toggle-button::after {
-    border-color: #ffdd5733;
 }

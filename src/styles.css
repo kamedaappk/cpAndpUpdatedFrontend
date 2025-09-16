@@ -1,1 +1,48 @@
+/* Global Theme Variables */
+:root {
+  /* Light Theme Colors */
+  --background-primary: #f5f7ff;
+  --background-secondary: #eef0ff;
+  --background-card: #ffffff;
+  --text-primary: #2d3748;
+  --text-secondary: #6b7280;
+  --text-heading: #1e1e2d;
+  --border-color: #e0e4f0;
+  --button-primary-bg: #0061ff;
+  --button-primary-hover: #0052d4;
+  --button-secondary-bg: #f8f9ff;
+  --button-secondary-hover: #edf0ff;
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-medium: rgba(0, 0, 0, 0.08);
+  --shadow-heavy: rgba(0, 0, 0, 0.12);
+}
 
+body.dark-theme {
+  /* Dark Theme Colors */
+  --background-primary: #121212;
+  --background-secondary: #1e1e1e;
+  --background-card: #1e1e2d;
+  --text-primary: #e0e0e6;
+  --text-secondary: #a0a0b0;
+  --text-heading: #ffffff;
+  --border-color: #2a2a3c;
+  --button-primary-bg: #0061ff;
+  --button-primary-hover: #0052d4;
+  --button-secondary-bg: #2a2a3c;
+  --button-secondary-hover: #3a3a4c;
+  --shadow-light: rgba(0, 0, 0, 0.2);
+  --shadow-medium: rgba(0, 0, 0, 0.3);
+  --shadow-heavy: rgba(0, 0, 0, 0.4);
+}
+
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 0;
+  box-sizing: border-box;
+  transition: background 0.3s ease, color 0.3s ease;
+}

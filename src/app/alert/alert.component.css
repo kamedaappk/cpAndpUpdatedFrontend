@@ -22,9 +22,9 @@
 }
 
 .alert-notification {
-    background: white;
+    background: var(--background-card);
     border-radius: 12px;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px -10px var(--shadow-heavy);
     padding: 14px 20px;
     display: flex;
     align-items: center;
@@ -65,7 +65,7 @@
 .alert-message {
     font-size: 14px;
     font-weight: 500;
-    color: #1e1e2d;
+    color: var(--text-heading);
     z-index: 1;
     flex: 1;
     line-height: 1.4;
@@ -74,7 +74,7 @@
 
 .alert-close-button {
     font-size: 16px;
-    color: #aaa;
+    color: var(--text-secondary);
     cursor: pointer;
     width: 22px;
     height: 22px;
@@ -89,7 +89,7 @@
 
 .alert-close-button:hover {
     background: rgba(255, 255, 255, 0.8);
-    color: #888;
+    color: var(--text-primary);
     transform: scale(1.1);
 }
 

@@ -5,8 +5,8 @@
 body {
     margin: 0;
     font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, #f5f7ff 0%, #eef0ff 100%);
-    color: #2d3748;
+    background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+    color: var(--text-primary);
     min-height: 100vh;
     padding: 0;
     box-sizing: border-box;
@@ -40,7 +40,7 @@ body {
 
 .motto {
     font-size: 1.2rem;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin-top: 0.5rem;
     font-weight: 500;
     letter-spacing: 0.5px;
@@ -56,18 +56,18 @@ body {
     max-width: 600px;
     margin: 2rem auto;
     padding: 2.5rem;
-    background: #ffffff;
+    background: var(--background-card);
     border-radius: 16px;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 30px -10px var(--shadow-medium);
     text-align: center;
     backdrop-filter: blur(4px);
-    border: 1px solid #e0e4f0;
+    border: 1px solid var(--border-color);
     animation: scaleIn 0.6s ease-out;
 }
 
 .home-title {
     font-size: 1.8rem;
-    color: #1e1e2d;
+    color: var(--text-heading);
     margin-bottom: 2rem;
     font-weight: 600;
     line-height: 1.4;
@@ -102,12 +102,12 @@ body {
 }
 
 .home-create-room-button {
-    background: #0061ff;
+    background: var(--button-primary-bg);
     color: white;
 }
 
 .home-create-room-button:hover {
-    background: #0052d4;
+    background: var(--button-primary-hover);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 97, 255, 0.25);
 }
@@ -117,14 +117,14 @@ body {
 }
 
 .home-enter-room-button {
-    background: #f8f9ff;
-    color: #0061ff;
-    border: 1px solid #d0d7f0;
+    background: var(--button-secondary-bg);
+    color: var(--button-primary-bg);
+    border: 1px solid var(--border-color);
 }
 
 .home-enter-room-button:hover {
-    background: #edf0ff;
-    color: #0052d4;
+    background: var(--button-secondary-hover);
+    color: var(--button-primary-hover);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(255, 111, 0, 0.1);
 }
@@ -156,7 +156,7 @@ body {
     gap: 0.5rem;
     background: transparent;
     border: none;
-    color: #0061ff;
+    color: var(--button-primary-bg);
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
@@ -167,7 +167,7 @@ body {
 
 .home-back-button:hover {
     background: rgba(0, 97, 255, 0.1);
-    color: #0052d4;
+    color: var(--button-primary-hover);
 }
 
 .home-back-button i {

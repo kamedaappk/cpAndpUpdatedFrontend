@@ -7,13 +7,13 @@
 .room-enter-state,
 .room-loggedin-state {
     font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-    color: #1e1e2d;
+    color: var(--text-heading);
     max-width: 720px;
     margin: 40px auto;
     padding: 32px;
-    background: #ffffff;
+    background: var(--background-card);
     border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 32px var(--shadow-medium);
     transition: all 0.3s ease;
     animation: fadeInUp 0.5s ease-out forwards;
 }
@@ -23,7 +23,7 @@
 .room-enter-title {
     font-size: 28px;
     font-weight: 700;
-    color: #0061ff;
+    color: var(--button-primary-bg);
     margin: 0 0 8px 0;
     display: flex;
     align-items: center;
@@ -33,7 +33,7 @@
 .room-create-description,
 .room-enter-description {
     font-size: 16px;
-    color: #4a4a68;
+    color: var(--text-secondary);
     margin: 0 0 24px 0;
     font-weight: 500;
 }
@@ -48,7 +48,7 @@ form {
 .room-field-label {
     font-size: 14px;
     font-weight: 600;
-    color: #1e1e2d;
+    color: var(--text-heading);
     display: flex;
     align-items: center;
     gap: 6px;
@@ -69,11 +69,11 @@ textarea,
 input[type="range"] {
     width: 100%;
     padding: 14px 16px;
-    border: 1px solid #d0d0da;
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     font-size: 15px;
-    color: #1e1e2d;
-    background-color: #f9f9fc;
+    color: var(--text-heading);
+    background-color: var(--background-secondary);
     transition: all 0.25s ease;
     outline: none;
 }
@@ -84,15 +84,15 @@ input[type="search"]:focus,
 input[type="email"]:focus,
 input[type="url"]:focus,
 textarea:focus {
-    border-color: #0061ff;
+    border-color: var(--button-primary-bg);
     box-shadow: 0 0 0 3px rgba(0, 97, 255, 0.15);
-    background-color: #ffffff;
+    background-color: var(--background-card);
     transform: scale(1.01);
 }
 
 input::placeholder,
 textarea::placeholder {
-    color: #a0a0b3;
+    color: var(--text-secondary);
     font-weight: 400;
 }
 
@@ -122,7 +122,7 @@ textarea {
     flex: 1;
     height: 6px;
     border-radius: 3px;
-    background: #e0e0e0;
+    background: var(--border-color);
     outline: none;
     cursor: pointer;
 }
@@ -132,7 +132,7 @@ textarea {
     height: 18px;
     width: 18px;
     border-radius: 50%;
-    background: #0061ff;
+    background: var(--button-primary-bg);
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 97, 255, 0.3);
     transition: transform 0.2s ease;
@@ -146,7 +146,7 @@ textarea {
     height: 18px;
     width: 18px;
     border-radius: 50%;
-    background: #0061ff;
+    background: var(--button-primary-bg);
     border: none;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 97, 255, 0.3);
@@ -154,7 +154,7 @@ textarea {
 
 .room-duration-value {
     font-weight: 600;
-    color: #0061ff;
+    color: var(--button-primary-bg);
     min-width: 60px;
     font-size: 15px;
 }
@@ -180,23 +180,23 @@ textarea {
 }
 
 .room-create-button {
-    background: #0061ff;
+    background: var(--button-primary-bg);
     color: white;
 }
 
 .room-enter-button {
-    background: #ff6f00;
+    background: var(--button-primary-bg);
     color: white;
 }
 
 .room-create-button:hover {
-    background: #0052d4;
+    background: var(--button-primary-hover);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 97, 255, 0.3);
 }
 
 .room-enter-button:hover {
-    background: #e65b00;
+    background: var(--button-primary-hover);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(255, 111, 0, 0.3);
 }
@@ -223,21 +223,21 @@ textarea {
 /* === ICONS (Font Awesome) === */
 i.fas {
     font-size: 18px;
-    color: #0061ff;
+    color: var(--button-primary-bg);
 }
 
 .room-enter-title i.fas {
-    color: #ff6f00;
+    color: var(--button-primary-bg);
 }
 
 .room-field-label i.fas {
-    color: #5a5a78;
+    color: var(--text-secondary);
     transition: color 0.2s ease;
 }
 
 input:focus+label i.fas,
 textarea:focus+label i.fas {
-    color: #0061ff;
+    color: var(--button-primary-bg);
 }
 
 /* === RESPONSIVE DESIGN === */
