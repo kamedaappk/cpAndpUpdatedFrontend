@@ -218,4 +218,8 @@ onFileSelected(event: any): void {
       this.maxUploadSizeSubscription.unsubscribe();
     }
   }
+
+  refreshRoom() {
+    this.roomService.getRoomDataS(this.room.userId)
+  }
 }

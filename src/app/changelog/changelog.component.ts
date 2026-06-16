@@ -15,6 +15,11 @@ export class ChangelogComponent {
     changelog = [
 
         {
+            date: '2026-06-16',
+            title: 'Room Refresh functionality',
+            description: 'Updated the Room Ui with Room refresh button, on clicking which refreshes the rooms data and loads the latest messages.'
+        },
+        {
             date: '2025-09-16',
             title: 'Text Formatting Preservation',
             description: 'Updated the message input to use a textarea instead of a single-line input field, and added CSS to preserve line breaks and whitespace when displaying messages. This allows users to enter multi-line messages with proper formatting preserved.'

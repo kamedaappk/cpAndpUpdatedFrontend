@@ -9,6 +9,10 @@
     <p class="room-expiry"><i class="fas fa-hourglass-half"></i> Expires in: <strong>{{room?.duration}}</strong></p>
     <p class="room-time"><i class="fas fa-clock"></i> Time: {{time}}</p>
 
+    <button type="button" class="room-refresh-button" (click)="refreshRoom()">
+        <i class="fas fa-sync-alt"></i> Refresh Room
+    </button>
+
     <!-- Messages List -->
     <div class="room-messages-list" *ngFor="let message of roomData?.messages">
         <div class="room-message-item">

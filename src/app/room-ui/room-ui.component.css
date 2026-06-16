@@ -162,6 +162,25 @@
     transform: scale(1.03);
 }
 
+.room-refresh-button {
+    background: var(--button-secondary-bg);
+    color: var(--button-primary-bg);
+    border: 1px solid var(--button-primary-bg);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 auto 20px auto;
+}
+
+.room-refresh-button:hover {
+    background: var(--button-secondary-hover);
+    transform: rotate(15deg) scale(1.05);
+}
 /* ============= MESSAGE INPUT SECTION ============= */
 .room-message-input {
     display: flex;
